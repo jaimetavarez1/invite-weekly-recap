@@ -299,36 +299,23 @@
     summaryText = '';
 
     window.cowork.askClaude(
-      `You are writing a Slack message for Jaime Tavarez, an Invite PE at Gusto, to share with their recruiting team.
+      `Write a Slack message from Jaime (Invite PE, Gusto) to their recruiting team based on the updates below. Return ONLY the message, no explanation.
 
-Write a structured, scannable Slack message using EXACTLY this format:
-
+Format:
 *This week's round-up 👇*
 
 _Asks_
-• 📌 *Key term or topic* — brief description
-    • Supporting detail or action needed
-    • Another sub-point if needed
+• 📌 *Topic* — action needed
+    • sub-detail
 
 _Updates_
-• 🎯 *Key update* — brief description
-    • Detail or context
+• 🎯 *Topic* — what happened
+    • sub-detail
 
 Please reply with a *yes* once you've read through! 🙌
 
-RULES:
-- Open with *This week's round-up 👇* (bold, on its own line)
-- Use _Asks_ for action items and _Updates_ for informational updates (italic headers on their own line)
-- Each main bullet MUST be on ONE line: emoji + *bold key term* + space + dash + description. NEVER put just a bold title alone on a bullet line with no description. NEVER split the title onto one line and the description onto the next
-- Sub-bullets (indented with 4 spaces, then •): one specific detail or action per sub-bullet
-- Use *bold* for names, dates, tool names, and anything requiring action
-- Leave a blank line between each section
-- Close with "Please reply with a *yes* once you've read through! 🙌"
-- NEVER write a paragraph — every piece of info goes in a bullet or sub-bullet
-- NEVER mention the same topic, event, or update more than once across the entire message. If something has both an action (e.g. complete prep) and context (e.g. session date), combine them into ONE bullet with sub-bullets — do not split it across Asks and Updates
-- Before writing, mentally group all updates by topic. If two items are about the same thing, merge them into one bullet
-- Return ONLY the message — no explanation, no code fences`,
-      items.map((item, i) => ({ label: `Update ${i+1}`, content: item }))
+Rules: Merge duplicate topics into one bullet. Every bullet on one line (emoji + *bold topic* — description). Sub-bullets indented 4 spaces. No paragraphs.`,
+      items.map((item, i) => ({ label: `Update ${i+1}`, content: item.slice(0, 300) }))
     ).then(result => {
       // Extract plain text from whatever askClaude returns
       let raw = result;
