@@ -229,13 +229,6 @@
     kebone:   { label: 'Kebone', sub: 'PM/PD', initials: 'KM', bg: '#F2EDFB', color: '#7C4FBF' }
   };
 
-  const SECTION_LABELS = [
-    { num: '1', title: 'Org &amp; policy updates' },
-    { num: '2', title: 'Key events &amp; decisions' },
-    { num: '3', title: 'PE org updates' },
-    { num: '4', title: 'Talking points' }
-  ];
-
   function setStep(msg, step) {
     document.getElementById('loadMsg').textContent = msg;
     [0,1,2,3].forEach(i => {
@@ -291,43 +284,31 @@
       if (el.dataset.summary) selected.push({ text: el.dataset.summary, el });
     });
     if (!selected.length) return;
-
-    // Build Slack message instantly — no API call
     const asks = [];
     const updates = [];
-
     selected.forEach(({ text, el }) => {
       const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
       if (!lines.length) return;
       const heading = lines[0].replace(/^\*\*(.+)\*\*$/, '$1').replace(/\*\*(.+?)\*\*/g, '$1');
       const bullets = lines.slice(1);
-
-      // Check if this item has an "Action required" tag → goes in Asks
       const tag = el.querySelector && el.querySelector('.itp-tag');
       const isAsk = tag && tag.textContent.toLowerCase().includes('action');
       const emoji = isAsk ? '📌' : '🎯';
-
-      // First bullet as inline description (strip bold markers, trim)
       let desc = bullets.length
         ? bullets[0].replace(/^\*\*([^*]+)\*\*:?\s*/, '').replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1').slice(0, 90)
         : '';
       let line = desc ? `• ${emoji} *${heading}* — ${desc}` : `• ${emoji} *${heading}*`;
-
-      // Up to 2 sub-bullets
       bullets.slice(1, 3).forEach(b => {
         const clean = b.replace(/^\*\*([^*]+)\*\*:?\s*/, '$1: ').replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1').slice(0, 100);
         line += `\n    • ${clean}`;
       });
-
       if (isAsk) asks.push(line);
       else updates.push(line);
     });
-
-    let msg = '*This week\'s round-up 👇*\n\n';
+    let msg = "*This week\'s round-up 👇*\n\n";
     if (asks.length) msg += '_Asks_\n' + asks.join('\n') + '\n\n';
     if (updates.length) msg += '_Updates_\n' + updates.join('\n') + '\n\n';
     msg += 'Please reply with a *yes* once you\'ve read through! 🙌';
-
     summaryText = msg;
     document.getElementById('sumOverlay').classList.add('open');
     document.getElementById('sumLoading').style.display = 'none';
@@ -339,7 +320,7 @@
     document.getElementById('sumActions').style.display = 'flex';
   }
 
-  function closeSummary() {
+    function closeSummary() {
     document.getElementById('sumOverlay').classList.remove('open');
   }
 
@@ -361,11 +342,6 @@
     </div>`;
   }
 
-  function toggleTp(id) {
-    const el = document.getElementById(id);
-    if (el) el.classList.toggle('open');
-  }
-
   let itpCount = 0;
   function applyInline(t) {
     return esc(t)
@@ -382,27 +358,22 @@
       const line = lines[i];
       const trimmed = line.trim();
       if (!trimmed) { html += '<div style="height:6px"></div>'; continue; }
-      // Bold title line (starts and ends with * but has spaces — e.g. *This week's round-up*)
       if (/^\*[^*].+[^*]\*$/.test(trimmed) || /^\*\*[^*].+[^*]\*\*$/.test(trimmed)) {
         html += `<div style="font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px">${applyInline(trimmed)}</div>`;
         continue;
       }
-      // Italic section header: _Asks_ or _Updates_
       if (/^_[^_]+_$/.test(trimmed)) {
         const label = trimmed.replace(/^_|_$/g, '');
         html += `<div style="font-style:italic;font-weight:600;font-size:14px;color:var(--tx2);margin:10px 0 4px">${esc(label)}</div>`;
         continue;
       }
-      // Sub-bullet (indented: spaces then ○ or ◦ or - or •)
       if (/^\s{2,}[○◦•\-]/.test(line) || /^\s{2,}[a-z]/i.test(line) && /^\s{3,}/.test(line)) {
         const inner = trimmed.replace(/^[○◦•\-]\s*/, '');
         html += `<div style="display:flex;gap:8px;padding:2px 0 2px 20px"><span style="flex-shrink:0;color:var(--tx3)">•</span><span style="font-size:13px;color:var(--tx2)">${applyInline(inner)}</span></div>`;
         continue;
       }
-      // Main bullet: starts with • or -
       if (/^[•\-]\s/.test(trimmed)) {
         const inner = trimmed.replace(/^[•\-]\s*/, '');
-        // If the content is ONLY a bold/italic term with no description, render as header (no bullet)
         const strippedInner = inner.replace(/\*([^*]+)\*/g,'$1').replace(/_([^_]+)_/g,'$1').replace(/:[\w_]+:/g,'').trim();
         if (!strippedInner || strippedInner === strippedInner.replace(/[\s—\-]/g,'').slice(0,3)) {
           html += `<div style="font-weight:700;font-size:13.5px;color:var(--tx);padding:5px 0 2px">${applyInline(inner)}</div>`;
@@ -411,11 +382,11 @@
         }
         continue;
       }
-      // Closing line or plain text
       html += `<div style="font-size:13.5px;color:var(--tx);padding:2px 0">${applyInline(trimmed)}</div>`;
     }
     return html;
   }
+
   function itpHtml(tp) {
     if (!tp) return '';
     const clr = tp.priority === 'red' ? 'red' : tp.priority === 'yellow' ? 'yellow' : 'green';
@@ -443,7 +414,6 @@
     document.querySelectorAll('.pe-panel').forEach(p => p.classList.toggle('active', p.dataset.key === key));
   }
 
-  // Map org keys to filter tags
   const ORG_FILTERS = [
     { key: 'all',        label: 'All' },
     { key: 'r&d',        label: 'Jaime &middot; R&amp;D' },
@@ -453,7 +423,6 @@
     { key: 'pm',         label: 'Kebone &middot; PM/PD' }
   ];
 
-  // PE key → filter org key
   const PE_TO_ORG = { jaime:'r&d', teresa:'foundation', lisa:'gtm', michelle:'cx', kebone:'pm' };
   const ORG_TO_PE = { 'r&d':'jaime', foundation:'teresa', gtm:'lisa', cx:'michelle', pm:'kebone' };
 
@@ -477,28 +446,19 @@
 
   function setFilter(org) {
     activeFilter = org;
-    // Update filter button states
     document.querySelectorAll('.f-btn').forEach(b => b.classList.toggle('active', b.dataset.org === org));
-
-    // Filter policy items
     document.querySelectorAll('.p-item[data-orgs]').forEach(el => {
       const orgs = el.dataset.orgs.split(',');
       el.classList.toggle('hidden-item', org !== 'all' && !orgs.includes('all') && !orgs.includes(org));
     });
-
-    // Filter event groups — hide group if all items hidden
     document.querySelectorAll('.ev-group[data-orgs]').forEach(el => {
       const orgs = el.dataset.orgs.split(',');
       el.classList.toggle('hidden-item', org !== 'all' && !orgs.includes('all') && !orgs.includes(org));
     });
-
-    // Filter talking points
     document.querySelectorAll('.tp[data-orgs]').forEach(el => {
       const orgs = el.dataset.orgs.split(',');
       el.classList.toggle('hidden-item', org !== 'all' && !orgs.includes('all') && !orgs.includes(org));
     });
-
-    // Auto-switch PE tab
     if (org !== 'all' && ORG_TO_PE[org]) {
       switchPE(ORG_TO_PE[org]);
     }
@@ -599,7 +559,6 @@
     } else { h += `<div style="padding:18px 22px" class="empty">No major events this week.</div>`; }
     h += `</div></div>`;
 
-
     document.getElementById('content').innerHTML = h;
     document.getElementById('content').style.display = 'block';
     document.getElementById('loading').style.display = 'none';
@@ -651,19 +610,16 @@
       const result = await window.cowork.askClaude(
         `You are generating a weekly recruiting recap for Jaime Tavarez, Invite PE covering R&D (Engineering, Data) at Gusto. Based ONLY on the provided data from the past 7 days, return a single valid JSON object with these 4 keys. No markdown, no explanation — just the JSON.
 
-"orgPolicy": array of {title: string, summary: string, source: string, priority: "high"|"medium"|"low"}
-  — Policy changes, new SOPs, process updates, tooling changes from IOPE Newsletter and Slack. high = requires immediate action, medium = this week, low = FYI.
+"orgPolicy": array of {title: string, summary: string, bullets: string[], source: string, sourceUrl: string|null, priority: "high"|"medium"|"low", tags: string[], tp: {priority:"red"|"yellow"|"green", audience:string, point:string}|null}
 
-"keyEvents": array of {theme: string, items: [{summary: string, source: string}]}
-  — Decisions made, outcomes, significant developments grouped by theme.
+"keyEvents": array of {theme: string, tags: string[], items: [{heading: string, bullets: string[], source: string, sourceUrl: string|null, tp: {priority:"red"|"yellow"|"green"}|null}]}
 
-"peOrgUpdates": object with keys jaime, teresa, lisa, michelle, kebone
-  — jaime=R&D/Eng/Data, teresa=Foundation/I&O/Finance, lisa=GTM/Sales/Marketing, michelle=CX, kebone=PM/PD
-  — Each: {updates: string[], sourceGap: string|null}
+"peOrgUpdates": object with keys jaime, teresa, lisa, michelle, kebone — each: {updates: [{heading:string, bullets:string[]}], sourceGap: string|null}
+  jaime=R&D/Eng/Data, teresa=Foundation/I&O/Finance, lisa=GTM/Sales/Marketing, michelle=CX, kebone=PM/PD
 
-"talkingPoints": array of {priority: "red"|"yellow"|"green", audience: string, point: string, source: string}
-  — red=urgent now, yellow=this week, green=FYI. point=ready-to-use message.
+"talkingPoints": array of {priority: "red"|"yellow"|"green", audience: string, point: string, source: string, sourceUrl: string|null, tags: string[]}
 
+tags values: "all", "r&d", "foundation", "gtm", "cx", "pm"
 Return ONLY valid JSON.`,
         rawData
       );
@@ -692,12 +648,18 @@ Return ONLY valid JSON.`,
     }
   }
 
-  const PRELOADED = {"week": "May 28 – June 4, 2026", "data": {"orgPolicy": [{"title": "New Variable Cash Award field — required on all GH offers", "summary": "**What changed:** A new required field has been added to every Greenhouse offer.", "bullets": ["**Field name:** \"Are they receiving a % Variable Cash Award?\"", "**Options:** No – Hourly · Yes – US Candidate · Yes – Canada Candidate", "**If Yes:** A second field appears — enter the variable % amount", "**Variable targets by level:** L1–L3: 5% · L4: 7.5% · L5: 10%", "**Split:** 50% individual performance / 50% company performance", "**Action:** Double-check offer details before sending any letter"], "source": "IOPE Newsletter, June 1, 2026", "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit", "priority": "high", "tp": {"priority": "red", "audience": "All orgs", "point": "📋 *Action needed on all GH offers:* A new required field was added — *\"Are they receiving a % Variable Cash Award?\"*\n• No = Hourly candidate\n• Yes - US = US-based candidate\n• Yes - Canada = Canada-based candidate\n\nIf Yes, enter the % by level: L1–L3: 5% · L4: 7.5% · L5: 10%\nDouble-check this field before sending *any* offer letters. DM me with questions!"}}, {"title": "Greenhouse Onboarding Location field — standardizing this week", "summary": "**What changed:** PeopleTech is cleaning up this field and connecting it to Workday, which currently can't ingest it.", "bullets": ["**Approved options only:** Remote · San Francisco · New York · Denver", "**Why it matters:** Feeds directly to the Onboarding team for new hire setup", "**Timeline:** Change expected by end of this week"], "source": "Alli Belamide, #invite-team, June 3, 2026", "sourceUrl": "https://gustohq.slack.com/archives/C0517BVP04V/p1780518505", "priority": "high", "tp": {"priority": "red", "audience": "All orgs", "point": "📍 *Onboarding Location field in GH is being standardized this week.*\nGoing forward, only these four options are valid:\n• Remote\n• San Francisco\n• New York\n• Denver\n\nThis feeds directly to the Onboarding team — wrong entries cause issues for new hires downstream. Reach out if unsure which to use."}}, {"title": "PeopleOS — Debrief + HC Prep features launching this week", "summary": "**Status:** Both features going live this week with same-day iteration in progress.", "bullets": ["**Debrief feature:** Live this week — Elan and Saumya are capturing early adopter feedback in real time", "**HC Prep feature:** Also launching this week", "**Next step:** Watch for comms from Elan/Saumya on how to access and use each feature"], "source": "Kristin Ruehle, #invite-team, June 2, 2026", "sourceUrl": "https://gustohq.slack.com/archives/C0517BVP04V/p1780445700", "priority": "high"}, {"title": "Greenhouse permissions — expanded for all Invite PEs", "summary": "**What changed:** Laura standardized GH access across all PEs this week.", "bullets": ["**New:** Manage company email and social media templates", "**New:** Manage CRM and assign prospects to pools", "**New:** Invite and deactivate agency recruiters directly — no longer routes through Ops", "**New (limited):** Create jobs only for confidential roles (FBOS approval required) or evergreen reqs", "**Do NOT use:** Scheduling links — still on Modernloop; enabling in parallel breaks reporting", "**Reminder:** Workday remains source of truth for all req-level details"], "source": "Laura Lockwood, #invite-pes, May 28, 2026", "sourceUrl": "https://gustohq.slack.com/archives/C0AFC07JJKA/p1779994800", "priority": "medium"}, {"title": "IKB rebuild — Notion migration underway", "summary": "**What's happening:** Full clean-up and rebuild of the Invite Knowledge Base.", "bullets": ["**Issues being addressed:** Outdated content, broken links, unclear ownership, duplicate pages", "**Goal:** One source of truth built around how recruiters and hiring teams actually work", "**Action needed:** IKB Redesign Survey closes **June 5** — encourage your team to complete it", "**Survey link:** forms.gle/F4MK2rzceHpwerAf9"], "source": "Laura Lockwood, #invite-pes, May 29, 2026", "sourceUrl": "https://gustohq.slack.com/archives/C0AFC07JJKA/p1780074195", "priority": "low", "tp": {"priority": "green", "audience": "All orgs", "point": "📝 *Quick ask — IKB Redesign Survey closes today (June 5)!*\nThe team is rebuilding the Invite Knowledge Base and wants your input before anything changes. Anonymous, takes under 5 min.\n\n👉 forms.gle/F4MK2rzceHpwerAf9\n\nPlease fill it out before EOD — every response helps!"}}], "keyEvents": [{"theme": "Org structure & promotions", "tags": ["r&d", "pm"], "items": [{"heading": "Jaime & Kebone promotions — announced at R&D All Hands, Thursday June 5", "bullets": ["**Jaime's new scope:** All Eng hiring — SWE, AIT, Security, Infrastructure · 9 recruiters · Spec Tech pod folds in", "**Jaime's team:** Mike, Khetsun, Kevin, Angeline, Jacob Ellison, Rose + contractors Jeff & Nico", "**Kebone's new scope:** PM/Design + Data · 8 recruiters · POC for Chris (PM), Amy (Design), Julia King (Data)", "**Moving to Kebone's team:** Jeremy, Janielle, Ashleigh, Abby"], "source": "Kristin Ruehle, #r-and-d-invite-leadership, June 2–3", "sourceUrl": "https://gustohq.slack.com/archives/C08SVC00BLN/p1780546716"}, {"heading": "L6 Head of Tech Invite & L5 Eng Invite PE backfills — paused", "bullets": ["**Decision:** Investment going into Jaime and Kebone's expanded scope instead", "**Why:** More senior/complex hiring anticipated in Q3–Q4; not a timing delay", "**How we operate:** Continue as one pod; flex resources across business needs"], "source": "Kristin Ruehle, #r-and-d-invite-leadership, June 2", "sourceUrl": "https://gustohq.slack.com/archives/C08SVC00BLN/p1780416516"}]}, {"theme": "PeopleOS / InviteOS", "tags": ["all"], "items": [{"heading": "Debrief + HC Prep features — launching this week", "bullets": ["Both features going live this week with same-day iteration in progress", "**Early adopter feedback:** Being captured actively — changes happening in real time", "Watch for comms from **Elan and Saumya** on how to access and use each feature"], "source": "Kristin Ruehle, #invite-team, June 2", "sourceUrl": "https://gustohq.slack.com/archives/C0517BVP04V/p1780445700"}, {"heading": "Recruiter DayPlay — UAT in progress", "bullets": ["Feature live in staging · testing and final refinements underway", "**Next batch of InviteOS builds:** Kristin and PEs finalizing recommendations this week — announcement coming soon"], "source": "IOPE Newsletter, June 1, 2026", "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit"}]}, {"theme": "Invite Ops — in flight", "tags": ["all"], "items": [{"heading": "IKB rebuild and Notion migration — kicked off", "bullets": ["**Fixing:** Outdated content, broken links, unclear ownership, duplicate pages", "**Goal:** One source of truth built around how recruiters and hiring teams actually work", "**Action:** IKB Redesign Survey closes **June 5** — encourage your team to complete it"], "source": "Laura Lockwood, #invite-pes, May 29", "sourceUrl": "https://gustohq.slack.com/archives/C0AFC07JJKA/p1780074195"}, {"heading": "VMA Evolution — weekly training sync now running", "bullets": ["Invite Ops reimagining the program for scalability and alignment with Gusto's direction", "**Weekly syncs running** with Celena, Ryan, and Lisa", "No process changes yet — more to come as the program takes shape"], "source": "Kristin Ruehle, #invite-team, June 2 + IOPE Newsletter, June 1", "sourceUrl": "https://gustohq.slack.com/archives/C0517BVP04V/p1780445700"}, {"heading": "Invite Within the Law training — on pause", "bullets": ["Sessions suspended while content is being refreshed", "**In the meantime:** Quick reference resource for legal/compliance questions being built"], "source": "IOPE Newsletter, June 1, 2026", "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit"}]}, {"theme": "Planning & process", "tags": ["all"], "items": [{"heading": "Cycle 2 planning — first drafts due EOD Thursday, June 5", "bullets": ["**Submit:** H1 north star + cycle-by-cycle breakdown (what's done at end of each cycle)", "**Include:** Cross-functional dependencies — Invite Ops, People Ops, other partners", "**Bring:** 3–5 PeopleOS feature ideas tied to your priorities · plan to ship 2 this cycle"], "source": "Kristin Ruehle, #invite-team, June 2", "sourceUrl": "https://gustohq.slack.com/archives/C0517BVP04V/p1780445700"}, {"heading": "Design Thinking Workshop — June 11, 1–2pm PT", "bullets": ["**Hosted by:** Teresa, Michelle, and Kebone · full Invite team attendance expected", "**Prep work:** ~20 min shared by **June 5 at noon** — complete before the session", "**Goal:** Identify where recruiters are drained and where to automate or simplify"], "source": "Teresa Waggoner, #invite-team, June 3", "sourceUrl": "https://gustohq.slack.com/archives/C0517BVP04V/p1780530510", "tp": {"priority": "yellow", "audience": "All orgs", "point": "📅 *Design Thinking Workshop — June 11, 1–2pm PT*\nTeresa, Michelle, and Kebone are hosting a session to look at the Invite process end-to-end. Attendance is expected for all recruiters!\n\n• Prep work (~20 min) will be shared *today by noon* — please complete it before the session\n• Come ready to be open about what's draining your work and what you'd want to change\n\nCheck your calendar for the invite!"}}, {"heading": "Internal Mobility Framework draft — shared with PEs for review", "bullets": ["**Covers:** Laterals, promotions, IC-to-PE transitions, bungees, downward moves", "**Status:** PEs are seeing this first — before People Partners or Comp", "**Focus areas:** Recruiter Role & Process Design · Eligibility Frameworks · Guidelines for PEs", "**Action:** Drop comments in the doc this week"], "source": "Kristin Ruehle, #invite-pes, May 28", "sourceUrl": "https://gustohq.slack.com/archives/C0AFC07JJKA/p1779940587353929"}, {"heading": "R&D Invite All Hands — Thursday, June 5", "bullets": ["Promotions and org restructure being shared with the full R&D Invite team", "**Pre-work:** Jaime and Kebone briefing key individuals in 1:1s before the All Hands"], "source": "Kristin Ruehle, #r-and-d-invite-leadership, June 2", "sourceUrl": "https://gustohq.slack.com/archives/C08SVC00BLN/p1780416516"}]}, {"theme": "Team changes", "tags": ["gtm", "pm"], "items": [{"heading": "Guadalupe Martinez — departed June 2", "bullets": ["**Tenure:** 5 years at Gusto · primarily supported the Product org", "**Transition:** Kebone managing with **Mallory Montanez** covering Lupe's late-stage roles", "**Note:** Chris (business partner) has asked about backfilling — staying lean for now"], "source": "Guadalupe Martinez, #invite-team, June 2", "sourceUrl": "https://gustohq.slack.com/archives/C0517BVP04V/p1780437608", "tp": {"priority": "yellow", "audience": "PM/PD", "point": "👋 *Team update:* Lupe Martinez's last day was June 2 — thank you Lupe for five incredible years!\n\n*Mallory Montanez* is covering her late-stage roles during the transition. For any questions on Product reqs, please reach out to me directly."}}, {"heading": "Gabe Cadavillo — resigned, last day June 12", "bullets": ["**Status:** Resigned · Lisa Pham flagged to the PE team on June 2", "**Action needed:** Confirm coverage for all open GTM reqs before his departure"], "source": "Lisa Pham, #invite-pes, June 2", "sourceUrl": "https://gustohq.slack.com/archives/C0AFC07JJKA/p1780438948", "tp": {"priority": "yellow", "audience": "GTM", "point": "👋 *Team update:* Gabe Cadavillo's last day is *June 12.*\n\nPlease take a few minutes this week to confirm coverage on all open GTM reqs before his departure. Reach out to me with any questions or if you need help prioritizing."}}]}], "peOrgUpdates": {"jaime": {"updates": [{"heading": "Promotion — announced at R&D All Hands, Thursday June 5", "bullets": ["**New scope:** All Eng hiring — SWE, AIT, Security, Infrastructure", "**Team size:** 9 recruiters · Spec Tech pod folds into the unified Eng pod", "**Your team:** Mike, Khetsun, Kevin, Angeline, Jacob Ellison, Rose + contractors Jeff & Nico", "**Moving to Kebone:** Jeremy, Janielle, Ashleigh, Abby"]}, {"heading": "Action item — Cycle 2 first draft due EOD Thursday, June 5", "bullets": ["**Submit:** H1 north star + cycle-by-cycle breakdown", "**Include:** Cross-functional dependencies and 3–5 PeopleOS feature ideas", "**Plan to ship:** 2 PeopleOS features this cycle"]}, {"heading": "R&D heads-down week — watch for dates", "bullets": ["Nikki flagged an upcoming R&D no-meeting week via #r-and-d-invite-all", "**Plan ahead:** Sourcing pushes and candidate comms should be timed around this window"]}], "sourceGap": "Only one message in #r-and-d-invite-all this week. Most R&D Invite updates surfaced in #r-and-d-invite-leadership and #invite-team."}, "teresa": {"updates": [{"heading": "Co-hosting Design Thinking Workshop — June 11, 1–2pm PT", "bullets": ["Running with **Michelle and Kebone** · full Invite team attendance expected", "**Prep work:** ~20 min shared by **June 5 at noon** — complete before attending", "**Goal:** Identify where recruiters are drained and what to automate or simplify"]}, {"heading": "Action item — Cycle 2 first draft due EOD Thursday, June 5", "bullets": ["**Foundation / I&O / Finance** workstream inputs needed", "Include cross-functional dependencies and 3–5 PeopleOS feature ideas"]}, {"heading": "New GH permissions — review and use", "bullets": ["**Expanded access:** Manage email/social templates, CRM/prospect pools, agency recruiter access", "**Do NOT use yet:** Scheduling links — still on Modernloop"]}], "sourceGap": "No dedicated Foundation Invite channel with recent activity. Updates limited to #invite-team and #invite-pes."}, "lisa": {"updates": [{"heading": "Team departure — Gabe Cadavillo, last day June 12", "bullets": ["**Status:** Resigned · flagged to PE team June 2", "**Action:** Confirm transition coverage for all open GTM reqs before he's out", "**Note:** Coordinate with remaining team on candidate pipeline continuity"]}, {"heading": "GH email template clean-up — now actionable", "bullets": ["New PE permissions allow Lisa to manage email/social templates directly", "**No longer needs to route through Ops** — can proceed with the template clean-up project"]}, {"heading": "Action item — Cycle 2 first draft due EOD Thursday, June 5", "bullets": ["**GTM** workstream inputs needed", "Tie feature ideas to GTM priorities · plan to ship 2 PeopleOS features this cycle"]}], "sourceGap": "No dedicated GTM Invite channel found with recent content. Updates limited to #invite-pes."}, "michelle": {"updates": [{"heading": "Co-hosting Design Thinking Workshop — June 11, 1–2pm PT", "bullets": ["Running with **Teresa and Kebone** · full Invite team attendance expected", "**Prep work:** ~20 min shared by **June 5 at noon**"]}, {"heading": "Variable cash on JDs — open question", "bullets": ["Michelle asked Kristin on June 4: should variable cash be added to posted JDs?", "**Status:** Standard language guidance pending — follow up with Kristin before updating any JD"]}, {"heading": "Hiring Strategy Planning tool — built for CX", "bullets": ["Michelle shared the tool in #invite-pes · available for other PEs to adapt", "Aligned with an active CX workstream and Laura's broader IKB/process initiatives"]}, {"heading": "Action item — Cycle 2 first draft due EOD Thursday, June 5", "bullets": ["**CX** workstream inputs needed · include PeopleOS feature ideas tied to CX priorities"]}], "sourceGap": "Dedicated CX channel (#invite-cxio) inactive since Oct 2025. Updates limited to #invite-team and #invite-pes."}, "kebone": {"updates": [{"heading": "Promotion — announced at R&D All Hands, Thursday June 5", "bullets": ["**New scope:** PM/Design + Data · 8 recruiters", "**Gaining:** Jeremy, Janielle, Ashleigh, Abby (moving from Jaime's team)", "**POC for:** Chris (PM) · Amy (Design) · Julia King (Data)"]}, {"heading": "Lupe Martinez transition — in progress", "bullets": ["**Last day:** June 2 · Mallory Montanez covering Lupe's late-stage roles", "**Business partner:** Chris asked about backfilling — confirmed staying lean", "**Action:** Direct Product req questions to Kebone during transition"]}, {"heading": "Co-hosting Design Thinking Workshop — June 11, 1–2pm PT", "bullets": ["Running with **Teresa and Michelle** · prep work shared by **June 5 at noon**"]}, {"heading": "Action item — Cycle 2 first draft due EOD Thursday, June 5", "bullets": ["**PM/PD/Data** workstream inputs needed across all three orgs", "Include cross-functional dependencies and 3–5 PeopleOS feature ideas"]}], "sourceGap": "No dedicated PM/PD Invite channel with recent content. Updates limited to #r-and-d-invite-all and #invite-pes."}}, "talkingPoints": [{"priority": "red", "audience": "All orgs", "point": "New required field on every GH offer: 'Are they receiving a % Variable Cash Award?' Select No (hourly), Yes-US, or Yes-Canada. If Yes, enter the % — L1–L3: 5%, L4: 7.5%, L5: 10%. Double-check before sending any letter.", "source": "IOPE Newsletter, June 1, 2026", "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit", "tags": ["all"]}, {"priority": "red", "audience": "All orgs", "point": "Onboarding Location in GH is being standardized this week. Use only: Remote, San Francisco, New York, or Denver. This feeds directly to the Onboarding team — wrong entries cause issues for new hires.", "source": "Alli Belamide, #invite-team, June 3", "sourceUrl": "https://gustohq.slack.com/archives/C0517BVP04V/p1780518505", "tags": ["all"]}, {"priority": "yellow", "audience": "All orgs", "point": "Design Thinking Workshop is June 11, 1–2pm PT. Teresa, Michelle, and Kebone are running it. Prep work (~20 min) will be shared by June 5 at noon. Attendance is expected — come ready to be honest about what's draining your work.", "source": "Teresa Waggoner, #invite-team, June 3", "sourceUrl": "https://gustohq.slack.com/archives/C0517BVP04V/p1780530510", "tags": ["all"]}, {"priority": "yellow", "audience": "GTM & PM/PD", "point": "Two departures this week: Lupe Martinez (Product, last day June 2) — Mallory Montanez covering her late-stage roles. Gabe Cadavillo (GTM, last day June 12) — confirm coverage for open reqs before he's out.", "source": "Kebone Moloko & Lisa Pham, #invite-pes, June 2", "sourceUrl": "https://gustohq.slack.com/archives/C0AFC07JJKA/p1780431721", "tags": ["gtm", "pm"]}, {"priority": "green", "audience": "All orgs", "point": "IKB Redesign Survey closes June 5 — takes under 5 min. Your team's input shapes what the new Knowledge Base looks like: forms.gle/F4MK2rzceHpwerAf9", "source": "Alli Belamide, #invite-team, June 1", "sourceUrl": "https://gustohq.slack.com/archives/C0517BVP04V/p1780329611", "tags": ["all"]}]}};
+  // PRELOADED data injected by the weekly-recap skill each run
+  const PRELOADED = {"week":"June 5 – June 12, 2026","data":{"orgPolicy":[{"title":"Variable Cash Award — New Greenhouse Offer Field","summary":"A new % Variable Cash Award field is now in Greenhouse offer details. Recruiters must select the correct option when building offers.","bullets":["Three options: No - Hourly Candidate, Yes - US Candidate, Yes - CANADA Candidate","Selecting 'Yes' reveals a % field — targets: L1–3: 5%, L4: 7.5%, L5: 10%","50% individual / 50% company performance split","Always double-check offer details before sending letters"],"source":"IOPE Newsletter, June 1, 2026","sourceUrl":null,"priority":"high","tags":["all"],"tp":{"priority":"red","audience":"all orgs","point":"New Greenhouse offer field for Variable Cash Award is live — all recruiters must use it correctly when building offers. Review the IOPE Newsletter for level-based % targets."}},{"title":"Greenhouse Onboarding Location Field Cleanup","summary":"PeopleTech is standardizing the Onboarding Location field in Greenhouse to 4 values, expected EOW June 6.","bullets":["New options: Remote, San Francisco, New York, Denver","Change enables Workday ingestion of this data","Particularly relevant for R&D roles"],"source":"#invite-team, Jun 3, 2026","sourceUrl":null,"priority":"medium","tags":["all"],"tp":{"priority":"yellow","audience":"all orgs","point":"Greenhouse Onboarding Location field is being cleaned up this week — new options: Remote, San Francisco, New York, Denver. Make sure your open offers reflect the correct location."}},{"title":"IKB Redesign Survey — Deadline June 5","summary":"Survey to shape the Invite Knowledge Base redesign and Notion migration closes today.","bullets":["Anonymous, <5 min — input shapes IKB 2.0 organization and design","Laura Lockwood and Alli Belamide leading the IKB Migration to Notion effort"],"source":"#invite-team, Jun 1–5, 2026","sourceUrl":"https://forms.gle/F4MK2rzceHpwerAf9","priority":"medium","tags":["all"],"tp":null},{"title":"Invite Within the Law Training — Temporarily Paused","summary":"Legal/compliance training sessions are on hold while a quick reference resource is being built.","bullets":["Quick reference doc for legal/compliance questions in recruiting in progress","VMA Evolution program also being refreshed for scalability and alignment with Gusto direction"],"source":"IOPE Newsletter, June 1, 2026","sourceUrl":null,"priority":"low","tags":["all"],"tp":{"priority":"green","audience":"all orgs","point":"FYI: Invite Within the Law training sessions are paused temporarily. A quick reference resource is being built. Reach out to your PE for compliance/legal questions in the meantime."}},{"title":"PeopleOS InviteOS — Two Features Targeting June 8 Launch","summary":"Recruiter DayPlay and Debrief Agent are both close to launch, targeting the week of June 8.","bullets":["Recruiter DayPlay: UAT in progress, live in staging, working through final refinements","Debrief Agent: Build complete, final refinements and UAT underway","PE recommendations for next batch of InviteOS builds coming soon"],"source":"IOPE Newsletter, June 1, 2026","sourceUrl":null,"priority":"medium","tags":["all"],"tp":{"priority":"green","audience":"all orgs","point":"Two new InviteOS features — Recruiter DayPlay and Debrief Agent — are targeting launch the week of June 8. Watch for IOPE announcement."}}],"keyEvents":[{"theme":"Org Restructure","tags":["r&d","pm"],"items":[{"heading":"Jaime and Kebone Promoted — Expanded Scope Announced","bullets":["Jaime: All Eng hiring (SWE, AIT, Security, Infrastructure) — 8 FTEs + 2 contractors (Jeff Myers, Nico Watson). Spec Tech pod folds into unified Eng pod.","Kebone: PM/PD + Data — 7 recruiters. New POC for Data (Julia King); continues with Chris and Amy.","No backfill for Head of Tech Invite (Todd’s role) or Eng Invite PE (Roberto’s role) — investment going into their expanded scope","Announced at R&D Invite All Hands"],"source":"#r-and-d-invite-leadership, Jun 2–5, 2026","sourceUrl":null,"tp":{"priority":"yellow"}}]},{"theme":"Team Departures","tags":["r&d","pm","gtm"],"items":[{"heading":"Guadalupe Martinez — Last Day June 2","bullets":["Five-year Gusto veteran supporting Product org; 20+ late-stage roles need coverage","Kebone coordinating transition with Mallory Montanez and Camille Ong","Business partner Chris asked about backfill — decision: staying lean"],"source":"#invite-team & #invite-pes, Jun 2, 2026","sourceUrl":null,"tp":null},{"heading":"Gabe Cadavillo — Last Day June 12","bullets":["On Lisa’s GTM team; resignation announced June 2","Transition plan for his open roles needed"],"source":"#invite-pes, Jun 2, 2026","sourceUrl":null,"tp":{"priority":"yellow"}}]},{"theme":"Team Workshop","tags":["all"],"items":[{"heading":"Design Thinking Workshop — June 11, 1–2pm PT","bullets":["Goal: examine end-to-end Invite process, identify automation opportunities and pain points","Pre-work (~20 min) due by Tuesday June 9 EOD","Led by Teresa Waggoner, Michelle Cordray, and Kebone Moloko","Output: Invite PEs will evaluate improvements and align on FY27 priorities"],"source":"#invite-team, Jun 3–5, 2026","sourceUrl":"https://forms.gle/BCzdDB33M4Wx1gfT6","tp":{"priority":"yellow"}}]},{"theme":"Cycle Planning","tags":["all"],"items":[{"heading":"Cycle 2 Planning — First Drafts Due","bullets":["Ruthless prioritization expected: rolling-over items must re-earn their spot","Deliverable per PE pair: H1 north star + cycle-by-cycle breakdown + dependencies + AI workstreams","Elan (PeopleOS) joining sync to align on 2 InviteOS features to ship this cycle"],"source":"#invite-pes, Jun 2, 2026","sourceUrl":null,"tp":null}]},{"theme":"PeopleOS / InviteOS","tags":["all"],"items":[{"heading":"Debrief & HC Prep Features Launched","bullets":["Debrief and hiring committee prep features now live in PeopleOS","Team iterating fast (same-day changes); feedback being captured from early adopters","Goose reporting V1 demoed to People Analytics; feedback in progress"],"source":"#invite-team (Kristin’s passdown), Jun 2, 2026","sourceUrl":null,"tp":null}]},{"theme":"Invite Ops","tags":["all"],"items":[{"heading":"IKB Migration to Notion — In Progress","bullets":["Full clean-up and rebuild underway: fixing outdated content, broken links, unclear ownership","Survey closed June 5; results shape IKB 2.0","Goal: single source of truth built around how recruiters and hiring teams actually work"],"source":"#invite-pes & IOPE Newsletter, May–Jun 2026","sourceUrl":null,"tp":null},{"heading":"Greenhouse Access Update — PEs Have More Control","bullets":["Alli standardized Greenhouse permissions across all Invite PEs","PEs can now manage email/social templates, CRM + prospect pools, agency recruiter access, create jobs in limited scenarios"],"source":"#invite-pes (Laura Lockwood), May 2026","sourceUrl":null,"tp":null}]}],"peOrgUpdates":{"jaime":{"updates":[{"heading":"Promotion & Expanded Scope Announced","bullets":["Now covering all Eng hiring: SWE, AIT, Security, Infrastructure — 8 FTEs + 2 contractors","Team: Jeff Myers, Mike, Khetsun, Kevin, Angeline, Jacob Ellison, Rose + Nico Watson (contractors)","Spec Tech pod folds into unified Eng pod; partners with Mike and his directs","No backfill for Head of Tech Invite or Eng Invite PE roles"]},{"heading":"Org Comms Delivered at R&D All Hands","bullets":["Team members moving to Kebone’s team: Jeremy, Janielle, Ashleigh, Abby","'One pod' mentality: continue to flex and share resources across R&D"]}],"sourceGap":null},"teresa":{"updates":[{"heading":"TI&E Team Delivering Cross-Functional Value","bullets":["1 recruiter + 1 sourcer flexing to support CX hiring sprints","Sourcing partner (onboarded mid-April) has first candidate at offer stage","Paul shipped Talent Scout System + demoed Gumloop Sourcing Intelligence Agent","Staci built Boolean sourcing agent and comp tool for hiring leaders"]},{"heading":"L5–L7 Searches in Final Stretch","bullets":["Foundation, Leadership, and TI&E teams closing in on critical senior-level hires"]}],"sourceGap":"No dedicated Foundation Invite Slack channel found. Updates sourced from #invite-pes and #invite-team."},"lisa":{"updates":[{"heading":"Always On Sourcing — Entire Expansion AM Class Hired","bullets":["John Thomas and Shayna Siemer drove sourced hires; TTH decreased","Opened a req and offered on the same day — TI&E model proving out"]},{"heading":"Pipeline Velocity Improvements","bullets":["Time-in-stage down across all stages via pipeline SLAs, BrightHire, dedicated CE","Andrew James and Celena Zeng leading these improvements"]},{"heading":"Gabe Cadavillo Resigning — Last Day June 12","bullets":["Transition plan needed for his open roles; coordinate with Lisa"]}],"sourceGap":"No GTM Invite channel found with recent content. Updates limited to #invite-pes."},"michelle":{"updates":[{"heading":"5 Concurrent CX Hiring Sprints Underway","bullets":["Licensed Benefits Advisor sprint tracking to 32+ hires","AI candidate prep podcast replaced 75 individual prep calls (~5 hrs saved per recruiter)","Cross-pipeline role comparison table routing strong candidates to correct sprint","Automated pipeline reporting for real-time pacing vs. milestones"]},{"heading":"Variable Cash JD Language — Pending Guidance","bullets":["Michelle asked Kristin whether to add variable cash details to JDs and what standard language to use — follow up if this affects your open reqs"]}],"sourceGap":"No CX Invite channel found with recent content. Updates sourced from #invite-pes."},"kebone":{"updates":[{"heading":"Promotion & Expanded Scope — PM/PD + Data","bullets":["7 recruiters: Ashleigh, Abby, Janielle, Jeremy (moved from Jaime’s team) + existing PM/PD team","New POC for Data org (Julia King); continues with Chris and Amy","No backfill for Lupe’s role — staying lean"]},{"heading":"Brand Studio Hiring — Design’s Hiring P0","bullets":["7 L4–L6 roles tied to Gusto’s $100M marketing investment","L6 Group Creative Director and L5 Brand Design Manager going to HC next week","Custom AI calibration skill built by Bri saving ~19 hrs of recruiter time"]},{"heading":"Guadalupe Martinez Departure — Transition in Progress","bullets":["Late-stage roles need immediate coverage; Mallory Montanez supporting","Business partner Chris asking about backfill — decision: staying lean"]}],"sourceGap":null}},"talkingPoints":[{"priority":"red","audience":"all orgs","point":"New Greenhouse offer field for Variable Cash Award is live — review the level-based % targets before building your next offer (L1–3: 5%, L4: 7.5%, L5: 10%). Always double-check offer details before sending letters.","source":"IOPE Newsletter, June 1, 2026","sourceUrl":null,"tags":["all"]},{"priority":"yellow","audience":"R&D","point":"Jaime and Kebone are both promoted! R&D Eng is now one unified pod under Jaime (SWE + AIT + Security + Infra). Kebone takes on PM/PD + Data. No backfills for the Head of Tech or PE roles — investment going into their expanded scope.","source":"#r-and-d-invite-leadership, Jun 2–5, 2026","sourceUrl":null,"tags":["r&d","pm"]},{"priority":"yellow","audience":"all orgs","point":"Design Thinking workshop is June 11, 1–2pm PT. Complete the pre-work by June 9 EOD — link was shared in #invite-team. This shapes FY27 process improvements for all of Invite.","source":"#invite-team, Jun 3–5, 2026","sourceUrl":"https://forms.gle/BCzdDB33M4Wx1gfT6","tags":["all"]},{"priority":"yellow","audience":"all orgs","point":"Greenhouse Onboarding Location field is being standardized this week — new options: Remote, San Francisco, New York, Denver. Verify your open roles have the correct location set.","source":"#invite-team, Jun 3, 2026","sourceUrl":null,"tags":["all"]},{"priority":"green","audience":"all orgs","point":"Two new InviteOS features (Recruiter DayPlay + Debrief Agent) are targeting launch the week of June 8. Watch for announcements from IOPE.","source":"IOPE Newsletter, June 1, 2026","sourceUrl":null,"tags":["all"]},{"priority":"green","audience":"GTM / all","point":"Gabe Cadavillo (GTM) last day is June 12. If you have cross-functional work with his roles, connect with Lisa on the transition plan.","source":"#invite-pes, Jun 2, 2026","sourceUrl":null,"tags":["gtm","all"]}]}}
+;
 
   (function init() {
-    render(PRELOADED.data);
-    document.getElementById('sub').textContent =
-      'Jaime Tavarez · R&D Invite · Week of ' + PRELOADED.week + ' · Hit ↻ Refresh for live data';
+    if (PRELOADED && PRELOADED.data) {
+      render(PRELOADED.data);
+      document.getElementById('sub').textContent =
+        'Jaime Tavarez · R&D Invite · Week of ' + PRELOADED.week + ' · Hit ↻ Refresh for live data';
+    } else {
+      loadRecap();
+    }
   })();
 </script>
 </body>
