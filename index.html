@@ -286,58 +286,57 @@
   }
 
   function openSummary() {
-    const items = [];
+    const selected = [];
     document.querySelectorAll('.sel-wrap.selected').forEach(el => {
-      const c = el.dataset.summary;
-      if (c) items.push(c);
+      if (el.dataset.summary) selected.push({ text: el.dataset.summary, el });
     });
-    if (!items.length) return;
+    if (!selected.length) return;
+
+    // Build Slack message instantly — no API call
+    const asks = [];
+    const updates = [];
+
+    selected.forEach(({ text, el }) => {
+      const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+      if (!lines.length) return;
+      const heading = lines[0].replace(/^\*\*(.+)\*\*$/, '$1').replace(/\*\*(.+?)\*\*/g, '$1');
+      const bullets = lines.slice(1);
+
+      // Check if this item has an "Action required" tag → goes in Asks
+      const tag = el.querySelector && el.querySelector('.itp-tag');
+      const isAsk = tag && tag.textContent.toLowerCase().includes('action');
+      const emoji = isAsk ? '📌' : '🎯';
+
+      // First bullet as inline description (strip bold markers, trim)
+      let desc = bullets.length
+        ? bullets[0].replace(/^\*\*([^*]+)\*\*:?\s*/, '').replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1').slice(0, 90)
+        : '';
+      let line = desc ? `• ${emoji} *${heading}* — ${desc}` : `• ${emoji} *${heading}*`;
+
+      // Up to 2 sub-bullets
+      bullets.slice(1, 3).forEach(b => {
+        const clean = b.replace(/^\*\*([^*]+)\*\*:?\s*/, '$1: ').replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1').slice(0, 100);
+        line += `\n    • ${clean}`;
+      });
+
+      if (isAsk) asks.push(line);
+      else updates.push(line);
+    });
+
+    let msg = '*This week\'s round-up 👇*\n\n';
+    if (asks.length) msg += '_Asks_\n' + asks.join('\n') + '\n\n';
+    if (updates.length) msg += '_Updates_\n' + updates.join('\n') + '\n\n';
+    msg += 'Please reply with a *yes* once you\'ve read through! 🙌';
+
+    summaryText = msg;
     document.getElementById('sumOverlay').classList.add('open');
+    document.getElementById('sumLoading').style.display = 'none';
     document.getElementById('sumOutput').style.display = 'none';
     document.getElementById('sumActions').style.display = 'none';
-    document.getElementById('sumLoading').style.display = 'flex';
-    summaryText = '';
-
-    window.cowork.askClaude(
-      `Write a Slack message from Jaime (Invite PE, Gusto) to their recruiting team based on the updates below. Return ONLY the message, no explanation.
-
-Format:
-*This week's round-up 👇*
-
-_Asks_
-• 📌 *Topic* — action needed
-    • sub-detail
-
-_Updates_
-• 🎯 *Topic* — what happened
-    • sub-detail
-
-Please reply with a *yes* once you've read through! 🙌
-
-Rules: Merge duplicate topics into one bullet. Every bullet on one line (emoji + *bold topic* — description). Sub-bullets indented 4 spaces. No paragraphs.`,
-      items.map((item, i) => ({ label: `Update ${i+1}`, content: item.slice(0, 300) }))
-    ).then(result => {
-      // Extract plain text from whatever askClaude returns
-      let raw = result;
-      if (typeof raw !== 'string') {
-        // Could be {text:...}, {content:...}, [{text:...}], etc.
-        if (raw && raw.text) raw = raw.text;
-        else if (raw && raw.content) raw = Array.isArray(raw.content) ? raw.content.map(c => c.text||'').join('') : raw.content;
-        else if (Array.isArray(raw)) raw = raw.map(c => c.text||c).join('');
-        else raw = JSON.stringify(raw);
-      }
-      // Normalize literal \n and strip any leftover JSON wrapper chars
-      summaryText = String(raw).replace(/\\n/g, '\n').replace(/^["']|["']$/g, '').trim();
-      document.getElementById('sumLoading').style.display = 'none';
-      const out = document.getElementById('sumOutput');
-      out.innerHTML = slackFmt(summaryText);
-      out.style.display = 'block';
-      document.getElementById('sumActions').style.display = 'flex';
-    }).catch(err => {
-      document.getElementById('sumLoading').style.display = 'none';
-      document.getElementById('sumOutput').textContent = 'Error generating summary. Please try again.';
-      document.getElementById('sumOutput').style.display = 'block';
-    });
+    const out = document.getElementById('sumOutput');
+    out.innerHTML = slackFmt(summaryText);
+    out.style.display = 'block';
+    document.getElementById('sumActions').style.display = 'flex';
   }
 
   function closeSummary() {
