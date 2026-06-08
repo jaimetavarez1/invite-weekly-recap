@@ -250,7 +250,7 @@
 </div>
 
 <div class="page-body">
-  <div id="loading" class="loading">
+  <div id="loading" class="loading" style="display:none">
     <div class="spinner"></div>
     <div class="loading-msg" id="loadMsg">Loading recap...</div>
     <div class="dots">
@@ -259,7 +259,7 @@
     </div>
   </div>
   <div id="errBox" class="error-box" style="display:none"></div>
-  <div id="content" style="display:none"></div>
+  <div id="content"></div>
 </div>
 
 <script>
@@ -649,6 +649,10 @@
     if (b) b.style.display = 'none';
   }
   async function loadRecap() {
+    if (!window.cowork) {
+      showErr('Live refresh requires the Cowork app. The data shown is from the most recent recap run.');
+      return;
+    }
     document.getElementById('refreshBtn').disabled = true;
     document.getElementById('content').style.display = 'none';
     document.getElementById('errBox').style.display = 'none';
@@ -730,9 +734,14 @@ Return ONLY valid JSON.`,
 
   (function init() {
     if (PRELOADED && PRELOADED.data) {
-      render(PRELOADED.data);
-      document.getElementById('sub').textContent =
-        'Jaime Tavarez · R&D Invite · Week of ' + PRELOADED.week + ' · Hit ↻ Refresh for live data';
+      try {
+        render(PRELOADED.data);
+        document.getElementById('sub').textContent =
+          'Jaime Tavarez · R&D Invite · Week of ' + PRELOADED.week;
+      } catch(e) {
+        document.getElementById('loading').style.display = 'none';
+        showErr('Error rendering recap: ' + e.message);
+      }
     } else {
       loadRecap();
     }
