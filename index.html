@@ -296,14 +296,15 @@
 
   async function ghFetch(path) {
     try {
-      // Public repo: GitHub API works without auth (60 req/hr per IP)
+      // Use raw.githubusercontent.com — no auth, no rate limit for public repos
+      // Cache-bust with timestamp so we always get fresh data
       const r = await fetch(
-        `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${path}?t=${Date.now()}`,
-        { headers: { Accept: 'application/vnd.github.v3+json' } }
+        `https://raw.githubusercontent.com/${GH.owner}/${GH.repo}/main/${path}?t=${Date.now()}`,
+        { cache: 'no-store' }
       );
       if (!r.ok) return null;
-      const meta = await r.json();
-      return { data: JSON.parse(atob(meta.content.replace(/\n/g,''))), sha: meta.sha };
+      const data = await r.json();
+      return { data };
     } catch { return null; }
   }
 
