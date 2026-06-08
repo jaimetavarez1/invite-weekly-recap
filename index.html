@@ -509,6 +509,17 @@
   function render(data) {
     let h = '';
 
+    // Instructions banner (dismissible, stored in memory)
+    if (!window._instrDismissed) {
+      h += `<div class="instructions" id="instrBanner">
+        <span class="inst-icon">💡</span>
+        <div class="inst-text">
+          <strong>Summarize for Slack</strong> — select updates by clicking any card (it highlights with a checkmark), then press the <span class="inst-step">Summarize for Slack →</span> button in the bottom-right. Your message is ready instantly.
+        </div>
+        <button class="inst-dismiss" onclick="dismissBanner()" title="Dismiss">✕</button>
+      </div>\`;
+    }
+
     // Org filter bar
     h += `<div class="filter-bar">
       <span class="filter-lbl">Filter by org:</span>
@@ -631,6 +642,12 @@
     if (wc && PRELOADED && PRELOADED.week) wc.textContent = PRELOADED.week;
   }
 
+
+  function dismissBanner() {
+    window._instrDismissed = true;
+    const b = document.getElementById('instrBanner');
+    if (b) b.style.display = 'none';
+  }
   async function loadRecap() {
     document.getElementById('refreshBtn').disabled = true;
     document.getElementById('content').style.display = 'none';
