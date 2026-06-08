@@ -625,10 +625,10 @@
   function triggerReload() {
     if (typeof sendPrompt === 'function') {
       // Inside Cowork — trigger skill directly
-      sendPrompt('run my weekly recap');
+      sendPrompt('refresh weekly recap data — pull fresh Slack and IOPE data, push to GitHub only, skip Notion');
     } else {
       // Show modal first, then open Claude on confirm
-      navigator.clipboard.writeText('run my weekly recap').catch(() => {});
+      navigator.clipboard.writeText('refresh weekly recap data — pull fresh Slack and IOPE data, push to GitHub only, skip Notion').catch(() => {});
       const overlay = document.createElement('div');
       overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:flex;align-items:center;justify-content:center';
       const isSetup = localStorage.getItem('invite-recap-setup');
@@ -637,8 +637,8 @@
           <div style="font-size:28px;margin-bottom:12px">📋</div>
           <div style="font-size:15px;font-weight:700;color:#17140D;margin-bottom:8px">Ready to refresh</div>
           <div style="font-size:13px;color:#57504A;line-height:1.6;margin-bottom:20px">
-            We've copied <strong>"run my weekly recap"</strong> to your clipboard.<br><br>
-            Click <strong>Open Claude</strong> below, then paste <strong>⌘V</strong> and hit Enter to run the skill.
+            We've copied the refresh prompt to your clipboard.<br><br>
+            Click <strong>Open Claude</strong> below, then paste <strong>⌘V</strong> and hit Enter to refresh the data.
           </div>
           <button id="openClaudeBtn" style="background:#F45D48;color:white;border:none;border-radius:999px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;width:100%;margin-bottom:10px">Open Claude →</button>
           ${!isSetup ? `
