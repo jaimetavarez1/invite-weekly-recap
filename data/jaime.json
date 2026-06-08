@@ -1,0 +1,23 @@
+{
+  "pe": "jaime",
+  "week": "June 8 – June 15, 2026",
+  "refreshedAt": "2026-06-08T16:00:00Z",
+  "updates": [
+    {
+      "heading": "Headcount Planning Audit — Sent to All PEs",
+      "bullets": [
+        "Co-leading cross-org headcount planning audit with Lisa Pham",
+        "Responses due EOD June 10 — covers tools, planning process, pain points",
+        "Goal: build a consistent, better planning process across all orgs"
+      ]
+    },
+    {
+      "heading": "Team Structure in Effect",
+      "bullets": [
+        "Unified Eng pod now live: SWE, AIT, Security, Infrastructure under Jaime",
+        "Team: Jeff Myers, Mike, Khetsun, Kevin, Angeline, Jacob Ellison, Rose + Nico Watson (contractors)",
+        "Spec Tech pod fully merged in"
+      ]
+    }
+  ]
+}
