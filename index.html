@@ -636,9 +636,19 @@
   // On GitHub Pages: prompts user to open Cowork
   function triggerReload() {
     if (typeof sendPrompt === 'function') {
+      // Inside Cowork — trigger skill directly
       sendPrompt('run my weekly recap');
     } else {
-      alert('To refresh the recap:\n\n1. Open Cowork on your computer\n2. The Weekly Recap skill will run automatically\n3. This page will update with fresh data');
+      // Outside Cowork — try to open Claude desktop app via deep link
+      // Falls back to a message if the scheme isn't registered
+      const prompt = encodeURIComponent('run my weekly recap');
+      const deepLink = `claude://cowork?prompt=${prompt}`;
+      const fallbackTimeout = setTimeout(() => {
+        alert('Could not open Claude automatically.\n\nPlease open the Claude desktop app, go to Cowork, and run the Weekly Recap skill.\n\nThis page will show fresh data once the skill completes.');
+      }, 2000);
+      window.location.href = deepLink;
+      // If the deep link worked, clear the fallback alert
+      window.addEventListener('blur', () => clearTimeout(fallbackTimeout), { once: true });
     }
   }
 
