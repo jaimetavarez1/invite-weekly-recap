@@ -634,21 +634,33 @@
   // ── Reload button handler ────────────────────────────────────────────────────
   // In Cowork: triggers the weekly recap skill via sendPrompt
   // On GitHub Pages: prompts user to open Cowork
+  function showToast(msg, duration) {
+    let t = document.getElementById('reloadToast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'reloadToast';
+      t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#17140D;color:white;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:600;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:opacity .3s;white-space:nowrap';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.opacity = '1';
+    clearTimeout(t._hide);
+    t._hide = setTimeout(() => { t.style.opacity = '0'; }, duration || 4000);
+  }
+
   function triggerReload() {
     if (typeof sendPrompt === 'function') {
       // Inside Cowork — trigger skill directly
       sendPrompt('run my weekly recap');
     } else {
-      // Outside Cowork — try to open Claude desktop app via deep link
-      // Falls back to a message if the scheme isn't registered
-      const prompt = encodeURIComponent('run my weekly recap');
-      const deepLink = `claude://cowork?prompt=${prompt}`;
-      const fallbackTimeout = setTimeout(() => {
-        alert('Could not open Claude automatically.\n\nPlease open the Claude desktop app, go to Cowork, and run the Weekly Recap skill.\n\nThis page will show fresh data once the skill completes.');
-      }, 2000);
-      window.location.href = deepLink;
-      // If the deep link worked, clear the fallback alert
-      window.addEventListener('blur', () => clearTimeout(fallbackTimeout), { once: true });
+      // Copy prompt to clipboard, open Claude, show paste instruction
+      navigator.clipboard.writeText('run my weekly recap').then(() => {
+        window.location.href = 'claude://';
+        showToast('Claude is opening — paste and hit Enter ⌘V', 6000);
+      }).catch(() => {
+        window.location.href = 'claude://';
+        showToast('Claude is opening — type "run my weekly recap"', 6000);
+      });
     }
   }
 
