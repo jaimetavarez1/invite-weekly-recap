@@ -465,7 +465,7 @@
       <div class="status-bar-hd">
         <span class="status-title">📊 PE refresh status</span>
         <span class="status-week">${week ? `Week of ${week}` : ''}</span>
-        <button class="status-reload" onclick="reloadAll()">↻ Reload</button>
+        <button class="status-reload" onclick="triggerReload()">↻ Reload</button>
       </div>
       <div class="status-grid">`;
     Object.keys(PE_META).forEach(k => {
@@ -629,6 +629,17 @@
     h += `</div></div>`;
 
     return h;
+  }
+
+  // ── Reload button handler ────────────────────────────────────────────────────
+  // In Cowork: triggers the weekly recap skill via sendPrompt
+  // On GitHub Pages: prompts user to open Cowork
+  function triggerReload() {
+    if (typeof sendPrompt === 'function') {
+      sendPrompt('run my weekly recap');
+    } else {
+      alert('To refresh the recap:\n\n1. Open Cowork on your computer\n2. The Weekly Recap skill will run automatically\n3. This page will update with fresh data');
+    }
   }
 
   // ── Main load/render ─────────────────────────────────────────────────────────
