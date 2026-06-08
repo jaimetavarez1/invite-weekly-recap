@@ -151,7 +151,8 @@
     .f-btn.active{background:var(--t);border-color:var(--t);color:white;box-shadow:0 2px 8px rgba(244,93,72,.25)}
 
     .status-bar{background:linear-gradient(135deg,#FEF0EE 0%,#FAF7F3 40%,#EEF5F0 75%,#EBF2FB 100%);border:1px solid var(--bd);border-radius:16px;margin-bottom:24px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.06),0 4px 20px rgba(244,93,72,.06)}
-    .status-bar-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+    .status-bar-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+    .status-note{font-size:10.5px;color:var(--tx3);margin-bottom:11px;line-height:1.4}
     .status-bar-label{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--tx3)}
     .status-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
     .status-pe{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);border-radius:10px;padding:9px 10px;display:flex;align-items:flex-start;gap:8px;cursor:default;transition:background .12s}
@@ -242,7 +243,7 @@
     teresa:   { label: 'Teresa Waggoner', sub: 'Foundation · I&amp;O · Finance', initials: 'TW', bg: '#E8F5EF', color: '#2C7A55' },
     lisa:     { label: 'Lisa Pham',       sub: 'GTM · Sales · Marketing',        initials: 'LP', bg: '#FEF4E6', color: '#C47A15' },
     michelle: { label: 'Michelle Cordray',sub: 'Customer Experience',            initials: 'MC', bg: '#EEF2FB', color: '#3B6FD4' },
-    kebone:   { label: 'Kebone Moloko',   sub: 'PM · PD · Product · Design · Data', initials: 'KM', bg: '#F2EDFB', color: '#7C4FBF' }
+    kebone:   { label: 'Kebone Moloko',   sub: 'Product · Design · Data',           initials: 'KM', bg: '#F2EDFB', color: '#7C4FBF' }
   };
 
   const PE_CHANNELS = {
@@ -462,6 +463,7 @@
         <span class="status-bar-label">PE Status</span>
         <button class="status-reload" onclick="triggerReload()">↻ Reload</button>
       </div>
+      <p class="status-note">To ensure the most relevant information for your org, each PE should click <strong>Reload</strong> at the start of each week.</p>
       <div class="status-row">`;
     Object.keys(PE_META).forEach(k => {
       const meta    = PE_META[k];
