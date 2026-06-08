@@ -213,7 +213,6 @@
         </div>
       </div>
     </div>
-    <button class="refresh-btn" id="refreshBtn" onclick="reloadAll()">&#8635; Refresh</button>
   </div>
 </div>
 
@@ -466,6 +465,7 @@
       <div class="status-bar-hd">
         <span class="status-title">📊 PE refresh status</span>
         <span class="status-week">${week ? `Week of ${week}` : ''}</span>
+        <button class="status-reload" onclick="reloadAll()">↻ Reload</button>
       </div>
       <div class="status-grid">`;
     Object.keys(PE_META).forEach(k => {
