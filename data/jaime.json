@@ -1,22 +1,39 @@
 {
   "pe": "jaime",
   "week": "June 8 – June 15, 2026",
-  "refreshedAt": "2026-06-08T16:00:00Z",
+  "refreshedAt": "2026-06-08T17:00:00Z",
   "updates": [
     {
-      "heading": "Headcount Planning Audit — Sent to All PEs",
+      "heading": "Jaime & Kebone Promoted — R&D Org Restructure",
       "bullets": [
-        "Co-leading cross-org headcount planning audit with Lisa Pham",
-        "Responses due EOD June 10 — covers tools, planning process, pain points",
-        "Goal: build a consistent, better planning process across all orgs"
+        "Jaime promoted with expanded scope: all Eng hiring (SWE, AIT, Security, Infrastructure) — 8 FTEs + 2 contractors",
+        "Team: Jeff, Mike, Khetsun, Kevin, Angeline, Jacob Ellison, Rose + Jeff & Nico (contractors); partners with Mike & his directs",
+        "Spec Tech pod folds into unified Eng pod",
+        "Backfills for Head of Technical Recruiting (Todd’s role) and Eng Invite PE (Roberto’s role) are paused — investment going into Jaime & Kebone’s expanded scope instead",
+        "Announcement made at R&D Invite All Hands (Thursday June 5)"
       ]
     },
     {
-      "heading": "Team Structure in Effect",
+      "heading": "Kebone’s Expanded Scope — Data Joins PM/PD",
       "bullets": [
-        "Unified Eng pod now live: SWE, AIT, Security, Infrastructure under Jaime",
-        "Team: Jeff Myers, Mike, Khetsun, Kevin, Angeline, Jacob Ellison, Rose + Nico Watson (contractors)",
-        "Spec Tech pod fully merged in"
+        "Kebone now covers PM, Design, and Data — 7 recruiters total",
+        "POC for Chris, Amy & Julia King",
+        "Ashleigh, Abby, Janielle (early career), and Jeremy move to Kebone’s team"
+      ]
+    },
+    {
+      "heading": "R&D Heads Down Week",
+      "bullets": [
+        "Nikki flagged an upcoming R&D heads down week — coordinate with your team to protect focused work time",
+        "Noted in #r-and-d-invite-all (June 3)"
+      ]
+    },
+    {
+      "heading": "Guadalupe Martinez Transition — R&D Impact",
+      "bullets": [
+        "Lupe’s departure left late-stage roles needing immediate coverage in PM/PD org",
+        "Kebone managing with Mallory Montanez stepping in; stakeholder Chris inquired about backfill — decision: staying lean, no backfill planned near-term",
+        "Monitor for capacity impact on Kebone’s team as she absorbs Data org"
       ]
     }
   ]
