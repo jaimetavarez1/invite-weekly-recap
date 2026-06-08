@@ -634,33 +634,31 @@
   // ── Reload button handler ────────────────────────────────────────────────────
   // In Cowork: triggers the weekly recap skill via sendPrompt
   // On GitHub Pages: prompts user to open Cowork
-  function showToast(msg, duration) {
-    let t = document.getElementById('reloadToast');
-    if (!t) {
-      t = document.createElement('div');
-      t.id = 'reloadToast';
-      t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#17140D;color:white;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:600;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:opacity .3s;white-space:nowrap';
-      document.body.appendChild(t);
-    }
-    t.textContent = msg;
-    t.style.opacity = '1';
-    clearTimeout(t._hide);
-    t._hide = setTimeout(() => { t.style.opacity = '0'; }, duration || 4000);
-  }
-
   function triggerReload() {
     if (typeof sendPrompt === 'function') {
       // Inside Cowork — trigger skill directly
       sendPrompt('run my weekly recap');
     } else {
-      // Copy prompt to clipboard, open Claude, show paste instruction
-      navigator.clipboard.writeText('run my weekly recap').then(() => {
+      // Show modal first, then open Claude on confirm
+      navigator.clipboard.writeText('run my weekly recap').catch(() => {});
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:flex;align-items:center;justify-content:center';
+      overlay.innerHTML = `
+        <div style="background:white;border-radius:16px;padding:28px 28px 22px;max-width:360px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.2);text-align:center">
+          <div style="font-size:28px;margin-bottom:12px">📋</div>
+          <div style="font-size:15px;font-weight:700;color:#17140D;margin-bottom:8px">Ready to refresh</div>
+          <div style="font-size:13px;color:#57504A;line-height:1.6;margin-bottom:20px">
+            We've copied <strong>"run my weekly recap"</strong> to your clipboard.<br><br>
+            Click <strong>Open Claude</strong> below, then paste <strong>⌘V</strong> and hit Enter.
+          </div>
+          <button id="openClaudeBtn" style="background:#F45D48;color:white;border:none;border-radius:999px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;width:100%;margin-bottom:8px">Open Claude →</button>
+          <button onclick="this.closest('[style*=fixed]').remove()" style="background:none;border:none;color:#A09890;font-size:12px;cursor:pointer">Cancel</button>
+        </div>`;
+      document.body.appendChild(overlay);
+      document.getElementById('openClaudeBtn').onclick = () => {
+        overlay.remove();
         window.location.href = 'claude://';
-        showToast('Claude is opening — paste and hit Enter ⌘V', 6000);
-      }).catch(() => {
-        window.location.href = 'claude://';
-        showToast('Claude is opening — type "run my weekly recap"', 6000);
-      });
+      };
     }
   }
 
