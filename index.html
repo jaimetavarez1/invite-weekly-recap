@@ -202,9 +202,36 @@
     .tp-priority-green{background:var(--g-lt);color:var(--g);border:1px solid #A8D9BE}
     .tp-audience{font-size:11px;color:var(--tx3);background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:2px 8px;white-space:nowrap}
     .tp-point{font-size:13.5px;color:var(--tx);line-height:1.75;margin-bottom:10px}
-  </style>
+  
+    /* ── PE Status Bar ──────────────────────────────────────────── */
+    .status-bar{background:var(--surf);border:1px solid var(--bd);border-radius:14px;padding:18px 20px;margin-bottom:24px}
+    .status-bar-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+    .status-title{font-size:13px;font-weight:700;color:var(--tx)}
+    .status-week{font-size:12px;color:var(--tx3);flex:1}
+    .status-reload{background:none;border:1.5px solid var(--bd2);border-radius:var(--r);padding:4px 12px;font-size:11px;font-weight:600;color:var(--tx2);cursor:pointer;transition:all .15s}
+    .status-reload:hover{border-color:var(--t);color:var(--t)}
+    .status-reload:disabled{opacity:.4;cursor:not-allowed}
+    .status-grid{display:flex;flex-wrap:wrap;gap:8px}
+    .status-card{display:flex;align-items:center;gap:9px;background:var(--bg);border:1.5px solid var(--bd);border-radius:10px;padding:9px 12px;min-width:160px;flex:1;transition:border-color .15s}
+    .status-card.ok{border-color:#A8D9BE}
+    .status-card.pending{border-color:var(--bd)}
+    .status-avatar{width:28px;height:28px;border-radius:8px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .status-info{flex:1;min-width:0}
+    .status-name{font-size:12px;font-weight:700;color:var(--tx);line-height:1.2}
+    .status-org{font-size:10px;color:var(--tx3);line-height:1.3}
+    .status-time{font-size:10px;margin-top:2px;line-height:1.3}
+    .status-time.ok{color:var(--g)}
+    .status-time.pending{color:var(--tx3)}
+    .status-refresh-btn{background:var(--t-lt);border:1px solid var(--t-md);border-radius:6px;padding:4px 9px;font-size:10px;font-weight:700;color:var(--t-dk);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
+    .status-refresh-btn:hover{background:var(--t);color:white}
+    .status-refresh-btn:disabled{opacity:.4;cursor:not-allowed}
+    .status-note{margin-top:12px;font-size:11.5px;color:var(--tx3);text-align:center;padding:8px;background:var(--bg);border-radius:7px}
+    .status-note a{color:var(--t);text-decoration:none;font-weight:600}
+    .status-loading{display:flex;align-items:center;gap:8px;color:var(--tx3);font-size:12px;padding:10px 0}
+    .status-spinner{width:14px;height:14px;border:2px solid var(--bd);border-top-color:var(--t);border-radius:50%;animation:spin .7s linear infinite}
+</style>
 </head>
-<body>
+
 
 <!-- Floating action bar -->
 <div class="fab" id="fab">
@@ -263,6 +290,194 @@
 </div>
 
 <script>
+
+  // ── GitHub config (public repo — no token needed for reads) ──────────────
+  const GH = { owner: 'jaimetavarez1', repo: 'invite-weekly-recap' };
+
+  async function ghFetch(path) {
+    try {
+      // Public repo: GitHub API works without auth (60 req/hr per IP)
+      const r = await fetch(
+        `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${path}?t=${Date.now()}`,
+        { headers: { Accept: 'application/vnd.github.v3+json' } }
+      );
+      if (!r.ok) return null;
+      const meta = await r.json();
+      return { data: JSON.parse(atob(meta.content.replace(/\n/g,''))), sha: meta.sha };
+    } catch { return null; }
+  }
+
+  // ── PE channel config (for Cowork refresh) ────────────────────────────────
+  const PE_CHANNELS = {
+    jaime:    { label:'R&D', channels:['C05V6DJ5QPQ','C08SVC00BLN','C0706MX3Q6B','C0B0PPHSCUA'] },
+    teresa:   { label:'Foundation', channels:[] },
+    lisa:     { label:'GTM', channels:[] },
+    michelle: { label:'CX', channels:['C0QKAP5TA'] },
+    kebone:   { label:'PM/PD', channels:[] }
+  };
+  const SHARED_CHANNELS = [
+    { id:'C0517BVP04V', label:'#invite-team' },
+    { id:'C0AFC07JJKA', label:'#invite-pes' }
+  ];
+  const IOPE_DOC_URL = 'https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit';
+
+  // ── Load all PE data from GitHub ──────────────────────────────────────────
+  async function loadAllData() {
+    const peKeys = Object.keys(PE_META);
+    const [sharedResult, ...peResults] = await Promise.all([
+      ghFetch('data/shared.json'),
+      ...peKeys.map(k => ghFetch(`data/${k}.json`))
+    ]);
+    const shared = sharedResult;
+    const peFiles = {};
+    peKeys.forEach((k, i) => { peFiles[k] = peResults[i]; });
+    return { shared, peFiles };
+  }
+
+  // ── Merge without duplication ─────────────────────────────────────────────
+  // Org & Policy + Key Events → shared.json only
+  // PE Org Updates → each PE's own file only
+  function mergeData(shared, peFiles) {
+    const orgPolicy  = shared?.data?.orgPolicy  || [];
+    const keyEvents  = shared?.data?.keyEvents  || [];
+    const peOrgUpdates = {};
+    Object.keys(PE_META).forEach(k => {
+      const f = peFiles[k];
+      peOrgUpdates[k] = {
+        updates:   f?.data?.updates   || [],
+        sourceGap: f ? null : 'This PE has not refreshed yet this week.'
+      };
+    });
+    return { orgPolicy, keyEvents, peOrgUpdates };
+  }
+
+  // ── Relative time helper ──────────────────────────────────────────────────
+  function relTime(iso) {
+    if (!iso) return null;
+    const diff = Math.floor((Date.now() - new Date(iso)) / 60000);
+    if (diff < 2)  return 'just now';
+    if (diff < 60) return `${diff}m ago`;
+    const h = Math.floor(diff/60);
+    if (h < 24)    return `${h}h ago`;
+    return `${Math.floor(h/24)}d ago`;
+  }
+
+  // ── Render PE status bar ──────────────────────────────────────────────────
+  function renderStatusBar(shared, peFiles) {
+    const week = shared?.data?.week || '';
+
+    let html = `<div class="status-bar" id="statusBar">
+      <div class="status-bar-hd">
+        <span class="status-title">📊 PE refresh status</span>
+        <span class="status-week">${week ? `Week of ${week}` : ''}</span>
+        <button class="status-reload" id="reloadBtn" onclick="reloadAll()">↻ Reload</button>
+      </div>
+      <div class="status-grid">`;
+
+    Object.keys(PE_META).forEach(k => {
+      const meta  = PE_META[k];
+      const f     = peFiles[k];
+      const ts    = f?.data?.refreshedAt;
+      const rel   = relTime(ts);
+      const isOk  = !!ts;
+      const hasCh = PE_CHANNELS[k]?.channels?.length > 0;
+
+      html += `<div class="status-card ${isOk ? 'ok' : 'pending'}">
+        <div class="status-avatar" style="background:${meta.bg};color:${meta.color}">${meta.initials}</div>
+        <div class="status-info">
+          <div class="status-name">${meta.label}</div>
+          <div class="status-org">${meta.sub}</div>
+          <div class="status-time ${isOk ? 'ok' : 'pending'}">${isOk ? `✅ ${rel}` : '⏳ Not yet this week'}</div>
+        </div>`;
+
+      if (hasCh) {
+        html += `<button class="status-refresh-btn" id="rbtn-${k}" onclick="refreshPE('${k}')">Refresh</button>`;
+      } else if (!hasCh) {
+        html += `<button class="status-refresh-btn" style="opacity:.4;cursor:default" disabled title="PE must run skill in their own Cowork">Needs PE</button>`;
+      }
+      html += `</div>`;
+    });
+
+    html += `</div>`;
+
+    if (typeof sendPrompt !== 'function') {
+      html += `<div class="status-note">To add your org's data, open <strong>Cowork</strong> and run the Weekly Recap skill — your section updates automatically.</div>`;
+    }
+
+    html += `</div>`;
+    return html;
+  }
+
+  // ── Per-PE refresh ───────────────────────────────────────────────────────
+  // In Cowork: uses sendPrompt() to trigger the weekly-recap skill for this PE
+  // On GitHub Pages: shows instructions
+  function refreshPE(peKey) {
+    const meta = PE_META[peKey];
+    if (typeof sendPrompt === 'function') {
+      // Cowork context — trigger the skill
+      sendPrompt(`Update the weekly recap with fresh data for ${meta.label}'s org (${meta.sub}). Push to data/${peKey}.json on GitHub and refresh the artifact.`);
+    } else {
+      // GitHub Pages — show instructions
+      alert(`To refresh ${meta.label}'s org data:\n\n1. Open Cowork on your computer\n2. Run the Weekly Recap skill\n3. Reload this page to see the updated data`);
+    }
+  }
+
+  // ── Reload all data from GitHub and re-render ─────────────────────────────
+  async function reloadAll() {
+    document.getElementById('reloadBtn') && (document.getElementById('reloadBtn').disabled = true);
+    document.getElementById('content').innerHTML =
+      `<div class="status-loading"><div class="status-spinner"></div> Loading latest data…</div>`;
+
+    try {
+      const { shared, peFiles } = await loadAllData();
+      const merged = mergeData(shared, peFiles);
+
+      let h = renderStatusBar(shared, peFiles);
+      document.getElementById('content').innerHTML = h;
+      document.getElementById('content').insertAdjacentHTML('beforeend', '<div id="recapBody"></div>');
+
+      // Render recap into #recapBody
+      const tmp = document.createElement('div');
+      renderInto(tmp, merged, shared?.data?.week || '');
+      document.getElementById('recapBody').innerHTML = tmp.innerHTML;
+
+      const wc = document.getElementById('weekChip');
+      if (wc && shared?.data?.week) wc.textContent = shared.data.week;
+      document.getElementById('sub').textContent = 'Invite PE team · Updated ' + new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+
+      applyFilter(currentFilter);
+    } catch(err) {
+      showErr('Could not load data: ' + err.message);
+    }
+  }
+
+  let currentFilter = 'all';
+  function setFilter(f) {
+    currentFilter = f;
+    applyFilter(f);
+  }
+  function applyFilter(f) {
+    document.querySelectorAll('[data-orgs]').forEach(el => {
+      const orgs = (el.dataset.orgs || 'all').split(',');
+      el.classList.toggle('hidden-item', f !== 'all' && !orgs.includes('all') && !orgs.includes(f));
+    });
+    document.querySelectorAll('.f-btn').forEach(b => b.classList.toggle('active', b.dataset.org === f));
+  }
+
+  function dismissBanner() {
+    window._instrDismissed = true;
+    const b = document.getElementById('instrBanner');
+    if (b) b.style.display = 'none';
+  }
+
+  function showErr(msg) {
+    const eb = document.getElementById('errBox');
+    if (!eb) return;
+    eb.style.display = 'block';
+    eb.innerHTML = `<div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">⚠️</span><div><strong>Something went wrong</strong><br><span style="font-size:12px;color:var(--tx3)">${msg}</span></div></div>`;
+  }
+
+
   const PE_META = {
     jaime:    { label: 'Jaime', sub: 'R&D', initials: 'JT', bg: '#FEF0EE', color: '#C63627' },
     teresa:   { label: 'Teresa', sub: 'Foundation', initials: 'TW', bg: '#E8F5EF', color: '#2C7A55' },
@@ -319,6 +534,376 @@
     selCount = 0;
     document.getElementById('fab').classList.remove('show');
   }
+
+  function openSummary() {
+    const selected = [];
+    document.querySelectorAll('.sel-wrap.selected').forEach(el => {
+      if (el.dataset.summary) selected.push({ text: el.dataset.summary, el });
+    });
+    if (!selected.length) return;
+    const asks = [];
+    const updates = [];
+    selected.forEach(({ text, el }) => {
+      const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+      if (!lines.length) return;
+      const heading = lines[0].replace(/^\*\*(.+)\*\*$/, '$1').replace(/\*\*(.+?)\*\*/g, '$1');
+      const bullets = lines.slice(1);
+      const tag = el.querySelector && el.querySelector('.itp-tag');
+      const isAsk = tag && tag.textContent.toLowerCase().includes('action');
+      const emoji = isAsk ? '📌' : '🎯';
+      let desc = bullets.length
+        ? bullets[0].replace(/^\*\*([^*]+)\*\*:?\s*/, '').replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1').slice(0, 90)
+        : '';
+      let line = desc ? `• ${emoji} *${heading}* — ${desc}` : `• ${emoji} *${heading}*`;
+      bullets.slice(1, 3).forEach(b => {
+        const clean = b.replace(/^\*\*([^*]+)\*\*:?\s*/, '$1: ').replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1').slice(0, 100);
+        line += `\n    • ${clean}`;
+      });
+      if (isAsk) asks.push(line);
+      else updates.push(line);
+    });
+    let msg = "*This week\'s round-up 👇*\n\n";
+    if (asks.length) msg += '_Asks_\n' + asks.join('\n') + '\n\n';
+    if (updates.length) msg += '_Updates_\n' + updates.join('\n') + '\n\n';
+    msg += 'Please reply with a *yes* once you\'ve read through! 🙌';
+    summaryText = msg;
+    document.getElementById('sumOverlay').classList.add('open');
+    document.getElementById('sumLoading').style.display = 'none';
+    document.getElementById('sumOutput').style.display = 'none';
+    document.getElementById('sumActions').style.display = 'none';
+    const out = document.getElementById('sumOutput');
+    out.innerHTML = slackFmt(summaryText);
+    out.style.display = 'block';
+    document.getElementById('sumActions').style.display = 'flex';
+  }
+
+    function closeSummary() {
+    document.getElementById('sumOverlay').classList.remove('open');
+  }
+
+  function copySummary() {
+    navigator.clipboard.writeText(summaryText).then(() => {
+      const btn = document.getElementById('sumCopyBtn');
+      btn.textContent = '✓ Copied!'; btn.classList.add('copied');
+      setTimeout(() => { btn.innerHTML = '📋 Copy message'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  let selId = 0;
+  function selWrap(innerHtml, summaryContent) {
+    const id = 'sw-' + (selId++);
+    const safe = (summaryContent || '').replace(/"/g, '&quot;');
+    return `<div class="sel-wrap" id="${id}" data-summary="${safe}" onclick="toggleSel(this, this.dataset.summary)">
+      ${innerHtml}
+      <div class="sel-indicator">✓</div>
+    </div>`;
+  }
+
+  let itpCount = 0;
+  function applyInline(t) {
+    return esc(t)
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*([^*\n]+)\*/g, '<strong>$1</strong>')
+      .replace(/_([^_\n]+)_/g, '<em>$1</em>');
+  }
+
+  function slackFmt(text) {
+    const normalized = String(text || '').replace(/\\n/g, '\n').replace(/\\t/g, '  ');
+    const lines = normalized.split('\n');
+    let html = '';
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const trimmed = line.trim();
+      if (!trimmed) { html += '<div style="height:6px"></div>'; continue; }
+      if (/^\*[^*].+[^*]\*$/.test(trimmed) || /^\*\*[^*].+[^*]\*\*$/.test(trimmed)) {
+        html += `<div style="font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px">${applyInline(trimmed)}</div>`;
+        continue;
+      }
+      if (/^_[^_]+_$/.test(trimmed)) {
+        const label = trimmed.replace(/^_|_$/g, '');
+        html += `<div style="font-style:italic;font-weight:600;font-size:14px;color:var(--tx2);margin:10px 0 4px">${esc(label)}</div>`;
+        continue;
+      }
+      if (/^\s{2,}[○◦•\-]/.test(line) || /^\s{2,}[a-z]/i.test(line) && /^\s{3,}/.test(line)) {
+        const inner = trimmed.replace(/^[○◦•\-]\s*/, '');
+        html += `<div style="display:flex;gap:8px;padding:2px 0 2px 20px"><span style="flex-shrink:0;color:var(--tx3)">•</span><span style="font-size:13px;color:var(--tx2)">${applyInline(inner)}</span></div>`;
+        continue;
+      }
+      if (/^[•\-]\s/.test(trimmed)) {
+        const inner = trimmed.replace(/^[•\-]\s*/, '');
+        const strippedInner = inner.replace(/\*([^*]+)\*/g,'$1').replace(/_([^_]+)_/g,'$1').replace(/:[\w_]+:/g,'').trim();
+        if (!strippedInner || strippedInner === strippedInner.replace(/[\s—\-]/g,'').slice(0,3)) {
+          html += `<div style="font-weight:700;font-size:13.5px;color:var(--tx);padding:5px 0 2px">${applyInline(inner)}</div>`;
+        } else {
+          html += `<div style="display:flex;gap:9px;padding:4px 0"><span style="flex-shrink:0;margin-top:1px">•</span><span style="font-size:13.5px;color:var(--tx)">${applyInline(inner)}</span></div>`;
+        }
+        continue;
+      }
+      html += `<div style="font-size:13.5px;color:var(--tx);padding:2px 0">${applyInline(trimmed)}</div>`;
+    }
+    return html;
+  }
+
+  function itpHtml(tp) {
+    if (!tp) return '';
+    const clr = tp.priority === 'red' ? 'red' : tp.priority === 'yellow' ? 'yellow' : 'green';
+    const lbl = clr === 'red' ? 'Action required' : clr === 'yellow' ? 'Cascade this week' : 'FYI';
+    const tagStyle = {
+      red:    'background:var(--t-lt);color:var(--t-dk);border:1px solid var(--t-md)',
+      yellow: 'background:var(--a-lt);color:#8A5210;border:1px solid #F5C87A',
+      green:  'background:var(--g-lt);color:var(--g);border:1px solid #A8D9BE'
+    }[clr];
+    return `<span class="itp-tag" style="${tagStyle}">${lbl}</span>`;
+  }
+
+  function copyItp(btnId, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById(btnId);
+      if (!btn) return;
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerHTML = '&#128203; Copy message'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function switchPE(key) {
+    document.querySelectorAll('.pe-tab').forEach(t => t.classList.toggle('active', t.dataset.key === key));
+    document.querySelectorAll('.pe-panel').forEach(p => p.classList.toggle('active', p.dataset.key === key));
+  }
+
+  const ORG_FILTERS = [
+    { key: 'all',        label: 'All' },
+    { key: 'r&d',        label: 'Jaime &middot; R&amp;D' },
+    { key: 'foundation', label: 'Teresa &middot; Foundation' },
+    { key: 'gtm',        label: 'Lisa &middot; GTM' },
+    { key: 'cx',         label: 'Michelle &middot; CX' },
+    { key: 'pm',         label: 'Kebone &middot; PM/PD' }
+  ];
+
+  const PE_TO_ORG = { jaime:'r&d', teresa:'foundation', lisa:'gtm', michelle:'cx', kebone:'pm' };
+  const ORG_TO_PE = { 'r&d':'jaime', foundation:'teresa', gtm:'lisa', cx:'michelle', pm:'kebone' };
+
+  let activeFilter = 'all';
+
+  function tagsFromAudience(audience) {
+    const a = (audience || '').toLowerCase();
+    if (a.includes('all')) return ['all'];
+    const tags = [];
+    if (a.includes('r&d') || a.includes('eng') || a.includes('data')) tags.push('r&d');
+    if (a.includes('foundation') || a.includes('i&o') || a.includes('finance')) tags.push('foundation');
+    if (a.includes('gtm') || a.includes('sales') || a.includes('marketing')) tags.push('gtm');
+    if (a.includes('cx') || a.includes('customer')) tags.push('cx');
+    if (a.includes('pm') || a.includes('product') || a.includes('design') || a.includes('pd')) tags.push('pm');
+    return tags.length ? tags : ['all'];
+  }
+
+  function orgAttr(tags) {
+    return `data-orgs="${(tags||['all']).join(',')}"`;
+  }
+
+  function setFilter(org) {
+    activeFilter = org;
+    document.querySelectorAll('.f-btn').forEach(b => b.classList.toggle('active', b.dataset.org === org));
+    document.querySelectorAll('.p-item[data-orgs]').forEach(el => {
+      const orgs = el.dataset.orgs.split(',');
+      el.classList.toggle('hidden-item', org !== 'all' && !orgs.includes('all') && !orgs.includes(org));
+    });
+    document.querySelectorAll('.ev-group[data-orgs]').forEach(el => {
+      const orgs = el.dataset.orgs.split(',');
+      el.classList.toggle('hidden-item', org !== 'all' && !orgs.includes('all') && !orgs.includes(org));
+    });
+    document.querySelectorAll('.tp[data-orgs]').forEach(el => {
+      const orgs = el.dataset.orgs.split(',');
+      el.classList.toggle('hidden-item', org !== 'all' && !orgs.includes('all') && !orgs.includes(org));
+    });
+    if (org !== 'all' && ORG_TO_PE[org]) {
+      switchPE(ORG_TO_PE[org]);
+    }
+  }
+
+  function renderInto(container, data, week) {
+    let h = '';
+
+    // Instructions banner (dismissible, stored in memory)
+    if (!window._instrDismissed) {
+      h += `<div class="instructions" id="instrBanner">
+        <span class="inst-icon">💡</span>
+        <div class="inst-text">
+          <strong>Summarize for Slack</strong> — select updates by clicking any card (it highlights with a checkmark), then press the <span class="inst-step">Summarize for Slack →</span> button in the bottom-right. Your message is ready instantly.
+        </div>
+        <button class="inst-dismiss" onclick="dismissBanner()" title="Dismiss">✕</button>
+      </div>`;
+    }
+
+    // Org filter bar
+    h += `<div class="filter-bar">
+      <span class="filter-lbl">Filter by org:</span>
+      ${ORG_FILTERS.map(f => `<button class="f-btn${f.key==='all'?' active':''}" data-org="${f.key}" onclick="setFilter('${f.key}')">${f.label}</button>`).join('')}
+    </div>`;
+    // ── Section 1: PE Org Updates ────────────────────────────────────────────
+    const peKeys = Object.keys(PE_META);
+    h += `<div class="section">
+      <div class="sec-hd"><span class="sec-hd-text">PE org updates</span><div class="sec-hd-line"></div></div>
+      <div class="card"><div class="pe-nav">`;
+    peKeys.forEach((k, i) => {
+      const peData = ((data.peOrgUpdates || {})[k]) || { updates: [] };
+      const cnt    = (peData.updates || []).length;
+      h += `<button class="pe-tab${i===0?' active':''}" data-key="${k}" onclick="switchPE('${k}')">
+        <div class="pe-avatar" style="background:${PE_META[k].bg};color:${PE_META[k].color}">${PE_META[k].initials}</div>
+        <span>${PE_META[k].label}</span>
+        ${cnt > 0 ? `<span class="pe-tab-count">${cnt}</span>` : ''}
+      </button>`;
+    });
+    h += `</div>`;
+    peKeys.forEach((k, i) => {
+      const pe = ((data.peOrgUpdates || {})[k]) || { updates: [], sourceGap: null };
+      h += `<div class="pe-panel${i===0?' active':''}" data-key="${k}">`;
+      if (pe.updates && pe.updates.length) {
+        pe.updates.forEach(u => {
+          if (typeof u === 'object' && u.heading) {
+            const peInner = `<div class="pe-item"><div class="pe-item-hd">${fmt(u.heading)}</div>${u.bullets && u.bullets.length ? `<ul class="pe-bullets">` + u.bullets.map(b=>`<li>${fmt(b)}</li>`).join('') + `</ul>` : ''}</div>`;
+            h += selWrap(peInner, u.heading + (u.bullets ? '\n' + u.bullets.join('\n') : ''));
+          } else {
+            h += selWrap(`<div class="pe-item"><div class="pe-item-hd">${fmt(u)}</div></div>`, String(u));
+          }
+        });
+      } else { h += `<div style="padding:16px 22px" class="empty">No specific updates this week.</div>`; }
+      if (pe.sourceGap) { h += `<div class="gap-note" style="margin:0 12px 12px">⚠️ ${esc(pe.sourceGap)}</div>`; }
+      h += `</div>`;
+    });
+    h += `</div></div>`;
+
+    // ── Section 3: Org & Policy Updates ─────────────────────────────────────
+    const policyItems = data.orgPolicy || [];
+    h += `<div class="section">
+      <div class="sec-hd">
+        <span class="sec-hd-text">Org &amp; policy updates</span>
+        ${policyItems.length ? `<span class="sec-count">${policyItems.length}</span>` : ''}
+        <div class="sec-hd-line"></div>
+      </div>
+      <div class="card">`;
+    if (policyItems.length) {
+      policyItems.forEach(item => {
+        const p    = (item.priority || 'medium').toLowerCase();
+        const tags = item.tags || ['all'];
+        const pInner = `<div class="p-item" ${orgAttr(tags)}>
+          <div class="p-bar p-bar-${p}"></div>
+          <div class="p-body">
+            <div class="p-row1">
+              <span class="p-title">${fmt(item.title)}</span>
+              <span class="badge badge-${p}">${p}</span>
+            </div>
+            ${item.summary ? `<div class="p-summary">${fmt(item.summary)}</div>` : ''}
+            ${item.bullets && item.bullets.length ? `<ul class="p-bullets">` + item.bullets.map(b => `<li>${fmt(b)}</li>`).join('') + `</ul>` : ''}
+            ${spill(item.source, item.sourceUrl)}
+            ${itpHtml(item.tp)}
+          </div>
+        </div>`;
+        h += selWrap(pInner, item.title + (item.bullets ? '\n' + item.bullets.join('\n') : ''));
+      });
+    } else { h += `<div style="padding:18px 22px" class="empty">No policy updates this week.</div>`; }
+    h += `</div></div>`;
+
+    // ── Section 4: Key Events & Decisions ───────────────────────────────────
+    const evGroups = data.keyEvents || [];
+    const evTotal  = evGroups.reduce((s, g) => s + (g.items||[]).length, 0);
+    h += `<div class="section">
+      <div class="sec-hd">
+        <span class="sec-hd-text">Key events &amp; decisions</span>
+        ${evTotal ? `<span class="sec-count">${evTotal}</span>` : ''}
+        <div class="sec-hd-line"></div>
+      </div>
+      <div class="card">`;
+    if (evGroups.length) {
+      evGroups.forEach(g => {
+        const groupTags = g.tags || ['all'];
+        h += `<div class="ev-group" ${orgAttr(groupTags)}><div class="ev-theme-bar"><span class="ev-theme-chip">${esc(g.theme)}</span></div><div class="ev-items">`;
+        (g.items || []).forEach(it => {
+          const srcHtml = it.source ? (it.sourceUrl
+            ? `<a href="${esc(it.sourceUrl)}" class="ev-src" target="_blank">${esc(it.source)}</a>`
+            : `<span class="ev-src">${esc(it.source)}</span>`) : '';
+          if (it.heading) {
+            const evInner = `<div class="ev-item">
+              <div class="ev-dot-col"><div class="ev-dot"></div></div>
+              <div class="ev-body">
+                <div class="ev-heading">${fmt(it.heading)}</div>
+                ${it.bullets && it.bullets.length ? `<ul class="ev-bullets">` + it.bullets.map(b=>`<li>${fmt(b)}</li>`).join('') + `</ul>` : ''}
+                ${srcHtml}${itpHtml(it.tp)}
+              </div>
+            </div>`;
+            h += selWrap(evInner, it.heading + (it.bullets ? '\n' + it.bullets.join('\n') : ''));
+          } else {
+            const evInner2 = `<div class="ev-item">
+              <div class="ev-dot-col"><div class="ev-dot"></div></div>
+              <div class="ev-body"><div class="ev-summary">${fmt(it.summary||'')}</div>${srcHtml}</div>
+            </div>`;
+            h += selWrap(evInner2, it.summary || '');
+          }
+        });
+        h += `</div></div>`;
+      });
+    } else { h += `<div style="padding:18px 22px" class="empty">No major events this week.</div>`; }
+    h += `</div></div>`;
+
+    container.innerHTML = h;
+  }
+
+
+  function dismissBanner() {
+    window._instrDismissed = true;
+    const b = document.getElementById('instrBanner');
+    if (b) b.style.display = 'none';
+  }
+  const ORG_FILTERS = [
+    { key: 'all',        label: 'All' },
+    { key: 'r&d',        label: 'Jaime &middot; R&amp;D' },
+    { key: 'foundation', label: 'Teresa &middot; Foundation' },
+    { key: 'gtm',        label: 'Lisa &middot; GTM' },
+    { key: 'cx',         label: 'Michelle &middot; CX' },
+    { key: 'pm',         label: 'Kebone &middot; PM/PD' }
+  ];
+
+  const PE_TO_ORG = { jaime:'r&d', teresa:'foundation', lisa:'gtm', michelle:'cx', kebone:'pm' };
+  const ORG_TO_PE = { 'r&d':'jaime', foundation:'teresa', gtm:'lisa', cx:'michelle', pm:'kebone' };
+
+  let activeFilter = 'all';
+
+  function tagsFromAudience(audience) {
+    const a = (audience || '').toLowerCase();
+    if (a.includes('all')) return ['all'];
+    const tags = [];
+    if (a.includes('r&d') || a.includes('eng') || a.includes('data')) tags.push('r&d');
+    if (a.includes('foundation') || a.includes('i&o') || a.includes('finance')) tags.push('foundation');
+    if (a.includes('gtm') || a.includes('sales') || a.includes('marketing')) tags.push('gtm');
+    if (a.includes('cx') || a.includes('customer')) tags.push('cx');
+    if (a.includes('pm') || a.includes('product') || a.includes('design') || a.includes('pd')) tags.push('pm');
+    return tags.length ? tags : ['all'];
+  }
+
+  function orgAttr(tags) {
+    return `data-orgs="${(tags||['all']).join(',')}"`;
+  }
+
+  function setFilter(org) {
+    activeFilter = org;
+    document.querySelectorAll('.f-btn').forEach(b => b.classList.toggle('active', b.dataset.org === org));
+    document.querySelectorAll('.p-item[data-orgs]').forEach(el => {
+      const orgs = el.dataset.orgs.split(',');
+      el.classList.toggle('hidden-item', org !== 'all' && !orgs.includes('all') && !orgs.includes(org));
+    });
+    document.querySelectorAll('.ev-group[data-orgs]').forEach(el => {
+      const orgs = el.dataset.orgs.split(',');
+      el.classList.toggle('hidden-item', org !== 'all' && !orgs.includes('all') && !orgs.includes(org));
+    });
+    document.querySelectorAll('.tp[data-orgs]').forEach(el => {
+      const orgs = el.dataset.orgs.split(',');
+      el.classList.toggle('hidden-item', org !== 'all' && !orgs.includes('all') && !orgs.includes(org));
+    });
+    if (org !== 'all' && ORG_TO_PE[org]) {
+      switchPE(ORG_TO_PE[org]);
+    }
+  }
+
 
   function openSummary() {
     const selected = [];
@@ -643,108 +1228,9 @@
   }
 
 
-  function dismissBanner() {
-    window._instrDismissed = true;
-    const b = document.getElementById('instrBanner');
-    if (b) b.style.display = 'none';
-  }
-  async function loadRecap() {
-    if (!window.cowork) {
-      showErr('Live refresh requires the Cowork app. The data shown is from the most recent recap run.');
-      return;
-    }
-    document.getElementById('refreshBtn').disabled = true;
-    document.getElementById('content').style.display = 'none';
-    document.getElementById('errBox').style.display = 'none';
-    document.getElementById('loading').style.display = 'flex';
-
-    try {
-      const oldest = String(Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60);
-
-      setStep('Reading Slack channels...', 0);
-      const [inviteTeam, invitePes, rndAll, rndLeadership] = await Promise.all([
-        window.cowork.callMcpTool('mcp__29840611-8dcc-4089-96e7-8a88da4fc48f__slack_read_channel',
-          { channel_id: 'C0517BVP04V', oldest, limit: 40, response_format: 'concise' }),
-        window.cowork.callMcpTool('mcp__29840611-8dcc-4089-96e7-8a88da4fc48f__slack_read_channel',
-          { channel_id: 'C0AFC07JJKA', oldest, limit: 30, response_format: 'concise' }),
-        window.cowork.callMcpTool('mcp__29840611-8dcc-4089-96e7-8a88da4fc48f__slack_read_channel',
-          { channel_id: 'C05V6DJ5QPQ', oldest, limit: 30, response_format: 'concise' }),
-        window.cowork.callMcpTool('mcp__29840611-8dcc-4089-96e7-8a88da4fc48f__slack_read_channel',
-          { channel_id: 'C08SVC00BLN', oldest, limit: 20, response_format: 'concise' })
-      ]);
-
-      setStep('Reading IOPE Newsletter...', 1);
-      const newsletter = await window.cowork.callMcpTool(
-        'mcp__4a329740-c8ca-4a61-a553-9b2639de6a8c__read_document',
-        { urls: ['https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit'] }
-      );
-
-      setStep('Synthesizing with AI...', 2);
-      const rawData = [
-        { label: '#invite-team', content: JSON.stringify(inviteTeam).slice(0, 4000) },
-        { label: '#invite-pes', content: JSON.stringify(invitePes).slice(0, 3000) },
-        { label: '#r-and-d-invite-all', content: JSON.stringify(rndAll).slice(0, 3000) },
-        { label: '#r-and-d-invite-leadership', content: JSON.stringify(rndLeadership).slice(0, 2000) },
-        { label: 'IOPE Newsletter', content: JSON.stringify(newsletter).slice(0, 4000) }
-      ];
-
-      const result = await window.cowork.askClaude(
-        `You are generating a weekly recruiting recap for Jaime Tavarez, Invite PE covering R&D (Engineering, Data) at Gusto. Based ONLY on the provided data from the past 7 days, return a single valid JSON object with these 4 keys. No markdown, no explanation — just the JSON.
-
-"orgPolicy": array of {title: string, summary: string, bullets: string[], source: string, sourceUrl: string|null, priority: "high"|"medium"|"low", tags: string[], tp: {priority:"red"|"yellow"|"green", audience:string, point:string}|null}
-
-"keyEvents": array of {theme: string, tags: string[], items: [{heading: string, bullets: string[], source: string, sourceUrl: string|null, tp: {priority:"red"|"yellow"|"green"}|null}]}
-
-"peOrgUpdates": object with keys jaime, teresa, lisa, michelle, kebone — each: {updates: [{heading:string, bullets:string[]}], sourceGap: string|null}
-  jaime=R&D/Eng/Data, teresa=Foundation/I&O/Finance, lisa=GTM/Sales/Marketing, michelle=CX, kebone=PM/PD
-
-"talkingPoints": array of {priority: "red"|"yellow"|"green", audience: string, point: string, source: string, sourceUrl: string|null, tags: string[]}
-
-tags values: "all", "r&d", "foundation", "gtm", "cx", "pm"
-Return ONLY valid JSON.`,
-        rawData
-      );
-
-      setStep('Rendering...', 3);
-      let parsed;
-      try {
-        if (typeof result === 'object' && result !== null) {
-          parsed = result;
-        } else {
-          const str = String(result);
-          try { parsed = JSON.parse(str); }
-          catch (_) {
-            const m = str.match(/\{[\s\S]*\}/);
-            if (m) parsed = JSON.parse(m[0]);
-            else throw new Error('Could not parse AI response. Please try refreshing.');
-          }
-        }
-      } catch (parseErr) {
-        throw new Error('Could not parse AI response: ' + parseErr.message);
-      }
-      render(parsed);
-
-    } catch (err) {
-      showErr(err.message || 'Unknown error. Please try refreshing.');
-    }
-  }
-
-  // PRELOADED data injected by the weekly-recap skill each run
-  const PRELOADED = {"week": "June 8 \u2013 June 15, 2026", "data": {"orgPolicy": [{"title": "Invite Within The Law Resource \u2014 Now Live", "summary": "Invite Ops published a temporary reference page for legal and compliance questions in recruiting. Replaces the paused training sessions.", "bullets": ["Available at: sites.google.com/gusto.com/invite-academy/invite-within-the-law", "Use this for any legal/compliance questions until the full training is refreshed"], "source": "IOPE Newsletter, June 8, 2026", "sourceUrl": "https://sites.google.com/gusto.com/invite-academy/invite-within-the-law", "priority": "high", "tags": ["all"], "tp": {"priority": "yellow", "audience": "all orgs", "point": "The Invite Within the Law resource page is now live \u2014 share this with your team as the go-to reference for any legal/compliance recruiting questions while the full training is being refreshed."}}, {"title": "Onboarding Location Field \u2014 Update Complete", "summary": "PeopleTech has finished updating the Onboarding Location field in Greenhouse. The four standardized options are now live.", "bullets": ["Options: Remote, San Francisco, New York, Denver", "Data now flows into Workday automatically", "Verify your open offers have the correct location set"], "source": "IOPE Newsletter, June 8, 2026", "sourceUrl": null, "priority": "medium", "tags": ["all"], "tp": {"priority": "yellow", "audience": "all orgs", "point": "Greenhouse Onboarding Location field is now updated \u2014 double-check your open offers are using one of the four new options (Remote, SF, NY, Denver) so Workday picks it up correctly."}}, {"title": "California Relocation Language \u2014 Coming Soon", "summary": "With California Bill 692, Invite Ops has worked with Legal and Comp to finalize relocation agreement language for candidates moving into California.", "bullets": ["Language applies to candidates relocating to California", "Details coming soon \u2014 watch for IOPE update before using"], "source": "IOPE Newsletter, June 8, 2026", "sourceUrl": null, "priority": "medium", "tags": ["all"], "tp": null}, {"title": "Auto-Population of Offer Details \u2014 In Progress", "summary": "Invite Ops is working with PeopleTech to auto-populate job-related fields in offer details, reducing manual recruiter effort.", "bullets": ["Job-related fields will flow directly into offer details when an offer is created", "More details coming soon"], "source": "IOPE Newsletter, June 8, 2026", "sourceUrl": null, "priority": "low", "tags": ["all"], "tp": null}, {"title": "PeopleOS \u2014 Recruiter DayPlay & Debrief Agent Targeting This Week", "summary": "Both InviteOS features are targeting launch the week of June 8.", "bullets": ["Recruiter DayPlay: UAT in progress, live in staging", "Debrief Agent: Build complete, final refinements underway", "PE recommendations for next batch of InviteOS builds coming soon"], "source": "IOPE Newsletter, June 1 & June 8, 2026", "sourceUrl": null, "priority": "medium", "tags": ["all"], "tp": {"priority": "green", "audience": "all orgs", "point": "Two InviteOS features are targeting launch this week \u2014 Recruiter DayPlay and Debrief Agent. Watch for an announcement from IOPE."}}], "keyEvents": [{"theme": "Action Required", "tags": ["all"], "items": [{"heading": "Headcount Planning Audit \u2014 Due EOD Wednesday June 10", "bullets": ["Jaime and Lisa are running a cross-org headcount planning audit to understand how planning works today and build something better", "Each PE: open and copy the audit doc, work through 6 sections (tools, how planning works, where the process feels broken), share responses with Jaime and Lisa by EOD June 10", "Link: docs.google.com/document/d/17tB4A1SR1pxrbTygDonhQBaw1NybuHtReQiTdzwrwF8"], "source": "#invite-pes (Jaime Tavarez), June 8, 2026", "sourceUrl": "https://docs.google.com/document/d/17tB4A1SR1pxrbTygDonhQBaw1NybuHtReQiTdzwrwF8/edit", "tp": {"priority": "red"}}]}, {"theme": "Team Workshop", "tags": ["all"], "items": [{"heading": "Design Thinking Workshop \u2014 Tomorrow, June 11, 1\u20132pm PT", "bullets": ["Pre-work (~20 min) due by EOD TODAY (June 9 deadline) \u2014 link in #invite-team", "Goal: examine end-to-end Invite process, identify automation and simplicity opportunities", "Output: Invite PEs will prioritize improvements as FY27 workstreams"], "source": "#invite-team, June 3\u20135, 2026", "sourceUrl": "https://forms.gle/BCzdDB33M4Wx1gfT6", "tp": {"priority": "yellow"}}]}, {"theme": "Team Departures", "tags": ["all", "r&d", "gtm"], "items": [{"heading": "Meesh Plante \u2014 Last Day June 10", "bullets": ["Contractor supporting scheduling across Data, SWE intern, L6/L7, Symmetry, PM/PD and more", "Coordinate any open scheduling needs before Tuesday"], "source": "#invite-team, June 5, 2026", "sourceUrl": null, "tp": {"priority": "yellow"}}, {"heading": "Gabe Cadavillo \u2014 Last Day June 12", "bullets": ["On Lisa's GTM team \u2014 last day this Thursday", "Ensure open req coverage is in place"], "source": "#invite-pes, June 2, 2026", "sourceUrl": null, "tp": {"priority": "yellow"}}]}, {"theme": "Org & Headcount", "tags": ["r&d", "pm"], "items": [{"heading": "Jaime & Kebone Promotions \u2014 Now in Effect", "bullets": ["Jaime: all Eng hiring (SWE, AIT, Security, Infrastructure) \u2014 8 FTEs + Jeff Myers + Nico Watson (contractors)", "Kebone: PM/PD + Data \u2014 7 recruiters, new POC for Julia King (Data)", "One-pod mentality continues \u2014 flex resources across orgs as needed"], "source": "#r-and-d-invite-leadership, June 2\u20135, 2026", "sourceUrl": null, "tp": null}]}, {"theme": "Invite Ops in Flight", "tags": ["all"], "items": [{"heading": "Goose Testing with People Insights", "bullets": ["Invite Ops collaborating with People Insights to test Goose, a new AI reporting tool", "Early-stage \u2014 watch for updates on how it affects recruiting reporting"], "source": "IOPE Newsletter, June 8, 2026", "sourceUrl": null, "tp": null}, {"heading": "IKB Migration to Notion \u2014 Ongoing", "bullets": ["Full rebuild of Invite KB underway; survey results from June 5 informing IKB 2.0 structure"], "source": "IOPE Newsletter, June 1\u20138, 2026", "sourceUrl": null, "tp": null}]}], "peOrgUpdates": {"jaime": {"updates": [{"heading": "Headcount Planning Audit \u2014 Sent to All PEs", "bullets": ["Co-leading cross-org headcount planning audit with Lisa Pham", "Responses due EOD June 10 \u2014 covers tools, planning process, pain points", "Goal: build a consistent, better planning process across all orgs"]}, {"heading": "Team Structure in Effect", "bullets": ["Unified Eng pod now live: SWE, AIT, Security, Infrastructure under Jaime", "Team: Jeff Myers, Mike, Khetsun, Kevin, Angeline, Jacob Ellison, Rose + Nico Watson (contractors)", "Spec Tech pod fully merged in"]}], "sourceGap": null}, "teresa": {"updates": [{"heading": "Design Thinking Workshop \u2014 Co-Leading June 11", "bullets": ["Pre-work due EOD today (June 9 deadline)", "Workshop: June 11, 1\u20132pm PT \u2014 full team expected to attend"]}, {"heading": "TI&E Team Continuing Cross-Functional Support", "bullets": ["L5\u2013L7 searches in final stretch", "TI&E members still flexing to support CX sprints"]}], "sourceGap": "No dedicated Foundation Invite channel. Updates from #invite-pes and #invite-team."}, "lisa": {"updates": [{"heading": "Headcount Planning Audit \u2014 Co-Leading with Jaime", "bullets": ["Audit doc sent to all PEs; responses due EOD June 10", "Covers tools, planning process, where it feels broken"]}, {"heading": "Gabe Cadavillo \u2014 Last Day June 12", "bullets": ["Ensure open req coverage is in place before Thursday", "Transition plan should be active"]}], "sourceGap": "No GTM Invite channel found with recent content. Updates from #invite-pes."}, "michelle": {"updates": [{"heading": "5 Concurrent Hiring Sprints \u2014 Ongoing", "bullets": ["Licensed Benefits Advisor sprint tracking to 32+ hires", "AI prep podcast, pipeline comparison table, automated reporting all active"]}, {"heading": "Design Thinking Workshop \u2014 Co-Leading June 11", "bullets": ["Pre-work due EOD today; workshop tomorrow 1\u20132pm PT"]}], "sourceGap": "No CX Invite channel found. Updates from #invite-pes and #invite-team."}, "kebone": {"updates": [{"heading": "Brand Studio \u2014 HC Submittals This Week", "bullets": ["L6 Group Creative Director + L5 Brand Design Manager both going to Hiring Committee this week", "L5 Creative Operations Lead already hired; 4 more roles in pipeline", "Custom AI calibration skill continuing to save ~19 hrs recruiter time"]}, {"heading": "Design Thinking Workshop \u2014 Co-Leading June 11", "bullets": ["Pre-work due EOD today; workshop tomorrow 1\u20132pm PT"]}, {"heading": "Lupe Transition \u2014 Ongoing", "bullets": ["Mallory Montanez supporting coverage of late-stage roles", "Staying lean on backfill; business partner Chris still asking \u2014 Kebone managing that relationship"]}], "sourceGap": null}}, "talkingPoints": [{"priority": "red", "audience": "all orgs", "point": "Headcount planning audit from Jaime + Lisa \u2014 responses due EOD Wednesday June 10. Open the audit doc, work through 6 sections on how planning works in your org today, and share back with Jaime and Lisa.", "source": "#invite-pes (Jaime Tavarez), June 8, 2026", "sourceUrl": "https://docs.google.com/document/d/17tB4A1SR1pxrbTygDonhQBaw1NybuHtReQiTdzwrwF8/edit", "tags": ["all"]}, {"priority": "yellow", "audience": "all orgs", "point": "Design Thinking workshop is tomorrow \u2014 June 11, 1\u20132pm PT. If you haven't completed the pre-work yet, the deadline is EOD today. Block time and come ready to be candid about where the Invite process is draining you.", "source": "#invite-team, June 3\u20135, 2026", "sourceUrl": "https://forms.gle/BCzdDB33M4Wx1gfT6", "tags": ["all"]}, {"priority": "yellow", "audience": "all orgs", "point": "Meesh Plante's last day is tomorrow (June 10) \u2014 she supported scheduling across Data, SWE intern, L6/L7, Symmetry, PM/PD. Make sure any open scheduling needs are sorted before then.", "source": "#invite-team, June 5, 2026", "sourceUrl": null, "tags": ["all"]}, {"priority": "yellow", "audience": "GTM", "point": "Gabe Cadavillo's last day is Thursday June 12. Confirm open req coverage is locked in for the GTM team.", "source": "#invite-pes, June 2, 2026", "sourceUrl": null, "tags": ["gtm"]}, {"priority": "yellow", "audience": "all orgs", "point": "Greenhouse Onboarding Location field is now updated \u2014 double-check your open offers are using one of the four new options (Remote, SF, NY, Denver) so Workday ingests the data correctly.", "source": "IOPE Newsletter, June 8, 2026", "sourceUrl": null, "tags": ["all"]}, {"priority": "green", "audience": "all orgs", "point": "Invite Within the Law resource page is now live \u2014 share with your team as the go-to reference for legal/compliance recruiting questions while the full training is being refreshed.", "source": "IOPE Newsletter, June 8, 2026", "sourceUrl": "https://sites.google.com/gusto.com/invite-academy/invite-within-the-law", "tags": ["all"]}, {"priority": "green", "audience": "all orgs", "point": "InviteOS: Recruiter DayPlay and Debrief Agent are both targeting launch this week. Watch for an IOPE announcement.", "source": "IOPE Newsletter, June 8, 2026", "sourceUrl": null, "tags": ["all"]}]}};
 
   (function init() {
-    if (PRELOADED && PRELOADED.data) {
-      try {
-        render(PRELOADED.data);
-        document.getElementById('sub').textContent =
-          'Jaime Tavarez · R&D Invite · Week of ' + PRELOADED.week;
-      } catch(e) {
-        document.getElementById('loading').style.display = 'none';
-        showErr('Error rendering recap: ' + e.message);
-      }
-    } else {
-      loadRecap();
-    }
+    reloadAll();
   })();
 </script>
 </body>
