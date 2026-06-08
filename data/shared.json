@@ -1,17 +1,39 @@
 {
   "week": "June 8 – June 15, 2026",
-  "refreshedAt": "2026-06-08T16:00:00Z",
+  "refreshedAt": "2026-06-08T17:00:00Z",
   "refreshedBy": "jaime",
   "orgPolicy": [
     {
-      "title": "Invite Within The Law Resource — Now Live",
-      "summary": "Invite Ops published a temporary reference page for legal and compliance questions in recruiting. Replaces the paused training sessions.",
+      "title": "New Variable Cash Award Field in Greenhouse Offer Details",
+      "summary": "A new required field 'Are they receiving a % Variable Cash Award?' has been added to offer details in Greenhouse. Recruiters must select the correct option before sending offer letters.",
       "bullets": [
-        "Available at: sites.google.com/gusto.com/invite-academy/invite-within-the-law",
-        "Use this for any legal/compliance questions until the full training is refreshed"
+        "Options: No - Hourly Candidate / Yes - US Candidate / Yes - Canada Candidate",
+        "Variable targets: L1-L3: 5% · L4: 7.5% · L5: 10% of base salary",
+        "Program is 50% individual / 50% company performance split",
+        "Selecting 'Yes' reveals a field to enter the % number — double-check offer details before sending"
       ],
-      "source": "IOPE Newsletter, June 8, 2026",
-      "sourceUrl": "https://sites.google.com/gusto.com/invite-academy/invite-within-the-law",
+      "source": "IOPE Newsletter, June 1, 2026",
+      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
+      "priority": "high",
+      "tags": [
+        "all"
+      ],
+      "tp": {
+        "priority": "red",
+        "audience": "all orgs",
+        "point": "New GH field for variable cash comp is live — make sure your team is selecting the correct option and double-checking offer details before sending. Incorrect selections affect offer letters."
+      }
+    },
+    {
+      "title": "Greenhouse Onboarding Location Field Updated",
+      "summary": "PeopleTech updated the Onboarding Location field in GH offer details so Workday can ingest the data. Only four options are now valid.",
+      "bullets": [
+        "Valid options: Remote, San Francisco, New York, Denver",
+        "This data flows directly to Workday and the Onboarding team — accuracy matters",
+        "R&D recruiters: ensure onboarding location is accurate on all active offers"
+      ],
+      "source": "IOPE Newsletter June 8, 2026 + #invite-team (Alli Belamide, June 3)",
+      "sourceUrl": null,
       "priority": "high",
       "tags": [
         "all"
@@ -19,68 +41,38 @@
       "tp": {
         "priority": "yellow",
         "audience": "all orgs",
-        "point": "The Invite Within the Law resource page is now live — share this with your team as the go-to reference for any legal/compliance recruiting questions while the full training is being refreshed."
+        "point": "Onboarding Location field in GH now has four fixed options (Remote, SF, NY, Denver). Remind your team to select the correct one on all offers — this feeds directly into Workday."
       }
     },
     {
-      "title": "Onboarding Location Field — Update Complete",
-      "summary": "PeopleTech has finished updating the Onboarding Location field in Greenhouse. The four standardized options are now live.",
+      "title": "Invite Within The Law Resource Page Now Available",
+      "summary": "Invite Ops launched a temporary resource page for legal/compliance questions while the full training is being refreshed.",
       "bullets": [
-        "Options: Remote, San Francisco, New York, Denver",
-        "Data now flows into Workday automatically",
-        "Verify your open offers have the correct location set"
+        "Available at: https://sites.google.com/gusto.com/invite-academy/invite-within-the-law",
+        "Use this as a first stop for any legal or compliance questions that come up in recruiting",
+        "Full Invite Within the Law training sessions are currently on pause during refresh"
       ],
       "source": "IOPE Newsletter, June 8, 2026",
-      "sourceUrl": null,
+      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
       "priority": "medium",
       "tags": [
         "all"
       ],
       "tp": {
-        "priority": "yellow",
+        "priority": "green",
         "audience": "all orgs",
-        "point": "Greenhouse Onboarding Location field is now updated — double-check your open offers are using one of the four new options (Remote, SF, NY, Denver) so Workday picks it up correctly."
+        "point": "New legal/compliance resource is live. Share with your team and remind them to check here before escalating questions."
       }
     },
     {
-      "title": "California Relocation Language — Coming Soon",
-      "summary": "With California Bill 692, Invite Ops has worked with Legal and Comp to finalize relocation agreement language for candidates moving into California.",
+      "title": "Greenhouse Expanded Permissions for Invite PEs",
+      "summary": "Alli standardized GH permissions across all Invite PEs — new access includes email/social templates, CRM, prospect pools, agency recruiter access, and job creation.",
       "bullets": [
-        "Language applies to candidates relocating to California",
-        "Details coming soon — watch for IOPE update before using"
+        "New access: email/social templates, CRM + prospect pools, agency recruiter access, create jobs (limited scenarios)",
+        "Review Laura's full post in #invite-pes for details",
+        "Bring questions to PE syncs"
       ],
-      "source": "IOPE Newsletter, June 8, 2026",
-      "sourceUrl": null,
-      "priority": "medium",
-      "tags": [
-        "all"
-      ],
-      "tp": null
-    },
-    {
-      "title": "Auto-Population of Offer Details — In Progress",
-      "summary": "Invite Ops is working with PeopleTech to auto-populate job-related fields in offer details, reducing manual recruiter effort.",
-      "bullets": [
-        "Job-related fields will flow directly into offer details when an offer is created",
-        "More details coming soon"
-      ],
-      "source": "IOPE Newsletter, June 8, 2026",
-      "sourceUrl": null,
-      "priority": "low",
-      "tags": [
-        "all"
-      ],
-      "tp": null
-    },
-    {
-      "title": "PeopleOS — Recruiter DayPlay & Debrief Agent Targeting This Week",
-      "summary": "Both InviteOS features are targeting launch the week of June 8.",
-      "bullets": [
-        "Recruiter DayPlay: UAT in progress, live in staging",
-        "Debrief Agent: Build complete, final refinements underway",
-        "PE recommendations for next batch of InviteOS builds coming soon"
-      ],
-      "source": "IOPE Newsletter, June 1 & June 8, 2026",
+      "source": "#invite-pes (Kristin Ruehle summary, June 2)",
       "sourceUrl": null,
       "priority": "medium",
       "tags": [
@@ -89,80 +81,126 @@
       "tp": {
         "priority": "green",
         "audience": "all orgs",
-        "point": "Two InviteOS features are targeting launch this week — Recruiter DayPlay and Debrief Agent. Watch for an announcement from IOPE."
+        "point": "PEs now have expanded Greenhouse permissions. Worth reviewing what’s newly available for your workflow."
       }
+    },
+    {
+      "title": "IKB Migrating to Notion",
+      "summary": "Invite Ops is doing a full clean-up and rebuild of the Invite Knowledge Base as part of a Notion migration.",
+      "bullets": [
+        "Fixing outdated content, broken links, unclear ownership, and duplicate pages",
+        "Goal: one source of truth built around how recruiters and hiring teams actually work",
+        "KB Redesign Survey closed June 5 — results will shape new structure"
+      ],
+      "source": "#invite-team + #invite-pes (Laura Lockwood / Alli Belamide)",
+      "sourceUrl": null,
+      "priority": "low",
+      "tags": [
+        "all"
+      ],
+      "tp": null
     }
   ],
   "keyEvents": [
     {
-      "theme": "Action Required",
+      "theme": "Team Changes & Departures",
       "tags": [
         "all"
       ],
       "items": [
         {
-          "heading": "Headcount Planning Audit — Due EOD Wednesday June 10",
+          "heading": "Meesh Plante departing June 10",
           "bullets": [
-            "Jaime and Lisa are running a cross-org headcount planning audit to understand how planning works today and build something better",
-            "Each PE: open and copy the audit doc, work through 6 sections (tools, how planning works, where the process feels broken), share responses with Jaime and Lisa by EOD June 10",
-            "Link: docs.google.com/document/d/17tB4A1SR1pxrbTygDonhQBaw1NybuHtReQiTdzwrwF8"
+            "Meesh’s last day is June 10 — she supported scheduling for Data, SWE interns, L6/L7, Symmetry, PM/PD, and more",
+            "Transition plan to be coordinated across affected teams"
           ],
-          "source": "#invite-pes (Jaime Tavarez), June 8, 2026",
-          "sourceUrl": "https://docs.google.com/document/d/17tB4A1SR1pxrbTygDonhQBaw1NybuHtReQiTdzwrwF8/edit",
+          "source": "#invite-team (Meesh Plante, June 5)",
+          "sourceUrl": null,
+          "tp": {
+            "priority": "yellow"
+          }
+        },
+        {
+          "heading": "Gabe Cadavillo (GTM) resigning — last day June 12",
+          "bullets": [
+            "Gabe resigned from Lisa’s GTM team; last day is June 12",
+            "Lisa shared the news with the PE team on June 2"
+          ],
+          "source": "#invite-pes (Lisa Pham, June 2)",
+          "sourceUrl": null,
+          "tp": {
+            "priority": "green"
+          }
+        },
+        {
+          "heading": "Guadalupe Martinez (PM/PD) departed June 2",
+          "bullets": [
+            "Lupe took severance and departed June 2 — had late-stage roles requiring immediate coverage",
+            "Kebone managing transition with Mallory Montanez stepping in to support"
+          ],
+          "source": "#invite-pes + #r-and-d-invite-leadership (June 2)",
+          "sourceUrl": null,
+          "tp": {
+            "priority": "green"
+          }
+        }
+      ]
+    },
+    {
+      "theme": "Upcoming Events & Deadlines",
+      "tags": [
+        "all"
+      ],
+      "items": [
+        {
+          "heading": "Design Thinking Workshop — June 11, 1–2pm PT",
+          "bullets": [
+            "Whole Invite team is invited — attend and share your feedback",
+            "Pre-work form (~15–20 min) due Tuesday June 9 EOD: https://forms.gle/BCzdDB33M4Wx1gfT6",
+            "Goal: explore the end-to-end Invite process and identify automation/improvement opportunities",
+            "Led by Kebone, Teresa, and Michelle"
+          ],
+          "source": "#invite-team (Teresa Waggoner + Kebone Moloko, June 3–5)",
+          "sourceUrl": null,
           "tp": {
             "priority": "red"
           }
-        }
-      ]
-    },
-    {
-      "theme": "Team Workshop",
-      "tags": [
-        "all"
-      ],
-      "items": [
+        },
         {
-          "heading": "Design Thinking Workshop — Tomorrow, June 11, 1–2pm PT",
+          "heading": "Headcount Planning Audit — due EOD June 10",
           "bullets": [
-            "Pre-work (~20 min) due by EOD TODAY (June 9 deadline) — link in #invite-team",
-            "Goal: examine end-to-end Invite process, identify automation and simplicity opportunities",
-            "Output: Invite PEs will prioritize improvements as FY27 workstreams"
+            "Jaime and Lisa running a cross-org headcount planning audit",
+            "Copy the audit doc and complete 6 sections (tools, planning process, pain points)",
+            "Share responses with Lisa and Jaime by EOD Wednesday June 10",
+            "Doc: https://docs.google.com/document/d/17tB4A1SR1pxrbTygDonhQBaw1NybuHtReQiTdzwrwF8/edit"
           ],
-          "source": "#invite-team, June 3–5, 2026",
-          "sourceUrl": "https://forms.gle/BCzdDB33M4Wx1gfT6",
+          "source": "#invite-pes (Jaime Tavarez, June 8)",
+          "sourceUrl": null,
           "tp": {
-            "priority": "yellow"
+            "priority": "red"
           }
-        }
-      ]
-    },
-    {
-      "theme": "Team Departures",
-      "tags": [
-        "all",
-        "r&d",
-        "gtm"
-      ],
-      "items": [
+        },
         {
-          "heading": "Meesh Plante — Last Day June 10",
+          "heading": "Project Orbit Coaching Survey — due EOD June 12",
           "bullets": [
-            "Contractor supporting scheduling across Data, SWE intern, L6/L7, Symmetry, PM/PD and more",
-            "Coordinate any open scheduling needs before Tuesday"
+            "Kebone and Teresa building quarterly PE coaching sessions (Project Orbit)",
+            "Survey on coaching experience, comfort, and approach — ~10 min",
+            "Link: https://forms.gle/dGJTzsLHifTFKmrs7"
           ],
-          "source": "#invite-team, June 5, 2026",
+          "source": "#invite-pes (Teresa Waggoner, June 8)",
           "sourceUrl": null,
           "tp": {
             "priority": "yellow"
           }
         },
         {
-          "heading": "Gabe Cadavillo — Last Day June 12",
+          "heading": "CX BenCare Cohort — bandwidth request",
           "bullets": [
-            "On Lisa's GTM team — last day this Thursday",
-            "Ensure open req coverage is in place"
+            "Michelle’s CX team needs support: 10–15 BenCare hires for Aug 10 or 17 start dates",
+            "CX team is at capacity for sourcing/screening — reach out to Michelle if your team has room",
+            "Screening volume details coming soon from Michelle"
           ],
-          "source": "#invite-pes, June 2, 2026",
+          "source": "#invite-pes (Michelle Cordray, June 8)",
           "sourceUrl": null,
           "tp": {
             "priority": "yellow"
@@ -171,49 +209,80 @@
       ]
     },
     {
-      "theme": "Org & Headcount",
-      "tags": [
-        "r&d",
-        "pm"
-      ],
-      "items": [
-        {
-          "heading": "Jaime & Kebone Promotions — Now in Effect",
-          "bullets": [
-            "Jaime: all Eng hiring (SWE, AIT, Security, Infrastructure) — 8 FTEs + Jeff Myers + Nico Watson (contractors)",
-            "Kebone: PM/PD + Data — 7 recruiters, new POC for Julia King (Data)",
-            "One-pod mentality continues — flex resources across orgs as needed"
-          ],
-          "source": "#r-and-d-invite-leadership, June 2–5, 2026",
-          "sourceUrl": null,
-          "tp": null
-        }
-      ]
-    },
-    {
-      "theme": "Invite Ops in Flight",
+      "theme": "PeopleOS & InviteOS Roadmap",
       "tags": [
         "all"
       ],
       "items": [
         {
-          "heading": "Goose Testing with People Insights",
+          "heading": "Recruiter DayPlay — UAT in progress, launching week of June 8",
           "bullets": [
-            "Invite Ops collaborating with People Insights to test Goose, a new AI reporting tool",
-            "Early-stage — watch for updates on how it affects recruiting reporting"
+            "Feature is live in staging; testing underway with final refinements in parallel",
+            "Expected launch: week of June 8"
           ],
-          "source": "IOPE Newsletter, June 8, 2026",
-          "sourceUrl": null,
-          "tp": null
+          "source": "IOPE Newsletter, June 1, 2026",
+          "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
+          "tp": {
+            "priority": "green"
+          }
         },
         {
-          "heading": "IKB Migration to Notion — Ongoing",
+          "heading": "Debrief Agent — build in progress, launching week of June 8",
           "bullets": [
-            "Full rebuild of Invite KB underway; survey results from June 5 informing IKB 2.0 structure"
+            "Eric (OS Eng partner) finalizing the build; UAT up next before launch",
+            "Expected launch: week of June 8"
           ],
-          "source": "IOPE Newsletter, June 1–8, 2026",
+          "source": "IOPE Newsletter, June 1, 2026",
+          "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
+          "tp": {
+            "priority": "green"
+          }
+        },
+        {
+          "heading": "Next InviteOS feature batch — PE recommendations wrapping up",
+          "bullets": [
+            "Kristin and PEs finalizing recommendations for the next round of InviteOS builds",
+            "Elan joining Wednesday PE sync — bring 3–5 feature ideas tied to your C2 priorities"
+          ],
+          "source": "#invite-pes (Kristin Ruehle, June 2) + IOPE Newsletter",
           "sourceUrl": null,
-          "tp": null
+          "tp": {
+            "priority": "yellow"
+          }
+        }
+      ]
+    },
+    {
+      "theme": "Cycle Planning & Strategy",
+      "tags": [
+        "all"
+      ],
+      "items": [
+        {
+          "heading": "Cycle 2 planning drafts due Thursday EOD",
+          "bullets": [
+            "Cycle 1 closes next week — Kristin calling for ruthless prioritization going into C2",
+            "Each PE pair submits: H1 north star, cycle-by-cycle breakdown, cross-functional dependencies, AI workstreams",
+            "Rolling-over items need a deliberate decision — do they still earn a spot?"
+          ],
+          "source": "#invite-pes (Kristin Ruehle, June 2)",
+          "sourceUrl": null,
+          "tp": {
+            "priority": "yellow"
+          }
+        },
+        {
+          "heading": "Internal Mobility Framework — PE review requested",
+          "bullets": [
+            "Kristin shared a draft for PE review before it goes to PPs or Comp",
+            "Focus: Recruiter Role & Process Design, Eligibility Frameworks, Guidelines for PEs",
+            "Drop comments directly in the doc"
+          ],
+          "source": "#invite-pes (Kristin Ruehle, June 2)",
+          "sourceUrl": "https://docs.google.com/document/d/1aQGdcwdMchiKd8LgoMhXU-awWPKoFgqJ6mvSpok6Sb8/edit",
+          "tp": {
+            "priority": "yellow"
+          }
         }
       ]
     }
