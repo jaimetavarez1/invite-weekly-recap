@@ -468,7 +468,6 @@
       const f       = peFiles[k];
       const ts      = f?.data?.refreshedAt;
       const isOk    = !!ts;
-      const hasCh   = (PE_CHANNELS[k]?.channels?.length || 0) > 0;
       const subText = isOk ? `✓ ${relTime(ts)}` : 'Not yet refreshed';
       h += `<div class="status-pe ${isOk ? 'ok' : ''}">
         <div class="status-pe-avatar" style="background:${meta.bg};color:${meta.color}">${meta.initials}</div>
@@ -477,7 +476,6 @@
           <span class="status-pe-org">${meta.sub}</span>
           <span class="status-pe-sub ${isOk ? 'ok' : ''}">${subText}</span>
         </div>
-        ${hasCh ? `<button class="status-refresh-btn" onclick="refreshPE('${k}')" title="Refresh ${meta.label}'s org">↻</button>` : ''}
       </div>`;
     });
     h += `</div></div>`;
