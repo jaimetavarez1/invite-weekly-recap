@@ -643,16 +643,25 @@
       navigator.clipboard.writeText('run my weekly recap').catch(() => {});
       const overlay = document.createElement('div');
       overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:flex;align-items:center;justify-content:center';
+      const isSetup = localStorage.getItem('invite-recap-setup');
       overlay.innerHTML = `
-        <div style="background:white;border-radius:16px;padding:28px 28px 22px;max-width:360px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.2);text-align:center">
+        <div style="background:white;border-radius:16px;padding:28px 28px 22px;max-width:380px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.2);text-align:center">
           <div style="font-size:28px;margin-bottom:12px">📋</div>
           <div style="font-size:15px;font-weight:700;color:#17140D;margin-bottom:8px">Ready to refresh</div>
           <div style="font-size:13px;color:#57504A;line-height:1.6;margin-bottom:20px">
             We've copied <strong>"run my weekly recap"</strong> to your clipboard.<br><br>
-            Click <strong>Open Claude</strong> below, then paste <strong>⌘V</strong> and hit Enter.
+            Click <strong>Open Claude</strong> below, then paste <strong>⌘V</strong> and hit Enter to run the skill.
           </div>
-          <button id="openClaudeBtn" style="background:#F45D48;color:white;border:none;border-radius:999px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;width:100%;margin-bottom:8px">Open Claude →</button>
-          <button onclick="this.closest('[style*=fixed]').remove()" style="background:none;border:none;color:#A09890;font-size:12px;cursor:pointer">Cancel</button>
+          <button id="openClaudeBtn" style="background:#F45D48;color:white;border:none;border-radius:999px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;width:100%;margin-bottom:10px">Open Claude →</button>
+          ${!isSetup ? `
+          <div style="border-top:1px solid #E2DBD3;padding-top:14px;margin-top:4px">
+            <div style="font-size:12px;color:#A09890;margin-bottom:8px">First time? You'll need the plugin installed first.</div>
+            <a href="https://app.notion.com/p/379ad673c6c281f89e7ff05bfb579f26" target="_blank" onclick="localStorage.setItem('invite-recap-setup','true')"
+              style="display:inline-block;font-size:12px;font-weight:700;color:#F45D48;text-decoration:none;border:1.5px solid #FBCFC9;border-radius:999px;padding:6px 16px;background:#FEF0EE">
+              🛠️ Get set up first →
+            </a>
+          </div>` : ''}
+          <div style="margin-top:10px"><button onclick="this.closest('[style*=fixed]').remove()" style="background:none;border:none;color:#A09890;font-size:12px;cursor:pointer">Cancel</button></div>
         </div>`;
       document.body.appendChild(overlay);
       document.getElementById('openClaudeBtn').onclick = () => {
