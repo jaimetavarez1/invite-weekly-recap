@@ -505,41 +505,7 @@
       <span class="filter-lbl">Filter by org:</span>
       ${ORG_FILTERS.map(f => `<button class="f-btn${f.key==='all'?' active':''}" data-org="${f.key}" onclick="setFilter('${f.key}')">${f.label}</button>`).join('')}
     </div>`;
-
-    // ── Section 1: Talking Points ────────────────────────────────────────────
-    const tpItems = data.talkingPoints || [];
-    const tpRed    = tpItems.filter(t => t.priority === 'red').length;
-    const tpYellow = tpItems.filter(t => t.priority === 'yellow').length;
-    h += `<div class="section">
-      <div class="sec-hd">
-        <span class="sec-hd-text">📢 Talking points</span>
-        ${tpRed    ? `<span class="sec-count" style="background:var(--t-lt);color:var(--t-dk);border-color:var(--t-md)">🔴 ${tpRed} action${tpRed>1?'s':''}</span>` : ''}
-        ${tpYellow ? `<span class="sec-count" style="background:var(--a-lt);color:#8A5210;border-color:#F5C87A">🟡 ${tpYellow} this week</span>` : ''}
-        <div class="sec-hd-line"></div>
-      </div>
-      <div class="card">`;
-    if (tpItems.length) {
-      tpItems.forEach(tp => {
-        const tags = tp.tags || ['all'];
-        const p    = (tp.priority || 'green').toLowerCase();
-        const pLbl = p === 'red' ? 'Action required' : p === 'yellow' ? 'Cascade this week' : 'FYI';
-        const tpInner = `<div class="tp" ${orgAttr(tags)}>
-          <div class="tp-bar tp-bar-${p}"></div>
-          <div class="tp-body">
-            <div class="tp-row1">
-              <span class="tp-priority tp-priority-${p}">${pLbl}</span>
-              <span class="tp-audience">${esc(tp.audience || 'all orgs')}</span>
-            </div>
-            <div class="tp-point">${fmt(tp.point)}</div>
-            ${spill(tp.source, tp.sourceUrl)}
-          </div>
-        </div>`;
-        h += selWrap(tpInner, `**${pLbl}** (${tp.audience || 'all orgs'})\n${tp.point}\n${tp.source}`);
-      });
-    } else { h += `<div style="padding:18px 22px" class="empty">No talking points this week.</div>`; }
-    h += `</div></div>`;
-
-    // ── Section 2: PE Org Updates ────────────────────────────────────────────
+    // ── Section 1: PE Org Updates ────────────────────────────────────────────
     const peKeys = Object.keys(PE_META);
     h += `<div class="section">
       <div class="sec-hd"><span class="sec-hd-text">PE org updates</span><div class="sec-hd-line"></div></div>
