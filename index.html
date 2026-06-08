@@ -111,8 +111,7 @@
     .pe-tab.active .pe-avatar{box-shadow:0 0 0 2px var(--t-md)}
     .pe-panel{display:none}
     .pe-panel.active{display:block}
-    .pe-item{padding:16px 20px;border-bottom:1px solid var(--bd)}
-    .pe-item:last-child{border-bottom:none}
+    
     .pe-item-hd{font-size:13.5px;font-weight:700;color:var(--tx);line-height:1.35;margin-bottom:8px}
     .pe-bullets{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px}
     .pe-bullets li{display:flex;gap:9px;font-size:13px;color:var(--tx2);line-height:1.6}
@@ -160,6 +159,40 @@
     .sum-copy-btn.copied{background:var(--g)}
 
     .empty{color:var(--tx3);font-size:13px;font-style:italic;padding:8px 0}
+
+    /* Filter bar */
+    .filter-bar{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:28px;align-items:center}
+    .filter-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--tx3);margin-right:2px;white-space:nowrap}
+    .f-btn{padding:6px 13px;border-radius:var(--r);border:1.5px solid var(--bd2);background:var(--surf);font-size:12px;font-weight:600;color:var(--tx2);cursor:pointer;transition:all .15s;white-space:nowrap}
+    .f-btn:hover{border-color:var(--t);color:var(--t);background:var(--t-lt)}
+    .f-btn.active{background:var(--t);border-color:var(--t);color:white;box-shadow:0 2px 8px rgba(244,93,72,.25)}
+
+    /* Section count badge */
+    .sec-count{font-size:10px;font-weight:700;background:var(--bg);border:1px solid var(--bd2);border-radius:var(--r);padding:2px 8px;color:var(--tx2);margin-right:6px}
+
+    /* PE tab count pip */
+    .pe-tab-count{font-size:9px;font-weight:800;background:var(--t-lt);color:var(--t-dk);border-radius:var(--r);padding:1px 5px;min-width:14px;text-align:center;flex-shrink:0}
+    .pe-tab.active .pe-tab-count{background:var(--t);color:white}
+
+    /* Fix PE item padding for sel-indicator */
+    .pe-item{padding:16px 48px 16px 20px;border-bottom:1px solid var(--bd)}
+    .pe-item:last-child{border-bottom:none}
+
+    /* Talking points */
+    .tp{display:flex;border-bottom:1px solid var(--bd)}
+    .tp:last-child{border-bottom:none}
+    .tp-bar{width:4px;flex-shrink:0}
+    .tp-bar-red{background:var(--t)}
+    .tp-bar-yellow{background:var(--a)}
+    .tp-bar-green{background:var(--g)}
+    .tp-body{padding:16px 48px 16px 18px;flex:1;min-width:0}
+    .tp-row1{display:flex;align-items:center;gap:7px;margin-bottom:9px;flex-wrap:wrap}
+    .tp-priority{font-size:10px;font-weight:700;padding:3px 9px;border-radius:var(--r);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+    .tp-priority-red{background:var(--t-lt);color:var(--t-dk);border:1px solid var(--t-md)}
+    .tp-priority-yellow{background:var(--a-lt);color:#8A5210;border:1px solid #F5C87A}
+    .tp-priority-green{background:var(--g-lt);color:var(--g);border:1px solid #A8D9BE}
+    .tp-audience{font-size:11px;color:var(--tx3);background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:2px 8px;white-space:nowrap}
+    .tp-point{font-size:13.5px;color:var(--tx);line-height:1.75;margin-bottom:10px}
   </style>
 </head>
 <body>
@@ -467,19 +500,61 @@
   function render(data) {
     let h = '';
 
-    // Section 1 — PE org updates
+    // Org filter bar
+    h += `<div class="filter-bar">
+      <span class="filter-lbl">Filter by org:</span>
+      ${ORG_FILTERS.map(f => `<button class="f-btn${f.key==='all'?' active':''}" data-org="${f.key}" onclick="setFilter('${f.key}')">${f.label}</button>`).join('')}
+    </div>`;
+
+    // ── Section 1: Talking Points ────────────────────────────────────────────
+    const tpItems = data.talkingPoints || [];
+    const tpRed    = tpItems.filter(t => t.priority === 'red').length;
+    const tpYellow = tpItems.filter(t => t.priority === 'yellow').length;
+    h += `<div class="section">
+      <div class="sec-hd">
+        <span class="sec-hd-text">📢 Talking points</span>
+        ${tpRed    ? `<span class="sec-count" style="background:var(--t-lt);color:var(--t-dk);border-color:var(--t-md)">🔴 ${tpRed} action${tpRed>1?'s':''}</span>` : ''}
+        ${tpYellow ? `<span class="sec-count" style="background:var(--a-lt);color:#8A5210;border-color:#F5C87A">🟡 ${tpYellow} this week</span>` : ''}
+        <div class="sec-hd-line"></div>
+      </div>
+      <div class="card">`;
+    if (tpItems.length) {
+      tpItems.forEach(tp => {
+        const tags = tp.tags || ['all'];
+        const p    = (tp.priority || 'green').toLowerCase();
+        const pLbl = p === 'red' ? 'Action required' : p === 'yellow' ? 'Cascade this week' : 'FYI';
+        const tpInner = `<div class="tp" ${orgAttr(tags)}>
+          <div class="tp-bar tp-bar-${p}"></div>
+          <div class="tp-body">
+            <div class="tp-row1">
+              <span class="tp-priority tp-priority-${p}">${pLbl}</span>
+              <span class="tp-audience">${esc(tp.audience || 'all orgs')}</span>
+            </div>
+            <div class="tp-point">${fmt(tp.point)}</div>
+            ${spill(tp.source, tp.sourceUrl)}
+          </div>
+        </div>`;
+        h += selWrap(tpInner, `**${pLbl}** (${tp.audience || 'all orgs'})\n${tp.point}\n${tp.source}`);
+      });
+    } else { h += `<div style="padding:18px 22px" class="empty">No talking points this week.</div>`; }
+    h += `</div></div>`;
+
+    // ── Section 2: PE Org Updates ────────────────────────────────────────────
+    const peKeys = Object.keys(PE_META);
     h += `<div class="section">
       <div class="sec-hd"><span class="sec-hd-text">PE org updates</span><div class="sec-hd-line"></div></div>
-      <div class="card">
-        <div class="pe-nav">`;
-    Object.keys(PE_META).forEach((k, i) => {
+      <div class="card"><div class="pe-nav">`;
+    peKeys.forEach((k, i) => {
+      const peData = ((data.peOrgUpdates || {})[k]) || { updates: [] };
+      const cnt    = (peData.updates || []).length;
       h += `<button class="pe-tab${i===0?' active':''}" data-key="${k}" onclick="switchPE('${k}')">
         <div class="pe-avatar" style="background:${PE_META[k].bg};color:${PE_META[k].color}">${PE_META[k].initials}</div>
         <span>${PE_META[k].label}</span>
+        ${cnt > 0 ? `<span class="pe-tab-count">${cnt}</span>` : ''}
       </button>`;
     });
     h += `</div>`;
-    Object.keys(PE_META).forEach((k, i) => {
+    peKeys.forEach((k, i) => {
       const pe = ((data.peOrgUpdates || {})[k]) || { updates: [], sourceGap: null };
       h += `<div class="pe-panel${i===0?' active':''}" data-key="${k}">`;
       if (pe.updates && pe.updates.length) {
@@ -492,18 +567,23 @@
           }
         });
       } else { h += `<div style="padding:16px 22px" class="empty">No specific updates this week.</div>`; }
-      if (pe.sourceGap) { h += `<div class="gap-note" style="margin:12px 0 0">⚠️ ${esc(pe.sourceGap)}</div>`; }
+      if (pe.sourceGap) { h += `<div class="gap-note" style="margin:0 12px 12px">⚠️ ${esc(pe.sourceGap)}</div>`; }
       h += `</div>`;
     });
     h += `</div></div>`;
 
-    // Section 2 — Policy
+    // ── Section 3: Org & Policy Updates ─────────────────────────────────────
+    const policyItems = data.orgPolicy || [];
     h += `<div class="section">
-      <div class="sec-hd"><span class="sec-hd-text">Org &amp; policy updates</span><div class="sec-hd-line"></div></div>
+      <div class="sec-hd">
+        <span class="sec-hd-text">Org &amp; policy updates</span>
+        ${policyItems.length ? `<span class="sec-count">${policyItems.length}</span>` : ''}
+        <div class="sec-hd-line"></div>
+      </div>
       <div class="card">`;
-    if (data.orgPolicy && data.orgPolicy.length) {
-      data.orgPolicy.forEach(item => {
-        const p = (item.priority || 'medium').toLowerCase();
+    if (policyItems.length) {
+      policyItems.forEach(item => {
+        const p    = (item.priority || 'medium').toLowerCase();
         const tags = item.tags || ['all'];
         const pInner = `<div class="p-item" ${orgAttr(tags)}>
           <div class="p-bar p-bar-${p}"></div>
@@ -518,18 +598,23 @@
             ${itpHtml(item.tp)}
           </div>
         </div>`;
-        const pSummary = item.title + (item.bullets ? '\n' + item.bullets.join('\n') : '');
-        h += selWrap(pInner, pSummary);
+        h += selWrap(pInner, item.title + (item.bullets ? '\n' + item.bullets.join('\n') : ''));
       });
     } else { h += `<div style="padding:18px 22px" class="empty">No policy updates this week.</div>`; }
     h += `</div></div>`;
 
-    // Section 3 — Events
+    // ── Section 4: Key Events & Decisions ───────────────────────────────────
+    const evGroups  = data.keyEvents || [];
+    const evTotal   = evGroups.reduce((s, g) => s + (g.items||[]).length, 0);
     h += `<div class="section">
-      <div class="sec-hd"><span class="sec-hd-text">Key events &amp; decisions</span><div class="sec-hd-line"></div></div>
+      <div class="sec-hd">
+        <span class="sec-hd-text">Key events &amp; decisions</span>
+        ${evTotal ? `<span class="sec-count">${evTotal}</span>` : ''}
+        <div class="sec-hd-line"></div>
+      </div>
       <div class="card">`;
-    if (data.keyEvents && data.keyEvents.length) {
-      data.keyEvents.forEach(g => {
+    if (evGroups.length) {
+      evGroups.forEach(g => {
         const groupTags = g.tags || ['all'];
         h += `<div class="ev-group" ${orgAttr(groupTags)}><div class="ev-theme-bar"><span class="ev-theme-chip">${esc(g.theme)}</span></div><div class="ev-items">`;
         (g.items || []).forEach(it => {
