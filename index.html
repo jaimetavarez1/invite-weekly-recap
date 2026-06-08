@@ -466,7 +466,6 @@
       <div class="status-bar-hd">
         <span class="status-title">📊 PE refresh status</span>
         <span class="status-week">${week ? `Week of ${week}` : ''}</span>
-        <button class="status-reload" id="reloadBtn" onclick="reloadAll()">↻ Reload</button>
       </div>
       <div class="status-grid">`;
     Object.keys(PE_META).forEach(k => {
@@ -634,9 +633,6 @@
 
   // ── Main load/render ─────────────────────────────────────────────────────────
   async function reloadAll() {
-    const reloadBtn = document.getElementById('reloadBtn');
-    if (reloadBtn) reloadBtn.disabled = true;
-
     document.getElementById('errBox').style.display = 'none';
     document.getElementById('content').innerHTML =
       `<div class="status-loading"><div class="status-spinner"></div>&nbsp;Loading latest data…</div>`;
