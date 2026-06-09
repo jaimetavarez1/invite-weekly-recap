@@ -365,6 +365,9 @@
       } else if (/^_[^_]+_$/.test(t)) {
         const label = t.replace(/^_|_$/g, '');
         html += `<div style="font-style:italic;font-weight:600;font-size:14px;color:var(--tx2);margin:10px 0 4px">${esc(label)}</div>`;
+      } else if (/^\s{2,}_[^_].+_$/.test(line)) {
+        const inner = line.trim().replace(/^_|_$/g, '');
+        html += `<div style="padding:2px 0 4px 22px;font-size:12.5px;font-style:italic;color:var(--tx2)">${applyInline(inner)}</div>`;
       } else if (/^\s{2,}[-–]\s/.test(line)) {
         const inner = line.replace(/^\s+[-–]\s*/, '');
         html += `<div style="display:flex;gap:8px;padding:2px 0 2px 22px"><span style="flex-shrink:0;color:var(--tx3);margin-top:1px;font-size:12px">–</span><span style="font-size:13px;color:var(--tx2)">${applyInline(inner)}</span></div>`;
@@ -405,8 +408,15 @@
       const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
       if (!lines.length) return '';
       const heading = clean(lines[0]);
-      const bullets = lines.slice(1);
+      let summary = null;
+      let bulletStart = 1;
+      if (lines[1] && lines[1].startsWith('>')) {
+        summary = clean(lines[1].slice(1).trim());
+        bulletStart = 2;
+      }
+      const bullets = lines.slice(bulletStart);
       let out = `• *${heading}*`;
+      if (summary) out += `\n   _${summary}_`;
       bullets.forEach(b => { out += `\n   – ${clean(b)}`; });
       return out;
     }
@@ -552,7 +562,10 @@
               <div class="pe-item-hd">${fmt(u.heading)}</div>
               ${u.bullets && u.bullets.length ? `<ul class="pe-bullets">` + u.bullets.map(b => `<li>${fmt(b)}</li>`).join('') + `</ul>` : ''}
             </div>`;
-            h += selWrap(inner, u.heading + (u.bullets ? '\n' + u.bullets.join('\n') : ''), 'pe');
+            const peBullets = u.bullets || [];
+            const peSummary = peBullets.length ? peBullets[0] : null;
+            const peRest    = peBullets.length > 1 ? peBullets.slice(1) : [];
+            h += selWrap(inner, u.heading + (peSummary ? '\n>' + peSummary : '') + (peRest.length ? '\n' + peRest.join('\n') : ''), 'pe');
           } else {
             h += selWrap(`<div class="pe-item"><div class="pe-item-hd">${fmt(u)}</div></div>`, String(u), 'pe');
           }
@@ -593,7 +606,7 @@
             ${itpHtml(item.tp)}
           </div>
         </div>`;
-        h += selWrap(inner, item.title + (item.bullets ? '\n' + item.bullets.join('\n') : ''), 'policy');
+        h += selWrap(inner, item.title + (item.summary ? '\n>' + item.summary : '') + (item.bullets && item.bullets.length ? '\n' + item.bullets.join('\n') : ''), 'policy');
       });
     } else {
       h += `<div style="padding:18px 22px" class="empty">No policy updates this week.</div>`;
@@ -629,7 +642,10 @@
               ${srcHtml}${itpHtml(it.tp)}
             </div>
           </div>`;
-          h += selWrap(inner, (it.heading || it.summary || '') + (it.bullets ? '\n' + it.bullets.join('\n') : ''), 'events');
+          const evBullets = it.bullets || [];
+          const evSummary = evBullets.length ? evBullets[0] : null;
+          const evRest    = evBullets.length > 1 ? evBullets.slice(1) : [];
+          h += selWrap(inner, (it.heading || it.summary || '') + (evSummary ? '\n>' + evSummary : '') + (evRest.length ? '\n' + evRest.join('\n') : ''), 'events');
         });
         h += `</div></div>`;
       });
