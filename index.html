@@ -338,10 +338,10 @@
     }[clr];
     return `<span class="itp-tag" style="${style}">${lbl}</span>`;
   }
-  function selWrap(inner, summaryContent) {
+  function selWrap(inner, summaryContent, section) {
     const id = 'sw-' + (selIdCounter++);
     const safe = (summaryContent || '').replace(/"/g, '&quot;');
-    return `<div class="sel-wrap" id="${id}" data-summary="${safe}" onclick="toggleSel(this)">
+    return `<div class="sel-wrap" id="${id}" data-summary="${safe}" data-section="${section||'other'}" onclick="toggleSel(this)">
       ${inner}
       <div class="sel-indicator">✓</div>
     </div>`;
@@ -365,6 +365,9 @@
       } else if (/^_[^_]+_$/.test(t)) {
         const label = t.replace(/^_|_$/g, '');
         html += `<div style="font-style:italic;font-weight:600;font-size:14px;color:var(--tx2);margin:10px 0 4px">${esc(label)}</div>`;
+      } else if (/^\s{2,}[-–]\s/.test(line)) {
+        const inner = line.replace(/^\s+[-–]\s*/, '');
+        html += `<div style="display:flex;gap:8px;padding:2px 0 2px 22px"><span style="flex-shrink:0;color:var(--tx3);margin-top:1px;font-size:12px">–</span><span style="font-size:13px;color:var(--tx2)">${applyInline(inner)}</span></div>`;
       } else if (/^[•\-]\s/.test(t)) {
         const inner = t.replace(/^[•\-]\s*/, '');
         html += `<div style="display:flex;gap:9px;padding:4px 0"><span style="flex-shrink:0;margin-top:1px">•</span><span style="font-size:13.5px;color:var(--tx)">${applyInline(inner)}</span></div>`;
@@ -387,27 +390,42 @@
     document.getElementById('fab').classList.remove('show');
   }
   function openSummary() {
-    const selected = [];
+    const bySection = { policy: [], events: [], pe: [], other: [] };
     document.querySelectorAll('.sel-wrap.selected').forEach(el => {
-      if (el.dataset.summary) selected.push(el.dataset.summary);
+      if (!el.dataset.summary) return;
+      const sec = el.dataset.section || 'other';
+      if (!bySection[sec]) bySection[sec] = [];
+      bySection[sec].push(el.dataset.summary);
     });
-    if (!selected.length) return;
-    const asks = [], updates = [];
-    selected.forEach(text => {
+    const total = Object.values(bySection).reduce((s, a) => s + a.length, 0);
+    if (!total) return;
+
+    function clean(s) { return s.replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1'); }
+    function formatItem(text) {
       const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-      if (!lines.length) return;
-      const heading = lines[0].replace(/\*\*(.+?)\*\*/g, '$1');
+      if (!lines.length) return '';
+      const heading = clean(lines[0]);
       const bullets = lines.slice(1);
-      let line = `• 🎯 *${heading}*`;
-      if (bullets.length) {
-        const desc = bullets[0].replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1').slice(0, 90);
-        if (desc) line = `• 🎯 *${heading}* — ${desc}`;
-      }
-      updates.push(line);
+      let out = `• *${heading}*`;
+      bullets.forEach(b => { out += `\n   – ${clean(b)}`; });
+      return out;
+    }
+
+    const SECTIONS = [
+      { key: 'policy', icon: '📋', label: 'Org & Policy Updates' },
+      { key: 'events', icon: '📅', label: 'Key Events & Decisions' },
+      { key: 'pe',     icon: '🎯', label: 'PE Org Updates' },
+      { key: 'other',  icon: '📌', label: 'Updates' }
+    ];
+
+    let msg = `*This week's recruiting round-up 👇*\n\n`;
+    SECTIONS.forEach(({ key, icon, label }) => {
+      const items = bySection[key];
+      if (!items || !items.length) return;
+      msg += `*${icon} ${label}*\n\n`;
+      msg += items.map(formatItem).join('\n\n') + '\n\n';
     });
-    let msg = "*This week's round-up 👇*\n\n";
-    if (updates.length) msg += '_Updates_\n' + updates.join('\n') + '\n\n';
-    msg += "Please reply with a *yes* once you've read through! 🙌";
+    msg += `Please reply with a *yes* once you've read through! 🙌`;
     summaryText = msg;
     document.getElementById('sumOutput').innerHTML = slackFmt(summaryText);
     document.getElementById('sumOutput').style.display = 'block';
@@ -534,9 +552,9 @@
               <div class="pe-item-hd">${fmt(u.heading)}</div>
               ${u.bullets && u.bullets.length ? `<ul class="pe-bullets">` + u.bullets.map(b => `<li>${fmt(b)}</li>`).join('') + `</ul>` : ''}
             </div>`;
-            h += selWrap(inner, u.heading + (u.bullets ? '\n' + u.bullets.join('\n') : ''));
+            h += selWrap(inner, u.heading + (u.bullets ? '\n' + u.bullets.join('\n') : ''), 'pe');
           } else {
-            h += selWrap(`<div class="pe-item"><div class="pe-item-hd">${fmt(u)}</div></div>`, String(u));
+            h += selWrap(`<div class="pe-item"><div class="pe-item-hd">${fmt(u)}</div></div>`, String(u), 'pe');
           }
         });
       } else {
@@ -575,7 +593,7 @@
             ${itpHtml(item.tp)}
           </div>
         </div>`;
-        h += selWrap(inner, item.title + (item.bullets ? '\n' + item.bullets.join('\n') : ''));
+        h += selWrap(inner, item.title + (item.bullets ? '\n' + item.bullets.join('\n') : ''), 'policy');
       });
     } else {
       h += `<div style="padding:18px 22px" class="empty">No policy updates this week.</div>`;
@@ -611,7 +629,7 @@
               ${srcHtml}${itpHtml(it.tp)}
             </div>
           </div>`;
-          h += selWrap(inner, (it.heading || it.summary || '') + (it.bullets ? '\n' + it.bullets.join('\n') : ''));
+          h += selWrap(inner, (it.heading || it.summary || '') + (it.bullets ? '\n' + it.bullets.join('\n') : ''), 'events');
         });
         h += `</div></div>`;
       });
