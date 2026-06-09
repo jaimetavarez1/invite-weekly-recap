@@ -314,6 +314,8 @@
     return esc(s)
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:var(--t);text-decoration:underline;text-underline-offset:2px">$1</a>')
+      .replace(/(^|[\s(])(https?:\/\/[^\s<)"]+)/g, '$1<a href="$2" target="_blank" rel="noopener" style="color:var(--t);text-decoration:underline;text-underline-offset:2px">$2</a>')
       .replace(/\n/g, '<br>');
   }
   function spill(source, url) {
