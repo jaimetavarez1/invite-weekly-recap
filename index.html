@@ -359,23 +359,26 @@
     let html = '';
     for (const line of lines) {
       const t = line.trim();
-      if (!t) { html += '<div style="height:6px"></div>'; continue; }
-      if (/^\*[^*].+[^*]\*$/.test(t) || /^\*\*[^*].+[^*]\*\*$/.test(t)) {
-        html += `<div style="font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px">${applyInline(t)}</div>`;
-      } else if (/^_[^_]+_$/.test(t)) {
-        const label = t.replace(/^_|_$/g, '');
-        html += `<div style="font-style:italic;font-weight:600;font-size:14px;color:var(--tx2);margin:10px 0 4px">${esc(label)}</div>`;
-      } else if (/^\s{2,}_[^_].+_$/.test(line)) {
-        const inner = line.trim().replace(/^_|_$/g, '');
-        html += `<div style="padding:2px 0 4px 22px;font-size:12.5px;font-style:italic;color:var(--tx2)">${applyInline(inner)}</div>`;
-      } else if (/^\s{2,}[-–]\s/.test(line)) {
-        const inner = line.replace(/^\s+[-–]\s*/, '');
-        html += `<div style="display:flex;gap:8px;padding:2px 0 2px 22px"><span style="flex-shrink:0;color:var(--tx3);margin-top:1px;font-size:12px">–</span><span style="font-size:13px;color:var(--tx2)">${applyInline(inner)}</span></div>`;
-      } else if (/^[•\-]\s/.test(t)) {
-        const inner = t.replace(/^[•\-]\s*/, '');
-        html += `<div style="display:flex;gap:9px;padding:4px 0"><span style="flex-shrink:0;margin-top:1px">•</span><span style="font-size:13.5px;color:var(--tx)">${applyInline(inner)}</span></div>`;
+      if (!t) { html += '<div style="height:10px"></div>'; continue; }
+      // Section header — bold line containing a section emoji
+      if (/^\*/.test(t) && /[📋📅🎯📌]/.test(t)) {
+        html += `<div style="font-size:13px;font-weight:700;color:var(--tx2);text-transform:uppercase;letter-spacing:.06em;margin:18px 0 6px;padding-bottom:5px;border-bottom:1px solid var(--bd)">${applyInline(t.replace(/\*/g,''))}</div>`;
+      // Page header — first bold line (no emoji, typically the title)
+      } else if (/^\*[^*].+\*$/.test(t) && !html) {
+        html += `<div style="font-size:15px;font-weight:700;color:var(--tx);margin-bottom:2px">${applyInline(t)}</div>`;
+      // Item heading — bold line
+      } else if (/^\*[^*].+\*$/.test(t)) {
+        html += `<div style="font-size:13.5px;font-weight:700;color:var(--tx);margin-top:12px;margin-bottom:1px">${applyInline(t)}</div>`;
+      // Italic summary / description line
+      } else if (/^_[^_].+_$/.test(t)) {
+        html += `<div style="font-size:12.5px;font-style:italic;color:var(--tx2);margin-bottom:4px">${applyInline(t)}</div>`;
+      // Bullet point
+      } else if (/^•\s/.test(t)) {
+        const inner = t.slice(2);
+        html += `<div style="display:flex;gap:8px;padding:2px 0"><span style="flex-shrink:0;color:var(--t);font-size:13px;margin-top:1px">•</span><span style="font-size:13px;color:var(--tx2)">${applyInline(inner)}</span></div>`;
+      // Footer / plain line
       } else {
-        html += `<div style="font-size:13.5px;color:var(--tx);padding:2px 0">${applyInline(t)}</div>`;
+        html += `<div style="font-size:13px;color:var(--tx2);padding:2px 0">${applyInline(t)}</div>`;
       }
     }
     return html;
@@ -415,9 +418,9 @@
         bulletStart = 2;
       }
       const bullets = lines.slice(bulletStart);
-      let out = `• *${heading}*`;
-      if (summary) out += `\n   _${summary}_`;
-      bullets.forEach(b => { out += `\n   – ${clean(b)}`; });
+      let out = `*${heading}*`;
+      if (summary) out += `\n_${summary}_`;
+      bullets.forEach(b => { out += `\n• ${clean(b)}`; });
       return out;
     }
 
@@ -428,14 +431,15 @@
       { key: 'other',  icon: '📌', label: 'Updates' }
     ];
 
-    let msg = `*This week's recruiting round-up 👇*\n\n`;
+    const weekStr = document.getElementById('weekChip')?.textContent?.trim() || '';
+    let msg = `*PE Weekly Recruiting Recap${weekStr ? ' — ' + weekStr : ''}* 👇\n\n`;
     SECTIONS.forEach(({ key, icon, label }) => {
       const items = bySection[key];
       if (!items || !items.length) return;
       msg += `*${icon} ${label}*\n\n`;
       msg += items.map(formatItem).join('\n\n') + '\n\n';
     });
-    msg += `Please reply with a *yes* once you've read through! 🙌`;
+    msg += `_Please reply with a 👍 once you've read through!_`;
     summaryText = msg;
     document.getElementById('sumOutput').innerHTML = slackFmt(summaryText);
     document.getElementById('sumOutput').style.display = 'block';
@@ -446,12 +450,30 @@
     document.getElementById('sumOverlay').classList.remove('open');
   }
   function copySummary() {
-    navigator.clipboard.writeText(summaryText).then(() => {
+    const showCopied = () => {
       const btn = document.getElementById('sumCopyBtn');
       btn.textContent = '✓ Copied!';
       btn.classList.add('copied');
       setTimeout(() => { btn.innerHTML = '📋 Copy message'; btn.classList.remove('copied'); }, 2000);
-    });
+    };
+    // Build HTML version so Slack's rich-text editor renders bold/italic natively on paste
+    const toHtml = s => s
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/\*([^*\n]+)\*/g,'<b>$1</b>')
+      .replace(/_([^_\n]+)_/g,'<i>$1</i>')
+      .replace(/\n/g,'<br>');
+    const htmlBlob = new Blob(
+      [`<html><body><p style="font-family:sans-serif;font-size:14px;line-height:1.6">${toHtml(summaryText)}</p></body></html>`],
+      { type: 'text/html' }
+    );
+    const textBlob = new Blob([summaryText], { type: 'text/plain' });
+    if (window.ClipboardItem) {
+      navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })])
+        .then(showCopied)
+        .catch(() => navigator.clipboard.writeText(summaryText).then(showCopied));
+    } else {
+      navigator.clipboard.writeText(summaryText).then(showCopied);
+    }
   }
 
   // ── Filter ───────────────────────────────────────────────────────────────────
