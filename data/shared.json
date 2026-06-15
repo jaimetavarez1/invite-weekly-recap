@@ -1,249 +1,236 @@
 {
   "week": "June 8 – June 15, 2026",
-  "refreshedAt": "2026-06-15T16:00:00Z",
-  "refreshedBy": "teresa",
+  "refreshedAt": "2026-06-15T17:00:00Z",
+  "refreshedBy": "lisa",
   "orgPolicy": [
     {
-      "title": "FY27 Offer Calculators Now Live",
-      "summary": "Updated offer calculators reflecting variable comp are live for all levels. Use these for all new offers going forward.",
+      "title": "Variable Cash Award — New Greenhouse Offer Field",
+      "summary": "Variable cash compensation has expanded to all salaried L1–L5 Gusties. A new Greenhouse offer field is now required: 'Are they receiving a % Variable Cash Award?' with three options.",
       "bullets": [
-        "L6 variable target increased to 25% (up from 20%)",
-        "L1–L5: file is manual — enter variable $ or % depending on offer type",
-        "Hourly (L1–L5): $1,250 flat target | Salary L1–L3: 5% | L4: 7.5% | L5: 10%",
-        "Calculators saved in the Invite Drive folder"
+        "Three options: No - Hourly/Not Eligible, Yes - US Candidate, Yes - CANADA Candidate",
+        "Variable targets: L1–L3: 5%, L4: 7.5%, L5: 10% of base salary",
+        "Program is 50% individual / 50% company performance split",
+        "If clicking 'Yes', a drop-down appears to enter the % number",
+        "L6 variable target updated to 25% (from 20%) — reflected in FY27 offer calculators",
+        "Always double-check offer details before sending offer letters"
       ],
-      "source": "Kristin Ruehle, #invite-team, June 12",
+      "source": "IOPE Newsletter June 15, 2026 + #invite-team (Kristin Ruehle, June 12)",
+      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4",
+      "priority": "high",
+      "tags": [
+        "all"
+      ],
+      "tp": {
+        "priority": "red",
+        "audience": "All recruiters",
+        "point": "Variable cash is now part of every salaried L1–L5 offer. You must complete the new GH field or the offer letter won't have the right language. Ask your PE if unsure."
+      }
+    },
+    {
+      "title": "Hiring Committee: Invite PE Now Owns Follow-Up (Not Invite Ops)",
+      "summary": "Invite Leadership is now facilitating Hiring Committee sessions and follow-ups. Direct any HC questions or candidate update requests to your Invite PE.",
+      "bullets": [
+        "Invite Ops is still supporting with candidate preps for now",
+        "For HC candidate questions or status updates → go to your Invite PE, not Invite Ops"
+      ],
+      "source": "IOPE Newsletter June 15, 2026",
+      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4",
+      "priority": "high",
+      "tags": [
+        "all"
+      ],
+      "tp": {
+        "priority": "yellow",
+        "audience": "All recruiters",
+        "point": "If you have a question about a submitted HC candidate, go to your PE — not Invite Ops."
+      }
+    },
+    {
+      "title": "Scorecard Standards: Human-Written Summary Required for HC",
+      "summary": "Scorecards submitted to Hiring Committee must include a human-authored synthesis — not just BrightHire/AI-generated transcription. This is the #1 flag in HC right now.",
+      "bullets": [
+        "Every scorecard needs a human-led summary — the interviewer's take, not just a raw transcript",
+        "Transcription-only scorecards will be flagged in HC, reflecting on Invite as a function",
+        "Do NOT submit to HC if a scorecard is still missing its human summary — a delayed submission is better than an incomplete one",
+        "Hold your interviewers accountable to this standard"
+      ],
+      "source": "#invite-team (Kristin Ruehle, June 11, 2026)",
+      "sourceUrl": null,
+      "priority": "high",
+      "tags": [
+        "all"
+      ],
+      "tp": {
+        "priority": "red",
+        "audience": "All recruiters",
+        "point": "AI tools support scorecards — they don't replace the interviewer's voice. No summary = delayed HC submission."
+      }
+    },
+    {
+      "title": "FY27 Offer Calculators Now Live",
+      "summary": "Updated FY27 offer calculators reflecting variable comp are now active. Use these for all offers going forward.",
+      "bullets": [
+        "L6: variable target is now 25% (updated from 20%)",
+        "L1–L5: file is manual — enter variable $ or % depending on offer type",
+        "Hourly (all L1–L5): $1,250 flat target; Salary: L1–L3 5%, L4 7.5%, L5 10%",
+        "Saved in the Invite shared Drive folder"
+      ],
+      "source": "#invite-team (Kristin Ruehle, June 12, 2026)",
       "sourceUrl": "https://drive.google.com/drive/folders/1nljFfbfxlXRP7XqSSFscZ6Mea8t7Iq5z",
       "priority": "high",
       "tags": [
         "all"
       ],
       "tp": {
-        "priority": "red",
+        "priority": "yellow",
         "audience": "All recruiters",
-        "point": "FY27 offer calculators are updated — use these for all offers now. L6 variable is now 25%; L1–L5 requires manual entry."
+        "point": "Use the new FY27 offer calculators for every offer — the old ones don't reflect variable comp."
       }
     },
     {
-      "title": "Comp Sheets Interim Workaround",
-      "summary": "Comp sheets are temporarily unavailable. Recruiters can view comp ranges in Greenhouse job details. PEs have a master spreadsheet for triage.",
+      "title": "Comp Band Sheets — Temporary Workaround",
+      "summary": "Comp band spreadsheets are temporarily down. Two interim solutions are available while PeopleTech works on a fix.",
       "bullets": [
-        "View comp range directly in Greenhouse job details (Loom walkthrough available)",
-        "For NHG and other info not in GH, ping your PE",
-        "PEs: use master spreadsheet for triage — do not share with recruiters directly"
+        "View comp range in Greenhouse job details (see Laura's Loom video in #invite-team)",
+        "Ping your PE directly for comp info — PEs have access to a master comp band spreadsheet",
+        "Do NOT share the PE master spreadsheet with the broader team"
       ],
-      "source": "Laura Lockwood & Kristin Ruehle, #invite-team, June 10–12",
-      "sourceUrl": "https://www.loom.com/share/bd7cf45db8774dfca1de8a116ee26557",
-      "priority": "high",
+      "source": "#invite-team (Laura Lockwood + Kristin Ruehle, June 10–12, 2026)",
+      "sourceUrl": null,
+      "priority": "medium",
       "tags": [
         "all"
       ],
       "tp": {
         "priority": "yellow",
         "audience": "All recruiters",
-        "point": "Comp sheets are temporarily down. View comp ranges in Greenhouse job details — PE has a walkthrough Loom. Ping your PE for anything you can't find."
+        "point": "Comp sheets are down. Use GH job details or ask your PE — don't block offers waiting for the sheets."
       }
     },
     {
-      "title": "Scorecards Must Include Human-Written Summary",
-      "summary": "Scorecards submitted to Hiring Committee must include a human-authored summary — not just BrightHire/AI-generated transcription. Missing summaries are flagged and delay HC submissions.",
+      "title": "Invite Within The Law: New Quick Resource",
+      "summary": "A temporary reference resource for legal/compliance questions in recruiting is now live while the formal training is being refreshed.",
       "bullets": [
-        "Every scorecard needs a human-led synthesis — AI tools support, not replace, the interviewer's voice",
-        "Transcription-only scorecards will be flagged in Hiring Committee",
-        "Do NOT submit to HC if a scorecard is missing its human summary — a delayed submission is better than an incomplete one"
+        "Resource URL: https://sites.google.com/gusto.com/invite-academy/invite-within-the-law",
+        "Invite Within the Law training sessions are on pause pending a refresh"
       ],
-      "source": "Kristin Ruehle, #invite-team, June 11",
-      "sourceUrl": null,
-      "priority": "high",
+      "source": "IOPE Newsletter June 8, 2026",
+      "sourceUrl": "https://sites.google.com/gusto.com/invite-academy/invite-within-the-law",
+      "priority": "medium",
       "tags": [
         "all"
       ],
-      "tp": {
-        "priority": "red",
-        "audience": "All recruiters",
-        "point": "Scorecards sent to HC must have a human-written summary — BrightHire transcripts alone are not sufficient. Hold interviewers accountable."
-      }
+      "tp": null
     },
     {
-      "title": "New Variable Cash Award Field in Greenhouse Offers",
-      "summary": "New 'Are they receiving a % Variable Cash Award?' field is now live in Greenhouse offer details. Must be completed for all offers.",
-      "bullets": [
-        "Three options: No - Hourly/Not Eligible | Yes - US Candidate | Yes - CANADA Candidate",
-        "Selecting 'Yes' reveals a % field — variable targets: L1–L3: 5%, L4: 7.5%, L5: 10%",
-        "50% individual / 50% company performance split",
-        "Always double-check offer details before sending"
-      ],
-      "source": "IOPE Newsletter, June 15",
-      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4",
-      "priority": "high",
-      "tags": [
-        "all"
-      ],
-      "tp": {
-        "priority": "red",
-        "audience": "All recruiters",
-        "point": "New VC field in Greenhouse offer details — select the right option (Hourly, US, or Canada) and enter the % if applicable."
-      }
-    },
-    {
-      "title": "VMA Evolution Launching August 3",
-      "summary": "Gusto's VMA program is being refreshed and relaunched August 3. Updated question bank, rubric, and a new AI mindset component. Celena joins next PE meeting to walk through recruiter actions.",
-      "bullets": [
-        "Updated question bank, calibrated rubric, new AI mindset component (learning/adaptability mindset — not technical skills)",
-        "Nomination: I&O partners with Invite PEs via structured process; self-volunteering replaced",
-        "Performance tie-in: VMA participation named as formal contribution for L3–L6 Gusties",
-        "Engineering: standalone VMAs reintroduced immediately; CX: full reintroduction targeted by Q2",
-        "Celena joining next PE meeting to cover what Invite needs to do — flag your calendar"
-      ],
-      "source": "Kristin Ruehle, #invite-pes, June 12",
-      "sourceUrl": null,
-      "priority": "high",
-      "tags": [
-        "all"
-      ],
-      "tp": {
-        "priority": "yellow",
-        "audience": "All recruiters",
-        "point": "VMA is getting a major refresh launching August 3. More details on recruiter actions coming from your PE after Celena's session."
-      }
-    },
-    {
-      "title": "Onboarding Location Field Updated in Greenhouse",
-      "summary": "PeopleTech updated the onboarding location field so data flows correctly into Workday. New standardized options replace previous free-text.",
+      "title": "Onboarding Location Field — Updated Options in GH",
+      "summary": "PeopleTech has updated the Onboarding Location field in offer details. Workday now ingests this data, so accuracy is critical.",
       "bullets": [
         "New options: Remote, San Francisco, New York, Denver",
-        "Ensure onboarding location is accurate — feeds directly to the Onboarding team"
+        "Ensures onboarding team sends correct details to new hires"
       ],
-      "source": "IOPE Newsletter, June 8",
+      "source": "IOPE Newsletter June 8, 2026",
       "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4",
       "priority": "medium",
       "tags": [
         "all"
       ],
-      "tp": {
-        "priority": "yellow",
-        "audience": "All recruiters",
-        "point": "Onboarding location field in Greenhouse now has standardized options: Remote, SF, NY, Denver. Use these going forward."
-      }
-    },
-    {
-      "title": "Gusto Closed June 19 (Juneteenth)",
-      "summary": "Gusto is closed this Friday, June 19th for Juneteenth. Plan accordingly for candidate communications and offer timelines.",
-      "bullets": [
-        "No Gusto business day on Friday, June 19"
-      ],
-      "source": "Kristin Ruehle, #invite-team, June 9",
-      "sourceUrl": null,
-      "priority": "medium",
-      "tags": [
-        "all"
-      ],
-      "tp": {
-        "priority": "green",
-        "audience": "All recruiters",
-        "point": "Heads up: Gusto is closed this Friday, June 19 for Juneteenth."
-      }
+      "tp": null
     }
   ],
   "keyEvents": [
     {
-      "theme": "InviteOS & PeopleOS Updates",
+      "theme": "InviteOS & People Tech",
       "tags": [
         "all"
       ],
       "items": [
         {
-          "heading": "New InviteOS Features Now Live",
+          "heading": "InviteOS New Features Now Live",
           "bullets": [
-            "Pending Actions: centralized view of candidate emails, scorecards, and referrals awaiting your review",
-            "Submit Feedback button: in-app button to send bugs/ideas directly to People Tech Jira queue",
-            "Loom walkthrough available (link in source)",
-            "Beta testers wanted for Debrief & Hiring Committee Agent — reply in #invite-team thread to join"
+            "Pending Actions: centralized view of candidate emails to review, scorecards to review, and referrals to review",
+            "Submit Feedback button: in-app button sends bugs/ideas directly to People Tech Jira queue",
+            "Beta testers wanted for Debrief & Hiring Committee Agent — reply in the #invite-team thread to join",
+            "Loom walkthrough available in #invite-team"
           ],
-          "source": "Elan Bailey, #invite-team, June 12",
+          "source": "#invite-team (Elan Bailey, June 12, 2026)",
           "sourceUrl": "https://www.loom.com/share/aabf4bd1aec243a39d47abba4df6c82b",
           "tp": {
             "priority": "green"
           }
         },
         {
-          "heading": "IOPE Cycle Focus: Auto-Population & CA Relocation Language",
+          "heading": "Cycle 2 Invite Cycle Planning Tracker Now Active",
           "bullets": [
-            "Invite Ops + PeopleTech working on auto-populating job-related fields in offer details — less manual work coming",
-            "California Bill 692: Invite Ops + Legal + Comp aligning on relocation agreement language for CA-bound hires — details coming soon",
-            "IKB content actively being migrated to Notion"
+            "Cycle 2 runs June 15 – July 31",
+            "Notion tracker is the single source of truth for all Invite work (cycle initiatives, BAU, backlog)",
+            "6 initiatives logged; PEs needed to fill in 'What is this?' and 'Done when...' fields by EOD June 13",
+            "Saumya Chopra (People Tech) joining next PE meeting to discuss req multi-step approval and req routing pain points"
           ],
-          "source": "IOPE Newsletter, June 15",
-          "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4",
-          "tp": null
+          "source": "#invite-pes (Kristin Ruehle, June 10, 2026)",
+          "sourceUrl": "https://app.notion.com/p/Invite-Cycle-Planning-Tracker-33c75cefee89443da577aa33f71f5f95",
+          "tp": {
+            "priority": "yellow"
+          }
         }
       ]
     },
     {
-      "theme": "Org & Team News",
+      "theme": "Programs & Process",
       "tags": [
         "all"
       ],
       "items": [
         {
-          "heading": "Cycle 2 Is Live (June 15 – July 31)",
+          "heading": "VMA Evolution Launching August 3rd",
           "bullets": [
-            "Cycle 2 launched today — IOPE working with DRIs to finalize initiative pages",
-            "If not done by June 13 deadline: fill in 'What is this?' and 'Done when...' fields in your Notion initiative pages",
-            "Use the Invite Cycle Planner Claude skill or edit Notion directly"
+            "VMA is being refreshed: updated question bank, calibrated rubric, new AI mindset component",
+            "Nomination flow replaces self-volunteering — I&O partners with Invite PEs to build interviewer bench",
+            "VMA returning to standalone interview for CX (DSA) and Engineering (was consolidated into other interviews)",
+            "Performance tie-in: VMA participation named as formal contribution for L3–L6 Gusties",
+            "Escalation path: Kristin Ruehle for L1–L5, Scott Helmes for L6+",
+            "Email went out to Gusto Admins Friday June 12 — PEs to follow up with I&O partners in next two weeks"
           ],
-          "source": "Kristin Ruehle, #invite-pes & #invite-team, June 9–10",
-          "sourceUrl": "https://app.notion.com/p/Invite-Cycle-Planning-Tracker-33c75cefee89443da577aa33f71f5f95",
+          "source": "#invite-pes (Kristin Ruehle, June 12, 2026)",
+          "sourceUrl": null,
           "tp": {
             "priority": "yellow"
           }
         },
         {
-          "heading": "Gabe Cadavillo Departing Gusto",
+          "heading": "Project Orbit Survey — Due EOD Monday June 15",
           "bullets": [
-            "Gabe Cadavillo (GTM team) is leaving Gusto at the end of this week after 4+ years",
-            "Leaving in great standing"
+            "Teresa Waggoner and Kebone Moloko are building Project Orbit: quarterly coaching sessions for PEs",
+            "Survey baseline (~10 min) due EOD Monday June 15",
+            "Link: https://forms.gle/dGJTzsLHifTFKmrs7"
           ],
-          "source": "Lisa Pham, #invite-team, June 11",
-          "sourceUrl": null,
-          "tp": null
-        },
+          "source": "#invite-pes (Teresa Waggoner, June 8 & 12, 2026)",
+          "sourceUrl": "https://forms.gle/dGJTzsLHifTFKmrs7",
+          "tp": {
+            "priority": "red"
+          }
+        }
+      ]
+    },
+    {
+      "theme": "Ops & Tooling Updates",
+      "tags": [
+        "all"
+      ],
+      "items": [
         {
-          "heading": "Greenhouse Open for Ops Conference Takeaways",
+          "heading": "Greenhouse Open for Ops Conference — Key Takeaways",
           "bullets": [
-            "Lisa Pham and Alli Belamide attended — theme: TA ops built to flex",
-            "Build flexible frameworks, not rigid solutions; enablement must be ongoing (not one-time training)",
-            "Metrics rethink: TTF is a lagging indicator; QoH belongs to HMs (Invite owns Quality of Submittal); activity metrics = coaching tool",
-            "Human-in-the-loop tiers: 100% human for judgment/experience; AI-assisted for screening/synthesis; fully automated for status updates",
-            "GH products to watch: Fraud detection, Notetaker, Analytics, Ezra (AI screening)"
+            "Lisa Pham and Alli Belamide attended June 10; theme: 'Built to Flex'",
+            "Key reframes: Time to Fill is a lagging indicator; Quality of Hire belongs to HMs, not TA; activity metrics = development tool not micromanagement",
+            "Human-in-the-Loop framework: 100% human (high-judgment), AI-assisted (screening, scheduling), Fully automated (onboarding workflows)",
+            "GH products to watch: Fraud detection, Notetaker (BrightHire copycat), Analytics, Ezra (AI screening)"
           ],
-          "source": "Lisa Pham, #invite-team, June 10",
-          "sourceUrl": null,
-          "tp": null
-        },
-        {
-          "heading": "Requisition Approval Process Review — Next PE Meeting",
-          "bullets": [
-            "Saumya Chopra (People Tech) joining next Wednesday's PE meeting",
-            "Topics: multi-step requisition approval process and requisition routing by job details",
-            "Goal: hear pain points from recruiters and prioritize People Tech fixes"
-          ],
-          "source": "Laura Lockwood, #invite-pes, June 10",
+          "source": "#invite-team (Lisa Pham, June 10, 2026)",
           "sourceUrl": null,
           "tp": {
             "priority": "green"
           }
-        },
-        {
-          "heading": "People Staff Passdowns (Week of June 9)",
-          "bullets": [
-            "Cycle 2 alignment: sharpen focus on AI-native work and modernizing People service delivery; clear ownership, sequenced priorities",
-            "Office experience survey results: top friction = conference room availability, desk predictability, noise/lighting, commute. Near-term: anchor day nudges, space improvements",
-            "People Partner charter Sprint 1 underway: org health metrics standardization, ER service delivery, redesigned talent review framework"
-          ],
-          "source": "Kristin Ruehle, #invite-team, June 9",
-          "sourceUrl": null,
-          "tp": null
         }
       ]
     }
