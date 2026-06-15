@@ -1,0 +1,56 @@
+{
+  "pe": "lisa",
+  "week": "June 8 – June 15, 2026",
+  "refreshedAt": "2026-06-15T17:00:00Z",
+  "updates": [
+    {
+      "heading": "Gabe Cadavillo Departing End of Week",
+      "bullets": [
+        "Gabe is leaving Gusto at the end of this week after 4+ years on the GTM pod",
+        "Leaving in great standing — please join in wishing him well",
+        "Backfill planning and req coverage will need to be addressed — reach out to Lisa with questions"
+      ]
+    },
+    {
+      "heading": "Variable Comp: GTM Team Cleared to Communicate",
+      "bullets": [
+        "Variable cash for salaried L1–L5 is now live — team is cleared to share verbally with candidates in pipeline",
+        "Variable targets: L1–L3: 5%, L4: 7.5%, L5: 10% (50% individual / 50% company performance split)",
+        "New Greenhouse offer field required — see org policy section for full details"
+      ]
+    },
+    {
+      "heading": "HM Coverage Cadence Pilot — Testing Next Week",
+      "bullets": [
+        "Lisa is piloting a monthly HM sync structure where each recruiter owns a set of HM Talent Advisor relationships",
+        "Testing next week via 1:1s: Gina→Sara Rawson, Grace→Tim Labeau, JT→Shawn Wilson, Will→Jess Moore",
+        "Recruiters need to retitle their 1:1 in Google Calendar (exact format), use Granola to transcribe, and then say 'Sync [HM name]'s notes' to Claude to push to Notion",
+        "Lisa will walk through the 10 monthly sync topics during 1:1"
+      ]
+    },
+    {
+      "heading": "GTM Pod GEM Dashboard Now Live",
+      "bullets": [
+        "Lisa launched a new real-time GEM dashboard for the GTM pod — populated via Greenhouse and GEM",
+        "Shows real-time signal of weekly/monthly/quarterly performance; click into data points to see GH source",
+        "Individual dashboards per recruiter are in progress (have bugs — using shared dashboard for now)",
+        "Feedback requested: missing data? Accuracy issues? Share with Lisa"
+      ]
+    },
+    {
+      "heading": "Sales Enablement Training — August 3 Start Date Confirmed",
+      "bullets": [
+        "August start date for Sales Enablement Training is confirmed as August 3",
+        "Applies to: Gina Panacci, Grace Stoughton, John Thomas"
+      ]
+    },
+    {
+      "heading": "Cycle 2 Initiative: Headcount & Capacity Planning Discovery (DRI: Lisa + Jaime)",
+      "bullets": [
+        "Lisa and Jaime are DRIs on the Headcount & Capacity Planning Discovery & Framework initiative for Cycle 2",
+        "Headcount planning audit doc (6 sections) was due EOD June 10 from all PEs",
+        "Goal: understand how planning works across orgs today and build a better aligned process"
+      ]
+    }
+  ]
+}
