@@ -1,39 +1,48 @@
 {
   "pe": "jaime",
-  "week": "June 8 – June 15, 2026",
-  "refreshedAt": "2026-06-08T17:00:00Z",
+  "week": "June 9 – June 15, 2026",
+  "refreshedAt": "2026-06-15T18:14:14.870121Z",
   "updates": [
     {
-      "heading": "Jaime & Kebone Promoted — R&D Org Restructure",
+      "heading": "5/5 L5 Offers Accepted This Quarter — Positive Exec Feedback",
       "bullets": [
-        "Jaime promoted with expanded scope: all Eng hiring (SWE, AIT, Security, Infrastructure) — 8 FTEs + 2 contractors",
-        "Team: Jeff, Mike, Khetsun, Kevin, Angeline, Jacob Ellison, Rose + Jeff & Nico (contractors); partners with Mike & his directs",
-        "Spec Tech pod folds into unified Eng pod",
-        "Backfills for Head of Technical Recruiting (Todd’s role) and Eng Invite PE (Roberto’s role) are paused — investment going into Jaime & Kebone’s expanded scope instead",
-        "Announcement made at R&D Invite All Hands (Thursday June 5)"
+        "Kristin and Jaime met with Mike Tria (R&D Exec) to share monthly reporting updates",
+        "5 of 5 L5 offers accepted so far this quarter — Mike Tria called it out as unprecedented: 'I don't think I've ever seen that, huge kudos to the team'",
+        "Some adjustments to reporting approach are coming — Kristin to share more details"
       ]
     },
     {
-      "heading": "Kebone’s Expanded Scope — Data Joins PM/PD",
+      "heading": "Headcount & Capacity Planning Audit — Jaime & Lisa Leading",
       "bullets": [
-        "Kebone now covers PM, Design, and Data — 7 recruiters total",
-        "POC for Chris, Amy & Julia King",
-        "Ashleigh, Abby, Janielle (early career), and Jeremy move to Kebone’s team"
+        "Jaime and Lisa are running a headcount planning audit across all PE orgs",
+        "Asked all PEs to complete audit doc covering tools, planning process, and pain points by June 10",
+        "Outputs will inform Cycle 2 initiative: Headcount & Capacity Planning Discovery & Framework (DRI: Jaime, Lisa)",
+        "Initiative Notion page: https://app.notion.com/376ad673c6c281bb9877e00fc68f510f"
       ]
     },
     {
-      "heading": "R&D Heads Down Week",
+      "heading": "Build V1 Centralized Recruiting Reporting Dashboard — Jaime & Teresa Co-DRIs",
       "bullets": [
-        "Nikki flagged an upcoming R&D heads down week — coordinate with your team to protect focused work time",
-        "Noted in #r-and-d-invite-all (June 3)"
+        "Jaime and Teresa are co-DRIs on the Cycle 2 initiative to build a centralized reporting dashboard for R&D",
+        "Kebone has already built an R&D open reqs tracker (Google Apps Script, auto-updated daily at 9am) as a starting point: https://script.google.com/a/macros/gusto.com/s/AKfycbzXPN5vU0DcEqz4vq1Pcq5Q8j0A2DOLAktC-PhF9ke_-n4pZFJCcJs8K5CWnIwLx5OHGw/exec",
+        "Initiative Notion page: https://app.notion.com/376ad673c6c281118fdde9123045aa31"
       ]
     },
     {
-      "heading": "Guadalupe Martinez Transition — R&D Impact",
+      "heading": "Weekly Recap Agent — Plugin Updated",
       "bullets": [
-        "Lupe’s departure left late-stage roles needing immediate coverage in PM/PD org",
-        "Kebone managing with Mallory Montanez stepping in; stakeholder Chris inquired about backfill — decision: staying lean, no backfill planned near-term",
-        "Monitor for capacity impact on Kebone’s team as she absorbs Data org"
+        "Jaime updated the Weekly Recap plugin and Notion page instructions",
+        "Setup guide: https://app.notion.com/p/Weekly-Recap-Setup-Guide-for-PEs-379ad673c6c281f89e7ff05bfb579f26",
+        "Lisa Pham gave a shoutout this week — ran it before her team meeting and said it 'surfaced everything I needed'"
+      ]
+    },
+    {
+      "heading": "Requisition Process Improvements — Saumya Chopra Joining Next PE Meeting",
+      "bullets": [
+        "Saumya Chopra (PeopleTech) joining PE meeting next Wednesday to discuss:",
+        "1. Requisition multi-step approval process pain points",
+        "2. Requisition routing based on job details / org structure",
+        "Goal: hear directly from PEs to determine what changes to prioritize with PeopleTech"
       ]
     }
   ]
