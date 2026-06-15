@@ -80,10 +80,9 @@ For each item:
 - Roberto Segovia (roberto.segovia@gusto.com)
 - Todd Hazen (todd.hazen@gusto.com)
 
-**Thread age filter — important:** Slack returns threads that had *any* activity in the past 7 days, including old threads with new replies. Before including any item, check the timestamp of the **original/parent message**:
-- If the original message is older than 7 days AND the new replies are purely social (congratulations, 👏, +1, emoji reactions, "so happy for you", etc.) → **exclude entirely**
-- If the original message is older than 7 days BUT the new replies contain substantive new information (decisions, updates, action items, announcements) → **include, but source it as the reply date, not the original post date**
-- If the original message is within the past 7 days → include normally
+**Thread age filter — strict:** Slack returns threads that had *any* activity in the past 7 days, including old threads with new replies. Always check the timestamp of the **original/parent message**:
+- If the original message is older than 7 days → **exclude entirely, regardless of what the replies say**
+- Only include items where the original message itself was posted within the past 7 days
 
 ## Step 4 — Push JSON to GitHub
 
