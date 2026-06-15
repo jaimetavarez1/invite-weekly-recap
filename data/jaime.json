@@ -1,48 +1,69 @@
 {
   "pe": "jaime",
-  "week": "June 9 – June 15, 2026",
-  "refreshedAt": "2026-06-15T18:14:14.870121Z",
+  "week": "June 8 – June 15, 2026",
+  "refreshedAt": "2026-06-15T21:37:04.040008+00:00",
   "updates": [
     {
-      "heading": "5/5 L5 Offers Accepted This Quarter — Positive Exec Feedback",
+      "heading": "Hiring Acceleration Week — Results (June 23–27)",
       "bullets": [
-        "Kristin and Jaime met with Mike Tria (R&D Exec) to share monthly reporting updates",
-        "5 of 5 L5 offers accepted so far this quarter — Mike Tria called it out as unprecedented: 'I don't think I've ever seen that, huge kudos to the team'",
-        "Some adjustments to reporting approach are coming — Kristin to share more details"
+        "R&D Invite's inaugural Hiring Acceleration Week focused on sourcing velocity, SLA cleanup, and candidate experience",
+        "Active apps: 5,218 → 4,043 (-22.5%) | Stale apps: 1,920 → 1,333 (-30.6%) | Stale candidates: 668 → 390 (-41.6%)",
+        "GEM: 371 prospects added, 296 contacted (80%), 82 replies (22%), 21 converted (6%)",
+        "Tag: GEM project #summersplash2025; GH tag #summersplash2025 for converted candidates"
       ]
     },
     {
-      "heading": "Headcount & Capacity Planning Audit — Jaime & Lisa Leading",
+      "heading": "Q1 R&D Metrics Snapshot (as of late July)",
       "bullets": [
-        "Jaime and Lisa are running a headcount planning audit across all PE orgs",
-        "Asked all PEs to complete audit doc covering tools, planning process, and pain points by June 10",
-        "Outputs will inform Cycle 2 initiative: Headcount & Capacity Planning Discovery & Framework (DRI: Jaime, Lisa)",
-        "Initiative Notion page: https://app.notion.com/376ad673c6c281bb9877e00fc68f510f"
+        "OA: 84 with 8 open offers | Target: 96",
+        "OA%: 86.6% | Target: 85%+",
+        "App to OA: 57 days | Target: 60 days",
+        "8 business days left in Q1 as of July 22 — push to close strong"
       ]
     },
     {
-      "heading": "Build V1 Centralized Recruiting Reporting Dashboard — Jaime & Teresa Co-DRIs",
+      "heading": "Internal Recruiter Fills — Khetsun Tenzin & Mike Galligan (Roberto's team)",
       "bullets": [
-        "Jaime and Teresa are co-DRIs on the Cycle 2 initiative to build a centralized reporting dashboard for R&D",
-        "Kebone has already built an R&D open reqs tracker (Google Apps Script, auto-updated daily at 9am) as a starting point: https://script.google.com/a/macros/gusto.com/s/AKfycbzXPN5vU0DcEqz4vq1Pcq5Q8j0A2DOLAktC-PhF9ke_-n4pZFJCcJs8K5CWnIwLx5OHGw/exec",
-        "Initiative Notion page: https://app.notion.com/376ad673c6c281118fdde9123045aa31"
+        "Two FTE Recruiter roles on Roberto Segovia's Eng team filled internally",
+        "Process was internal-only, 5 business days open; both candidates are high performers already on the team"
       ]
     },
     {
-      "heading": "Weekly Recap Agent — Plugin Updated",
+      "heading": "R&D Exec Reporting Dashboard — Kebone Building",
       "bullets": [
-        "Jaime updated the Weekly Recap plugin and Notion page instructions",
-        "Setup guide: https://app.notion.com/p/Weekly-Recap-Setup-Guide-for-PEs-379ad673c6c281f89e7ff05bfb579f26",
-        "Lisa Pham gave a shoutout this week — ran it before her team meeting and said it 'surfaced everything I needed'"
+        "Kebone taking lead on building a shared R&D reporting dashboard to replace manual exec update doc",
+        "Will cover Eng, PM, and Design pods; framework to be socialized with Jaime, Roberto, and Todd"
       ]
     },
     {
-      "heading": "Requisition Process Improvements — Saumya Chopra Joining Next PE Meeting",
+      "heading": "Equitability Consultant — Rachel Bonds Intro (Action: Schedule 30 min)",
       "bullets": [
-        "Saumya Chopra (PeopleTech) joining PE meeting next Wednesday to discuss:",
-        "1. Requisition multi-step approval process pain points",
-        "2. Requisition routing based on job details / org structure",
-        "Goal: hear directly from PEs to determine what changes to prioritize with PeopleTech"
+        "Invite is working with Rachel Bonds (external consultant) to improve equitability in recruiting processes",
+        "Todd asked Kebone and Jaime to schedule via Calendly at their earliest convenience"
+      ]
+    },
+    {
+      "heading": "Candidate Fraud / Propaganda Resumes — Watch Out",
+      "bullets": [
+        "Multiple R&D recruiters flagging fraudulent profiles and resumes with potential propaganda",
+        "Todd noted guidance in progress — watch for updates on flagging and managing process"
+      ]
+    },
+    {
+      "heading": "FY27 Q1 R&D Headcount — 19 Roles to Close",
+      "bullets": [
+        "Brandon Lassoff confirmed 19 open roles to close as part of FY27 Q1 R&D Headcount Exercise",
+        "Tracker shared with Kristin and Kebone — status updates needed in column G"
+      ]
+    },
+    {
+      "heading": "Notable Closes This Quarter (R&D)",
+      "bullets": [
+        "Mike Galligan: Principal Software Engineer, Payroll Services (L6)",
+        "Angeline Lo: Principal Software Engineer, Payments (L6)",
+        "Khetsun Tenzin: Principal Engineer, Tax Platform (L6)",
+        "Jeremy Murdy: 2 critical L4 ML roles + critical L5 Principal Data Architect",
+        "Johana Martinez Mendez: 5 critical mobile engineering reqs closed this quarter"
       ]
     }
   ]
