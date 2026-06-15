@@ -76,6 +76,10 @@ For each item:
 - Always cite the source channel and date
 - Assign priority: `red` = action required or high urgency, `yellow` = important/FYI, `green` = informational
 
+**Departed employee filter:** The following people are no longer at Gusto — skip any message authored by them entirely, do not include in any section:
+- Roberto Segovia (roberto.segovia@gusto.com)
+- Todd Hazen (todd.hazen@gusto.com)
+
 **Thread age filter — important:** Slack returns threads that had *any* activity in the past 7 days, including old threads with new replies. Before including any item, check the timestamp of the **original/parent message**:
 - If the original message is older than 7 days AND the new replies are purely social (congratulations, 👏, +1, emoji reactions, "so happy for you", etc.) → **exclude entirely**
 - If the original message is older than 7 days BUT the new replies contain substantive new information (decisions, updates, action items, announcements) → **include, but source it as the reply date, not the original post date**
