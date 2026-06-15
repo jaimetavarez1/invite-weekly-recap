@@ -80,6 +80,13 @@ For each item:
 - Roberto Segovia (roberto.segovia@gusto.com)
 - Todd Hazen (todd.hazen@gusto.com)
 
+**Source integrity — critical:** Every item you include must be directly traceable to a specific message you actually read. Do NOT:
+- Synthesize or infer summaries that weren't explicitly stated in a channel (e.g. do not construct a "Notable Closes" list from names mentioned across different threads)
+- Combine fragments from multiple messages into a new item that didn't exist as a single post
+- Include any item you cannot cite with a specific channel, author, and date
+
+If you cannot point to an exact message as the source, leave it out entirely.
+
 **Thread age filter — strict:** Slack returns threads that had *any* activity in the past 7 days, including old threads with new replies. Always check the timestamp of the **original/parent message**:
 - If the original message is older than 7 days → **exclude entirely, regardless of what the replies say**
 - Only include items where the original message itself was posted within the past 7 days
