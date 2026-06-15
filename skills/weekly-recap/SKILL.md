@@ -53,6 +53,22 @@ Read the following channels with `oldest` set to that timestamp and `limit: 100`
 
 If a channel returns an error or no messages, note it and continue.
 
+## Step 1b — Search Slack for R&D org-wide updates (R&D PEs only)
+
+If the PE's `pe_key` is `jaime` (R&D org), run the following Slack searches using `slack_search_public_and_private` with `after` set to the 7-day-ago timestamp. These catch org-wide R&D announcements that don't appear in invite-specific channels:
+
+Search queries to run (one at a time):
+- `"deep work week" in:#r-and-d-invite-all` — R&D no-meetings weeks that affect recruiting scheduling
+- `"R&D" "week" in:#invite-team` — any R&D-specific callouts in the invite-team channel
+- `"r-and-d" hiring OR recruiting` — org-wide hiring announcements
+
+For each result:
+- Apply the same source integrity and thread age filters from Step 3
+- Only include items where the original message is within the past 7 days
+- Add valid results to the PE-specific updates bucket for synthesis in Step 3
+
+If the PE's `pe_key` is not `jaime`, skip this step entirely. Other PEs should add equivalent org-wide search queries to this step when their plugin is configured.
+
 ## Step 2 — Read the IOPE Newsletter
 
 Read the two most recent entries from the IOPE Newsletter Google Doc via Glean:
