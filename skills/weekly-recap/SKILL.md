@@ -76,6 +76,11 @@ For each item:
 - Always cite the source channel and date
 - Assign priority: `red` = action required or high urgency, `yellow` = important/FYI, `green` = informational
 
+**Thread age filter — important:** Slack returns threads that had *any* activity in the past 7 days, including old threads with new replies. Before including any item, check the timestamp of the **original/parent message**:
+- If the original message is older than 7 days AND the new replies are purely social (congratulations, 👏, +1, emoji reactions, "so happy for you", etc.) → **exclude entirely**
+- If the original message is older than 7 days BUT the new replies contain substantive new information (decisions, updates, action items, announcements) → **include, but source it as the reply date, not the original post date**
+- If the original message is within the past 7 days → include normally
+
 ## Step 4 — Push JSON to GitHub
 
 **Repo:** `jaimetavarez1/invite-weekly-recap`
