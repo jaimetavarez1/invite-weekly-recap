@@ -2,5 +2,31 @@
   "pe": "jaime",
   "week": "June 8 – June 15, 2026",
   "refreshedAt": "2026-06-15T21:37:04.040008+00:00",
-  "updates": []
+  "updates": [
+    {
+      "heading": "Hiring Acceleration Week — Results (June 23–27)",
+      "bullets": [
+        "R&D Invite's inaugural Hiring Acceleration Week focused on sourcing velocity, SLA cleanup, and candidate experience",
+        "Active apps: 5,218 → 4,043 (-22.5%) | Stale apps: 1,920 → 1,333 (-30.6%) | Stale candidates: 668 → 390 (-41.6%)",
+        "GEM: 371 prospects added, 296 contacted (80%), 82 replies (22%), 21 converted (6%)",
+        "Tag: GEM project #summersplash2025; GH tag #summersplash2025 for converted candidates"
+      ]
+    },
+    {
+      "heading": "Q1 R&D Metrics Snapshot (as of late July)",
+      "bullets": [
+        "OA: 84 with 8 open offers | Target: 96",
+        "OA%: 86.6% | Target: 85%+",
+        "App to OA: 57 days | Target: 60 days",
+        "8 business days left in Q1 as of July 22 — push to close strong"
+      ]
+    },
+    {
+      "heading": "FY27 Q1 R&D Headcount — 19 Roles to Close",
+      "bullets": [
+        "Brandon Lassoff confirmed 19 open roles to close as part of FY27 Q1 R&D Headcount Exercise",
+        "Tracker shared with Kristin and Kebone — status updates needed in column G"
+      ]
+    }
+  ]
 }
