@@ -121,7 +121,7 @@ Push `data/shared.json`:
 ```json
 {
   "week": "<week string>",
-  "refreshedAt": "<current UTC time — use datetime.datetime.utcnow().isoformat() + 'Z' at the moment of pushing>",
+  "refreshedAt": "<use: datetime.datetime.utcnow().isoformat() + 'Z'>",  // ALWAYS compute at runtime — never hardcode
   "refreshedBy": "<PE_KEY>",
   "orgPolicy": [
     {
@@ -158,7 +158,7 @@ Push `data/<PE_KEY>.json` (e.g. `data/kebone.json`):
 {
   "pe": "<PE_KEY>",
   "week": "<week string>",
-  "refreshedAt": "<current UTC time — use datetime.datetime.utcnow().isoformat() + 'Z' at the moment of pushing>",
+  "refreshedAt": "<use: datetime.datetime.utcnow().isoformat() + 'Z'>",  // ALWAYS compute at runtime — never hardcode
   "updates": [
     { "heading": "", "bullets": [] }
   ]
