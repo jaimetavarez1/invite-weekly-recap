@@ -146,10 +146,9 @@
     .inst-dismiss{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:14px;padding:0 0 0 4px;flex-shrink:0;line-height:1;transition:color .12s}
     .inst-dismiss:hover{color:var(--tx)}
 
-    .filter-bar{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:5px;margin-bottom:28px;align-items:center}
-    .filter-bar::-webkit-scrollbar{display:none}
-    .filter-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--tx3);margin-right:1px;white-space:nowrap;flex-shrink:0}
-    .f-btn{padding:5px 9px;border-radius:var(--r);border:1.5px solid var(--bd2);background:var(--surf);font-size:11px;font-weight:600;color:var(--tx2);cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
+    .filter-bar{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:28px;align-items:center}
+    .filter-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--tx3);margin-right:2px;white-space:nowrap}
+    .f-btn{padding:6px 13px;border-radius:var(--r);border:1.5px solid var(--bd2);background:var(--surf);font-size:12px;font-weight:600;color:var(--tx2);cursor:pointer;transition:all .15s;white-space:nowrap}
     .f-btn:hover{border-color:var(--t);color:var(--t);background:var(--t-lt)}
     .f-btn.active{background:var(--t);border-color:var(--t);color:white;box-shadow:0 2px 8px rgba(244,93,72,.25)}
 
@@ -259,7 +258,7 @@
 
   const ORG_FILTERS = [
     { key: 'all',        label: 'All' },
-    { key: 'r&d',        label: 'Jaime · R&D' },
+    { key: 'r&d',        label: 'Jaime · Engineering' },
     { key: 'foundation', label: 'Teresa · Foundation' },
     { key: 'gtm',        label: 'Lisa · GTM' },
     { key: 'cx',         label: 'Michelle · CX' },
