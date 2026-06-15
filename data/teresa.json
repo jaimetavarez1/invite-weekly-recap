@@ -1,21 +1,12 @@
 {
   "pe": "teresa",
-  "week": "June 8 – June 15, 2026",
-  "refreshedAt": "2026-06-15T16:00:00Z",
+  "week": "June 9 \u2013 June 15, 2026",
+  "refreshedAt": "2026-06-15T00:00:00Z",
   "updates": [
     {
-      "heading": "Project Orbit Survey — Final Deadline Today",
+      "heading": "Teresa test",
       "bullets": [
-        "Teresa and Kebone are building Project Orbit: quarterly coaching sessions for PEs",
-        "Baseline survey on coaching experience/comfortability due EOD Monday, June 15 — complete if not yet done",
-        "Survey: https://forms.gle/dGJTzsLHifTFKmrs7 (~10 min)"
-      ]
-    },
-    {
-      "heading": "Foundation & I/O Channels — Quiet This Week",
-      "bullets": [
-        "#r-and-d_foundation-invite: no new messages in the past 7 days",
-        "#io-invite: channel not found (may be private or renamed)"
+        "test bullet"
       ]
     }
   ]
