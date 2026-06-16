@@ -82,7 +82,7 @@ Classify everything you read into two buckets:
 
 **Shared (orgPolicy + keyEvents)** — sourced from #invite-team, #invite-pes, #invite_pes_and_people_insights, and the IOPE Newsletter only. These are updates that affect all Invite recruiters regardless of org.
 - `orgPolicy` = process/tooling/SOP changes (new fields in GH, scorecard rules, offer calculator updates, VMA changes)
-- `keyEvents` = decisions, departures, launches, roadmap updates, upcoming dates
+- `keyEvents` = decisions, departures, launches, roadmap updates, upcoming dates, **company-wide holidays** (e.g. Juneteenth, Labor Day), org-wide events that affect recruiting schedules
 
 **PE-specific (updates)** — sourced from the PE's org channels only. Anything that belongs only to their org and is not already covered in shared. Examples: org-specific hiring wins, exec meetings, team announcements, pipeline alerts.
 
