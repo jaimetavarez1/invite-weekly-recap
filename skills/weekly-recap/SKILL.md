@@ -117,6 +117,66 @@ For each holiday printed, add a keyEvent item with:
 - `source`: "Gusto FY27 Holiday Calendar"
 - `tp.priority`: "yellow" if >7 days away, "red" if ≤7 days away
 
+**Work anniversary auto-detection:** After holiday detection, query Glean to find upcoming work anniversaries across the entire Invite team. Run the following three `employee_search` calls, deduplicate by email, then compute anniversaries:
+
+Call 1: `query="invite recruiting team gusto"` — returns Invite ICs
+Call 2: `query="invite tech recruiting gusto apex"` — returns Apex contractors
+Call 3: `query="invite leadership gusto"` — returns PE managers/leads
+
+For each unique person returned (deduplicated by email, filter to `team=Invite` or manager `email` ending in `@gusto.com`), run:
+
+```python
+import datetime
+
+# team_members = list of (name, start_date_str) from all three Glean queries, deduplicated by email
+# Example: [("Ashleigh Huffman", "2019-08-05"), ("Jeremy Murdy", "2022-04-04"), ...]
+
+today = datetime.date.today()
+upcoming_anniversaries = []
+
+for name, start_date_str in team_members:
+    start = datetime.date.fromisoformat(start_date_str)
+    
+    # Skip anyone who started this year — no anniversary yet
+    if start.year >= today.year:
+        continue
+    
+    years_this = today.year - start.year
+    
+    # Try anniversary this calendar year
+    try:
+        anniversary_this = start.replace(year=today.year)
+    except ValueError:
+        anniversary_this = start.replace(year=today.year, day=28)  # Feb 29 edge case
+    
+    if anniversary_this >= today:
+        anniversary = anniversary_this
+        years = years_this
+    else:
+        # Already passed — check next year
+        years = years_this + 1
+        try:
+            anniversary = start.replace(year=today.year + 1)
+        except ValueError:
+            anniversary = start.replace(year=today.year + 1, day=28)
+    
+    days_away = (anniversary - today).days
+    if 0 <= days_away <= 14:
+        upcoming_anniversaries.append((name, anniversary, years, days_away))
+
+for name, date, years, days in upcoming_anniversaries:
+    print(f"ADD TO keyEvents: {name} — {years}-year anniversary on {date.strftime('%A %B %-d')} ({days} days away)")
+```
+
+For each anniversary printed, add a keyEvent item with:
+- `theme`: "Work Anniversary"
+- `heading`: "{Name} — {N}-Year Anniversary · {Month Day}"
+- `bullets`: ["{Name} celebrates {N} year{'s' if N>1 else ''} at Gusto on {date}!", "Consider a shoutout in #invite-team or a personal note"]
+- `source`: "Glean / Workday"
+- `tp.priority`: "yellow" if >7 days away, "red" if ≤7 days away (≤3 days = definitely red)
+
+Group all anniversaries in the same week into a single keyEvent theme block.
+
 **PE-specific (updates)** — sourced from the PE's org channels only. Anything that belongs only to their org and is not already covered in shared. Examples: org-specific hiring wins, exec meetings, team announcements, pipeline alerts.
 
 For each item:
