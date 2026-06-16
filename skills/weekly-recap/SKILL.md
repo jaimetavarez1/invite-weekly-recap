@@ -117,13 +117,21 @@ For each holiday printed, add a keyEvent item with:
 - `source`: "Gusto FY27 Holiday Calendar"
 - `tp.priority`: "yellow" if >7 days away, "red" if ≤7 days away
 
-**Work anniversary auto-detection:** After holiday detection, query Glean to find upcoming work anniversaries across the entire Invite team. Run the following three `employee_search` calls, deduplicate by email, then compute anniversaries:
+**Work anniversary auto-detection:** After holiday detection, query Glean to find upcoming work anniversaries across the entire Invite team. Use the following approach to get complete coverage:
 
-Call 1: `query="invite recruiting team gusto"` — returns Invite ICs
-Call 2: `query="invite tech recruiting gusto apex"` — returns Apex contractors
-Call 3: `query="invite leadership gusto"` — returns PE managers/leads
+Search each PE manager by name — their profile includes the full `directReports` list. Run these 5 `employee_search` calls:
 
-For each unique person returned (deduplicated by email, filter to `team=Invite` or manager `email` ending in `@gusto.com`), run:
+- `query="Jaime Tavarez"` → returns Jaime's profile with all 13 direct reports
+- `query="Teresa Waggoner"` → returns Teresa's profile with all 10 direct reports
+- `query="Kebone Moloko"` → returns Kebone's profile with all 5 direct reports
+- `query="Michelle Cordray"` → returns Michelle's profile with all 5 direct reports
+- `query="Lisa Pham"` → returns Lisa's profile with all 4 direct reports
+
+From each result, extract:
+1. The manager themselves (name + startDate from the top-level person)
+2. All people in their `directReports` array (name + startDate)
+
+Deduplicate the combined list by email, then run:
 
 ```python
 import datetime
