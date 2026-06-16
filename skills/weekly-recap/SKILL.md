@@ -82,7 +82,40 @@ Classify everything you read into two buckets:
 
 **Shared (orgPolicy + keyEvents)** — sourced from #invite-team, #invite-pes, #invite_pes_and_people_insights, and the IOPE Newsletter only. These are updates that affect all Invite recruiters regardless of org.
 - `orgPolicy` = process/tooling/SOP changes (new fields in GH, scorecard rules, offer calculator updates, VMA changes)
-- `keyEvents` = decisions, departures, launches, roadmap updates, upcoming dates, **company-wide holidays** (e.g. Juneteenth, Labor Day), org-wide events that affect recruiting schedules
+- `keyEvents` = decisions, departures, launches, roadmap updates, upcoming dates, company-wide holidays, org-wide events that affect recruiting schedules
+
+**Holiday auto-detection:** At the start of Step 3, run this Python to find any Gusto holidays that fall within the next 14 days and add them to `keyEvents` automatically — do not wait for Slack to mention them:
+
+```python
+import datetime
+
+GUSTO_HOLIDAYS_FY27 = [
+    ("Juneteenth", datetime.date(2026, 6, 19)),
+    ("Independence Day", datetime.date(2026, 7, 3)),
+    ("Labor Day", datetime.date(2026, 9, 7)),
+    ("Veterans Day", datetime.date(2026, 11, 11)),
+    ("Thanksgiving Day", datetime.date(2026, 11, 26)),
+    ("Christmas Day", datetime.date(2026, 12, 25)),
+]
+
+today = datetime.date.today()
+upcoming = []
+for name, date in GUSTO_HOLIDAYS_FY27:
+    days_away = (date - today).days
+    if 0 <= days_away <= 14:
+        upcoming.append((name, date, days_away))
+
+for name, date, days in upcoming:
+    day_str = date.strftime("%A %B %-d, %Y")
+    print(f"ADD TO keyEvents: {name} — {day_str} ({days} days away)")
+```
+
+For each holiday printed, add a keyEvent item with:
+- `theme`: "Upcoming Holiday"
+- `heading`: "{Holiday Name} — {Day Month Date}" (e.g. "Juneteenth — Friday June 19")
+- `bullets`: ["[Full holiday name] is {date} — company holiday", "Plan interview scheduling, offers, and candidate comms around this date"]
+- `source`: "Gusto FY27 Holiday Calendar"
+- `tp.priority`: "yellow" if >7 days away, "red" if ≤7 days away
 
 **PE-specific (updates)** — sourced from the PE's org channels only. Anything that belongs only to their org and is not already covered in shared. Examples: org-specific hiring wins, exec meetings, team announcements, pipeline alerts.
 
