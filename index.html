@@ -739,7 +739,7 @@
 
       const week = shared?.data?.week || '';
       const wc = document.getElementById('weekChip');
-      if (wc && week) wc.textContent = week;
+      if (wc && week) { const end = week.includes('–') ? week.split('–').pop().trim() : week; wc.textContent = 'Week of ' + end; }
 
       document.getElementById('sub').textContent =
         'Invite PE team · Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
