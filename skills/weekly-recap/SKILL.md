@@ -69,6 +69,37 @@ For each result:
 
 If the PE's `pe_key` is not `jaime`, skip this step entirely. Other PEs should add equivalent org-wide search queries to this step when their plugin is configured.
 
+
+## Step 1c — Read Leadership Hub (Notion)
+
+Pull active pass-downs and open action items from the Invite PE Leadership Hub.
+
+**Cascade to Your Teams** (pass-downs from Kristin/leadership — things that need to move downstream to your recruiters):
+
+Use `notion-query-data-sources` with:
+- `data_source_id`: `collection://7c90c5eb-ca2f-42c1-a29a-66e2d7bbbbd9`
+- SQL:
+```sql
+SELECT "Action", "Status", "To Be Completed By", "Due Date", "Notes"
+FROM "collection://7c90c5eb-ca2f-42c1-a29a-66e2d7bbbbd9"
+WHERE "Status" NOT IN ('Cascaded ✓', 'Archived')
+ORDER BY createdTime DESC
+```
+
+**PE Action Items** (open tasks owned by PEs):
+
+Use `notion-query-data-sources` with:
+- `data_source_id`: `collection://07af0c0a-3fe8-4531-af0a-fe315fda0aed`
+- SQL:
+```sql
+SELECT "Action", "Status", "Priority", "Due Date", "Notes"
+FROM "collection://07af0c0a-3fe8-4531-af0a-fe315fda0aed"
+WHERE "Status" NOT IN ('Done ✓', 'Archived')
+ORDER BY createdTime DESC
+```
+
+Store results for Step 3 and Step 4. If either query fails or returns no results, note it and continue.
+
 ## Step 2 — Read the IOPE Newsletter
 
 Read the two most recent entries from the IOPE Newsletter Google Doc via Glean:
@@ -193,6 +224,9 @@ For each item:
 - Always cite the source channel and date
 - Assign priority: `red` = action required or high urgency, `yellow` = important/FYI, `green` = informational
 
+
+**Leadership Hub (leadershipHub)** — sourced from Notion (Step 1c). Include all active cascade items and open action items as-is. Do not filter by date — these are standing items until marked Done/Cascaded in Notion. Surface them in both the PE JSON and the Notion recap page.
+
 **Departed employee filter:** The following people are no longer at Gusto — skip any message authored by them entirely, do not include in any section:
 - Roberto Segovia (roberto.segovia@gusto.com)
 - Todd Hazen (todd.hazen@gusto.com)
@@ -262,7 +296,15 @@ Push `data/<PE_KEY>.json` (e.g. `data/kebone.json`):
   "refreshedAt": "<use: datetime.datetime.utcnow().isoformat() + 'Z'>",  // ALWAYS compute at runtime — never hardcode
   "updates": [
     { "heading": "", "bullets": [] }
-  ]
+  ],
+  "leadershipHub": {
+    "cascades": [
+      { "action": "", "status": "", "toBeCompletedBy": [], "dueDate": null, "notes": "" }
+    ],
+    "actionItems": [
+      { "action": "", "status": "", "priority": "", "dueDate": null, "notes": "" }
+    ]
+  }
 }
 ```
 
@@ -351,6 +393,11 @@ Then:
 
 ## 📅 Key Events & Decisions
 (keyEvents items — ### per theme, - bullets, *italic* source citations)
+
+---
+
+## 📣 Pass-Downs & Action Items
+(from the Leadership Hub — active cascades first, then open PE action items grouped by priority: 🔴 Urgent → 🟡 This Week → 🟢 This Cycle)
 ```
 
 Do NOT include PE-specific org updates in the Notion page. That data lives in the GitHub JSON and the live artifact only.
