@@ -1,206 +1,158 @@
 {
-  "week": "June 9 – June 15, 2026",
-  "refreshedAt": "2026-06-15T22:49:20.431437Z",
-  "refreshedBy": "jaime",
+  "week": "June 15 – June 22, 2026",
+  "refreshedAt": "2026-06-22T16:11:36.561832+00:00",
+  "refreshedBy": "teresa",
   "orgPolicy": [
     {
-      "title": "Comp Bands Now in Workday",
-      "summary": "The GSheets comp bands are gone. PeopleTech has a live Workday report as the permanent replacement.",
+      "title": "New Broker License Verbiage in Offer Letters",
+      "summary": "Updated verbiage for the 'Does this role require a broker license?' offer question for CX & Sales roles.",
       "bullets": [
-        "Run the report at https://wd5.myworkday.com/gusto/d/inst/1422$5089/rel-task/3001$14.htmld — bookmark it",
-        "Search by Job Family; returns all ranges across levels and comp zones",
-        "Workday is now the source of truth for comp bands, bonus targets, and more",
-        "Questions? Submit a ticket at go/phc"
+        "When 'Yes' is selected for broker license question, updated verbiage now populates in the offer letter.",
+        "New language covers Licensing Requirement, timeline (3 months), and Licensing Costs (Gusto reimburses approved costs).",
+        "Applies to CX & Sales roles only — no change needed for other orgs."
       ],
-      "source": "IOPE Newsletter, June 15 | #invite-team, Alli, June 15",
-      "sourceUrl": "https://wd5.myworkday.com/gusto/d/inst/1422$5089/rel-task/3001$14.htmld",
+      "source": "IOPE Newsletter – June 22, 2026",
+      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
+      "priority": "high",
+      "tags": [
+        "all"
+      ],
+      "tp": {
+        "priority": "yellow",
+        "audience": "Recruiters supporting CX & Sales roles",
+        "point": "Offer letter verbiage for broker license roles has been updated — double-check your offer details before sending."
+      }
+    },
+    {
+      "title": "Updated Relocation Document for California",
+      "summary": "Effective June 18: new dropdown field in offer details to identify California-bound relocations, ensuring correct legal documents are generated.",
+      "bullets": [
+        "New dropdown: 'Is the relocation to California?' — select Yes or No.",
+        "California requires specific clawback language in relocation repayment agreements.",
+        "The correct documents will generate automatically based on your selection.",
+        "This went live June 18 — ensure all new relocation offers use the updated field."
+      ],
+      "source": "IOPE Newsletter – June 22, 2026",
+      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
       "priority": "high",
       "tags": [
         "all"
       ],
       "tp": {
         "priority": "red",
-        "audience": "all recruiters",
-        "point": "Comp band GSheets are gone — use the new Workday report. Bookmark the link."
+        "audience": "All recruiters with candidates opting into relocation",
+        "point": "New California relocation field is live — always select Yes or No when a candidate is relocating. Selecting the wrong option generates the wrong legal documents."
       }
     },
     {
-      "title": "Variable Cash Award: New Field in GH Offers",
-      "summary": "New offer detail field: 'Are they receiving a % Variable Cash Award?' — three options based on candidate type.",
+      "title": "Compensation Bands Now in Workday (GSheets Deprecated)",
+      "summary": "The comp band GSheets are no longer functioning. Workday now has a live report for salary ranges and compensation bands.",
       "bullets": [
-        "Options: No - Hourly/Not Eligible | Yes - US Candidate | Yes - Canada Candidate",
-        "Variable targets: L1–L3 = 5%, L4 = 7.5%, L5 = 10% of base salary",
-        "50% individual / 50% company performance split",
-        "Always double-check offer details before sending letters"
+        "Search by Job Family to get all ranges across levels and comp zones.",
+        "Access: https://wd5.myworkday.com/gusto/d/inst/1422$5089/rel-task/3001$14.htmld — bookmark it.",
+        "All Job Requisitions in Workday now have comp bands assigned; data is also feeding into Greenhouse & PeopleOS.",
+        "New Hire grant information still in development; expected to be in place shortly."
       ],
-      "source": "IOPE Newsletter, June 15",
-      "sourceUrl": null,
+      "source": "IOPE Newsletter – June 15, 2026",
+      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
       "priority": "high",
       "tags": [
         "all"
       ],
       "tp": {
-        "priority": "red",
-        "audience": "all recruiters",
-        "point": "New GH offer field for Variable Cash Award — select the right option and verify percentages before sending."
-      }
-    },
-    {
-      "title": "HC Updates: Invite Leadership Now Facilitating",
-      "summary": "Invite Leadership is now facilitating Hiring Committee sessions and follow-ups.",
-      "bullets": [
-        "Ops still supporting with candidate preps for now",
-        "For candidate questions or HC updates, reach out to your Invite PE — not Ops"
-      ],
-      "source": "IOPE Newsletter, June 15",
-      "sourceUrl": null,
-      "priority": "medium",
-      "tags": [
-        "all"
-      ],
-      "tp": {
         "priority": "yellow",
-        "audience": "all recruiters",
-        "point": "HC questions now go to your PE, not Ops."
+        "audience": "All recruiters",
+        "point": "Stop using comp band GSheets — they no longer work. Use the live Workday report instead. Share the bookmark link with your team."
       }
     },
     {
-      "title": "Process Changes: Flag GH System Changes Early",
-      "summary": "Increased volume of urgent GH system changes causing issues. Flag process changes ASAP so PeopleTech can test.",
+      "title": "Process Changes Require Early Flagging to IOPE",
+      "summary": "Increase in urgent system change requests noted. All process changes that impact Greenhouse configuration must be flagged early.",
       "bullets": [
-        "Applies to: custom fields (offer detail/job info), verbiage changes, any system configuration",
-        "PeopleTech partners with Invite to test/configure in GH before go-live",
-        "Not sure if it's a system change? Submit a ticket at go/phc to be safe"
+        "Process changes include: custom field updates (offer detail/job info), verbiage changes, any system configuration.",
+        "Submit a ticket via go/phc if unsure whether a change has system impact.",
+        "Avoid rush changes that bypass validation/testing."
       ],
-      "source": "IOPE Newsletter, June 15",
-      "sourceUrl": null,
+      "source": "IOPE Newsletter – June 15, 2026",
+      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
       "priority": "medium",
-      "tags": [
-        "all"
-      ],
-      "tp": {
-        "priority": "yellow",
-        "audience": "all recruiters",
-        "point": "Heads up: flag any process changes that touch GH system settings early — submit a ticket if unsure."
-      }
-    },
-    {
-      "title": "FY27 Offer Calculators Updated",
-      "summary": "Updated offer calculators for L1–L6 reflecting new variable comp targets are live.",
-      "bullets": [
-        "L6 variable target: now 25%",
-        "L1–L5 Salary: L1–L3 = 5%, L4 = 7.5%, L5 = 10%",
-        "L1–L5 Hourly: $1,250 flat variable target",
-        "Use for all offers going forward"
-      ],
-      "source": "#invite-team, Kristin Ruehle, June 12",
-      "sourceUrl": "https://drive.google.com/drive/folders/1nljFfbfxlXRP7XqSSFscZ6Mea8t7Iq5z",
-      "priority": "high",
-      "tags": [
-        "all"
-      ],
-      "tp": {
-        "priority": "red",
-        "audience": "all recruiters",
-        "point": "Use the updated FY27 offer calculators for all new offers. L6 variable is now 25%."
-      }
-    },
-    {
-      "title": "Scorecards Must Include a Human-Written Summary",
-      "summary": "HC pushback increasing on AI-only transcripts. Every scorecard needs a human-authored summary.",
-      "bullets": [
-        "Raw BrightHire/AI transcripts alone are NOT sufficient — every interviewer must write their own take",
-        "Do NOT submit to HC if a scorecard is missing its summary",
-        "Hold your interviewers accountable; automations to ease this are in progress"
-      ],
-      "source": "#invite-team, Kristin Ruehle, June 11",
-      "sourceUrl": null,
-      "priority": "high",
-      "tags": [
-        "all"
-      ],
-      "tp": {
-        "priority": "red",
-        "audience": "all recruiters",
-        "point": "Remind your panels: AI transcript alone isn't a scorecard — every interviewer needs to write their own summary."
-      }
-    },
-    {
-      "title": "VMA Evolution: Comms Going Out This Week",
-      "summary": "VMA Evolution communications are going out to the broader team this week.",
-      "bullets": [
-        "Invite Ops is reimagining the VMA program to align with Gusto's direction and ensure scalability",
-        "Watch for comms in #invite-team"
-      ],
-      "source": "#invite-pes, Kristin Ruehle, June 12",
-      "sourceUrl": null,
-      "priority": "medium",
-      "tags": [
-        "all"
-      ],
-      "tp": {
-        "priority": "yellow",
-        "audience": "all recruiters",
-        "point": "VMA Evolution comms dropping this week — heads up so your recruiters aren't caught off guard."
-      }
-    },
-    {
-      "title": "InviteOS: Pending Actions + Feedback Button Live",
-      "summary": "New InviteOS features released: Pending Actions tab and a Feedback button.",
-      "bullets": [
-        "Pending Actions: surfaces items needing your attention",
-        "Feedback button: submit in-product feedback directly",
-        "Team nudged to use InviteOS daily as adoption ramps"
-      ],
-      "source": "#invite-team, Elan, June 12 & June 15",
-      "sourceUrl": null,
-      "priority": "medium",
-      "tags": [
-        "all"
-      ],
-      "tp": {
-        "priority": "yellow",
-        "audience": "all recruiters",
-        "point": "InviteOS has new features — Pending Actions and a Feedback button. Encourage your team to use it daily."
-      }
-    },
-    {
-      "title": "Gabe Cadavillo Departing",
-      "summary": "Gabe Cadavillo is leaving the team.",
-      "bullets": [
-        "Departure announced by Lisa in #invite-team"
-      ],
-      "source": "#invite-team, Lisa, June 11",
-      "sourceUrl": null,
-      "priority": "low",
       "tags": [
         "all"
       ],
       "tp": {
         "priority": "green",
-        "audience": "all",
-        "point": "FYI — Gabe Cadavillo is departing."
+        "audience": "All recruiters",
+        "point": "If you're aware of any upcoming process changes that touch Greenhouse, flag them to IOPE early — don't wait until it's urgent."
+      }
+    },
+    {
+      "title": "Hiring Committee: Invite Leadership Now Facilitating",
+      "summary": "Invite Leadership (PEs) are now facilitating HC sessions and follow-ups. Invite Ops is still supporting with candidate preps.",
+      "bullets": [
+        "For questions or updates on submitted candidates, reach out to your Invite PE — not Invite Ops.",
+        "Invite Ops continues to handle candidate prep support."
+      ],
+      "source": "IOPE Newsletter – June 15, 2026",
+      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
+      "priority": "medium",
+      "tags": [
+        "all"
+      ],
+      "tp": {
+        "priority": "yellow",
+        "audience": "All recruiters",
+        "point": "HC ownership has shifted — Invite PEs are now running HC sessions and follow-ups. Direct candidate status questions to your PE, not Invite Ops."
+      }
+    },
+    {
+      "title": "Variable Cash Award Field in Greenhouse Offer Details",
+      "summary": "New question added to GH offer details: 'Are they receiving a % Variable Cash Award?' with three options.",
+      "bullets": [
+        "No - Hourly/Not Eligible: no VC verbiage in offer",
+        "Yes - US Candidate: populates US-based VC verbiage",
+        "Yes - CANADA Candidate: populates Canada-based VC verbiage",
+        "Variable targets range 5–10% depending on level (L1-L3: 5%, L4: 7.5%, L5: 10%); 50% individual / 50% company split.",
+        "Double-check offer details before sending — accuracy is critical."
+      ],
+      "source": "IOPE Newsletter – June 15, 2026",
+      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
+      "priority": "high",
+      "tags": [
+        "all"
+      ],
+      "tp": {
+        "priority": "red",
+        "audience": "All recruiters extending offers",
+        "point": "New Variable Cash Award field is live in Greenhouse. You must select the correct option for every offer — it determines which VC verbiage appears in the offer letter."
       }
     }
   ],
   "keyEvents": [
     {
-      "theme": "Upcoming Holiday",
+      "theme": "Current Cycle Priorities (InviteOS & Ops)",
       "tags": [
         "all"
       ],
       "items": [
         {
-          "heading": "Juneteenth — Friday June 19",
+          "heading": "Auto-Population of Offer Details — In Progress",
           "bullets": [
-            "Juneteenth National Independence Day is Friday June 19 — company holiday",
-            "Plan interview scheduling, offers, and candidate comms around the long weekend"
+            "Invite Ops + PeopleTech are working to auto-populate job-related fields in offer details to reduce manual effort.",
+            "More details coming soon."
           ],
-          "source": "#invite-pes, Kristin Ruehle, June 9",
-          "sourceUrl": null,
-          "tp": {
-            "priority": "yellow"
-          }
+          "source": "IOPE Newsletter – June 15, 2026",
+          "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
+          "tp": null
+        },
+        {
+          "heading": "IKB Migration to Notion — Ongoing",
+          "bullets": [
+            "Ops continues migrating Invite Knowledge Base (IKB) resources into Notion.",
+            "Goal: consolidated, simpler navigation for all IKB resources."
+          ],
+          "source": "IOPE Newsletter – June 15 & June 8, 2026",
+          "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
+          "tp": null
         }
       ]
     }
