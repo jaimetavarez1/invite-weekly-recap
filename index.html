@@ -298,6 +298,61 @@
     return { orgPolicy, keyEvents, peOrgUpdates };
   }
 
+
+  // ── Leadership Hub (live Notion query) ───────────────────────────────────────
+  async function loadLeadershipHub() {
+    if (typeof window.cowork?.callMcpTool !== 'function') return { cascades: [], actionItems: [] };
+    const TOOL = 'mcp__a4403969-aedc-4972-a908-b60ec95c4aaf__notion-query-data-sources';
+    const CASCADE_DS  = 'collection://7c90c5eb-ca2f-42c1-a29a-66e2d7bbbbd9';
+    const ACTION_DS   = 'collection://07af0c0a-3fe8-4531-af0a-fe315fda0aed';
+    try {
+      const [cr, ar] = await Promise.all([
+        window.cowork.callMcpTool(TOOL, { data: {
+          data_source_urls: [CASCADE_DS],
+          query: `SELECT "Action","Status","date:Due Date:start","Notes" FROM "${CASCADE_DS}" WHERE "Status" NOT IN ('Cascaded ✓','Archived') ORDER BY createdTime DESC`
+        }}),
+        window.cowork.callMcpTool(TOOL, { data: {
+          data_source_urls: [ACTION_DS],
+          query: `SELECT "Action","Status","Priority","date:Due Date:start","Notes" FROM "${ACTION_DS}" WHERE "Status" NOT IN ('Done ✓','Archived') ORDER BY createdTime DESC`
+        }})
+      ]);
+      const parse = r => {
+        if (r?.structuredContent?.results) return r.structuredContent.results;
+        try { return JSON.parse(r?.content?.[0]?.text || '{}').results || []; } catch { return []; }
+      };
+      return { cascades: parse(cr), actionItems: parse(ar) };
+    } catch(e) { console.warn('Leadership Hub load failed:', e); return { cascades: [], actionItems: [] }; }
+  }
+
+  function injectLeadershipHub(data, hub) {
+    const HUB_URL = 'https://app.notion.com/p/383ad673c6c2816886d2d98e7e1996f3';
+    // Cascades → orgPolicy items (prepend)
+    const cascadeItems = (hub.cascades || []).map(row => {
+      const bullets = [];
+      if (row['date:Due Date:start']) bullets.push('Due: ' + row['date:Due Date:start']);
+      if (row.Notes) bullets.push(row.Notes);
+      return { title: row.Action, bullets, source: 'Leadership Hub', sourceUrl: HUB_URL,
+               priority: 'high', tags: ['all'], tp: { priority: 'yellow', point: row.Action } };
+    });
+    if (cascadeItems.length) data.orgPolicy = [...cascadeItems, ...(data.orgPolicy || [])];
+
+    // Action Items → keyEvents group (prepend)
+    const aiItems = (hub.actionItems || []).map(row => {
+      const bullets = [];
+      if (row.Priority) bullets.push(row.Priority);
+      if (row['date:Due Date:start']) bullets.push('Due: ' + row['date:Due Date:start']);
+      if (row.Notes) bullets.push(row.Notes);
+      const tpPriority = (row.Priority || '').includes('🔴') || (row.Priority || '').includes('🔴') ? 'red'
+                       : (row.Priority || '').includes('🟡') || (row.Priority || '').includes('🟡') ? 'yellow' : 'green';
+      return { heading: row.Action, bullets, source: 'Leadership Hub', sourceUrl: HUB_URL,
+               tp: { priority: tpPriority } };
+    });
+    if (aiItems.length) {
+      data.keyEvents = [{ theme: 'PE Action Items', tags: ['all'], items: aiItems }, ...(data.keyEvents || [])];
+    }
+    return data;
+  }
+
   // ── Relative time ────────────────────────────────────────────────────────────
   function relTime(iso) {
     if (!iso) return null;
@@ -727,8 +782,8 @@
       `<div class="status-loading"><div class="status-spinner"></div>&nbsp;Loading latest data…</div>`;
 
     try {
-      const { shared, peFiles } = await loadAllData();
-      const merged = mergeData(shared, peFiles);
+      const [{ shared, peFiles }, hub] = await Promise.all([loadAllData(), loadLeadershipHub()]);
+      const merged = injectLeadershipHub(mergeData(shared, peFiles), hub);
 
       selIdCounter = 0; // reset IDs for fresh render
 
