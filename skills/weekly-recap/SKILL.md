@@ -306,7 +306,7 @@ def gh_push(path, data_dict, message):
 ## Step 5 — Create Notion page
 
 **Parent page ID:** `376ad673-c6c2-8196-8e2e-e09dbc954986`
-**Page title format:** `📋 Week of [start] – [end], [year]`
+**Page title format:** `Week of [end], [year]`
 
 Always use `notion-create-pages` to create a new page. Do NOT search for or update an existing page — each run creates a fresh page to preserve history.
 
