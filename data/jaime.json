@@ -1,52 +1,31 @@
 {
   "pe": "jaime",
-  "week": "June 9 – June 15, 2026",
-  "refreshedAt": "2026-06-15T22:49:20.431437Z",
+  "week": "June 22, 2026",
+  "refreshedAt": "2026-06-22T19:05:20.401191Z",
   "updates": [
     {
-      "heading": "R&D Deep Work Week — June 15–19",
+      "heading": "R&D Open Reqs Tracker Built by Kebone",
       "bullets": [
-        "R&D Deep Work Week is live this week — meetings across R&D are being cancelled or moved async",
-        "Plan interview scheduling accordingly; check with candidates/panels before booking new loops",
-        "Source: #data-hiring-fy26, Vignesh Mahendran, June 15 (asking about interview scheduling impact)"
+        "Kebone built a Google Apps Script-based open reqs tracker for all of R&D, inspired by Brandon's PM tracker",
+        "Auto-updates daily at 9am — should reflect current state each morning",
+        "JD tracker section needs manual updates; Kebone plans to tackle that later this week",
+        "Source: #r-and-d-invite-leadership (June 15)"
       ]
     },
     {
-      "heading": "L5 Offers: 5/5 Accepted",
+      "heading": "Kebone Requested Engineering HC Doc Access (Data Eng Historical Data)",
       "bullets": [
-        "R&D closed 5 L5 offers — all 5 accepted",
-        "Kristin shoutout in #r-and-d-invite-all: 'Jaime crushed the Mike Tria meeting'",
-        "Source: #r-and-d-invite-all, Kristin Ruehle, June 12"
+        "Kebone requested access to the R&D Engineering Hiring Committee feedback doc",
+        "Purpose: deep dive into historical Data Engineering role signal and feedback",
+        "Flagged in #r-and-d-invite-leadership June 17 — follow up to confirm access was granted"
       ]
     },
     {
-      "heading": "R&D Open Reqs Tracker Live",
+      "heading": "Talent Market Signal: Robinhood Cutting ~300 Roles",
       "bullets": [
-        "Kebone shared the R&D open reqs tracker — provides live visibility into headcount across all R&D orgs",
-        "Source: #invite-pes, Kebone, June 10"
-      ]
-    },
-    {
-      "heading": "Saumya Chopra Joining PE Meeting",
-      "bullets": [
-        "Saumya Chopra will join the upcoming PE meeting to discuss req approval pain points",
-        "Bring specific examples if you have them",
-        "Source: #invite-pes, Laura Lockwood, June 10"
-      ]
-    },
-    {
-      "heading": "Welcome Party Venue Confirmed: Bierstadt Lagerhaus",
-      "bullets": [
-        "Bierstadt Lagerhaus confirmed as the venue for the upcoming welcome party",
-        "Source: #invite-pes, Kristin Ruehle, June 15"
-      ]
-    },
-    {
-      "heading": "Cycle 2 Planning",
-      "bullets": [
-        "Cycle 2 planning is underway — Cycle Planning Tracker has action items pending",
-        "Source: #invite-pes, Kristin Ruehle, June 9 weekly update | #invite-pes, Kristin Ruehle, June 10",
-        "Source: #invite-pes, Kristin Ruehle, June 9 weekly update | #invite-pes, Kristin Ruehle, June 10"
+        "Robinhood announced a restructuring cutting nearly 300 roles",
+        "Could surface engineering and product talent — worth monitoring for passive sourcing on active R&D reqs",
+        "Source: #r-and-d-invite-all (June 16)"
       ]
     }
   ]
