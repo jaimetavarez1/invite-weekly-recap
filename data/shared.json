@@ -1,38 +1,18 @@
 {
   "week": "June 15 – June 22, 2026",
-  "refreshedAt": "2026-06-22T16:11:36.561832+00:00",
-  "refreshedBy": "teresa",
+  "refreshedAt": "2026-06-22T16:00:00Z",
+  "refreshedBy": "lisa",
   "orgPolicy": [
     {
-      "title": "New Broker License Verbiage in Offer Letters",
-      "summary": "Updated verbiage for the 'Does this role require a broker license?' offer question for CX & Sales roles.",
+      "title": "California Relocation Documents — New Dropdown Required",
+      "summary": "Effective June 18, a new dropdown now appears in Greenhouse when candidates opt into relocation. Recruiters must select whether the destination is California — this determines which relocation/clawback documents are generated (California Bill 692 compliance).",
       "bullets": [
-        "When 'Yes' is selected for broker license question, updated verbiage now populates in the offer letter.",
-        "New language covers Licensing Requirement, timeline (3 months), and Licensing Costs (Gusto reimburses approved costs).",
-        "Applies to CX & Sales roles only — no change needed for other orgs."
+        "New dropdown appears in GH when candidate opts into relocation",
+        "Select 'Yes' if relocating to California; 'No' if not",
+        "California requires specific legal (clawback) language per Bill 692",
+        "Effective June 18, 2026"
       ],
-      "source": "IOPE Newsletter – June 22, 2026",
-      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
-      "priority": "high",
-      "tags": [
-        "all"
-      ],
-      "tp": {
-        "priority": "yellow",
-        "audience": "Recruiters supporting CX & Sales roles",
-        "point": "Offer letter verbiage for broker license roles has been updated — double-check your offer details before sending."
-      }
-    },
-    {
-      "title": "Updated Relocation Document for California",
-      "summary": "Effective June 18: new dropdown field in offer details to identify California-bound relocations, ensuring correct legal documents are generated.",
-      "bullets": [
-        "New dropdown: 'Is the relocation to California?' — select Yes or No.",
-        "California requires specific clawback language in relocation repayment agreements.",
-        "The correct documents will generate automatically based on your selection.",
-        "This went live June 18 — ensure all new relocation offers use the updated field."
-      ],
-      "source": "IOPE Newsletter – June 22, 2026",
+      "source": "#invite-team, IOPE Newsletter June 22",
       "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
       "priority": "high",
       "tags": [
@@ -40,41 +20,81 @@
       ],
       "tp": {
         "priority": "red",
-        "audience": "All recruiters with candidates opting into relocation",
-        "point": "New California relocation field is live — always select Yes or No when a candidate is relocating. Selecting the wrong option generates the wrong legal documents."
+        "audience": "All recruiters handling relocation",
+        "point": "New field in GH for CA relocation — make sure you’re selecting correctly or the wrong docs get generated."
       }
     },
     {
-      "title": "Compensation Bands Now in Workday (GSheets Deprecated)",
-      "summary": "The comp band GSheets are no longer functioning. Workday now has a live report for salary ranges and compensation bands.",
+      "title": "Broker License Verbiage Updated in Offer Letters",
+      "summary": "For CX and Sales roles requiring a broker license, updated verbiage now populates in offer letters when 'Yes' is selected on the broker license question. Verbiage covers 3-month completion window, reassignment risk, and reimbursement terms.",
       "bullets": [
-        "Search by Job Family to get all ranges across levels and comp zones.",
-        "Access: https://wd5.myworkday.com/gusto/d/inst/1422$5089/rel-task/3001$14.htmld — bookmark it.",
-        "All Job Requisitions in Workday now have comp bands assigned; data is also feeding into Greenhouse & PeopleOS.",
-        "New Hire grant information still in development; expected to be in place shortly."
+        "Applies to CX and Sales roles with a broker license requirement",
+        "New verbiage: 3-month timeline, possible reassignment if not completed, and reimbursement policy",
+        "California law carveouts included where applicable"
       ],
-      "source": "IOPE Newsletter – June 15, 2026",
+      "source": "IOPE Newsletter June 22",
       "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
+      "priority": "medium",
+      "tags": [
+        "all"
+      ],
+      "tp": {
+        "priority": "yellow",
+        "audience": "Recruiters on CX and Sales roles",
+        "point": "Broker license verbiage in offer letters has been updated — check the IOPE doc for the new language."
+      }
+    },
+    {
+      "title": "Comp Bands GSheets Gone — Use Workday Report",
+      "summary": "The legacy comp bands Google Sheets are no longer functioning. PeopleTech built a replacement Workday report. All job reqs now have comp bands assigned in Workday, feeding downstream into Greenhouse and PeopleOS. New Hire grant data still in development.",
+      "bullets": [
+        "Bookmark: https://wd5.myworkday.com/gusto/d/inst/1422$5089/rel-task/3001$14.htmld",
+        "Search by Job Family; returns all ranges across levels and comp zones",
+        "All reqs now have bands; GH and PeopleOS reflect this",
+        "New Hire grant info still in development"
+      ],
+      "source": "#invite-team, IOPE Newsletter June 15",
+      "sourceUrl": "https://wd5.myworkday.com/gusto/d/inst/1422$5089/rel-task/3001$14.htmld",
       "priority": "high",
+      "tags": [
+        "all"
+      ],
+      "tp": {
+        "priority": "red",
+        "audience": "All recruiters",
+        "point": "Comp bands GSheets are gone — everyone needs the Workday report now. Bookmark the link."
+      }
+    },
+    {
+      "title": "Offers Over Max of Mature — Comp Required, Loop In Brian",
+      "summary": "Reminder: any offer going over the max of mature must include comp justification. PEs must contact Brian before proceeding. A hiring PE recently wasn’t aware, so cascading as a reminder.",
+      "bullets": [
+        "Any offer over max of mature requires comp review",
+        "PE must reach out to Brian before proceeding",
+        "Applies to all pods"
+      ],
+      "source": "#invite-pes, June 16",
+      "sourceUrl": null,
+      "priority": "medium",
       "tags": [
         "all"
       ],
       "tp": {
         "priority": "yellow",
         "audience": "All recruiters",
-        "point": "Stop using comp band GSheets — they no longer work. Use the live Workday report instead. Share the bookmark link with your team."
+        "point": "Reminder: offers over max of mature need comp involved — loop Brian in before moving forward."
       }
     },
     {
-      "title": "Process Changes Require Early Flagging to IOPE",
-      "summary": "Increase in urgent system change requests noted. All process changes that impact Greenhouse configuration must be flagged early.",
+      "title": "Unhire Process Change — Recruiters No Longer Execute Directly",
+      "summary": "Recruiters will no longer need to process unhires themselves. Michelle Eakin’s team takes it from here. The process remains the same: ping in #invite_notifications.",
       "bullets": [
-        "Process changes include: custom field updates (offer detail/job info), verbiage changes, any system configuration.",
-        "Submit a ticket via go/phc if unsure whether a change has system impact.",
-        "Avoid rush changes that bypass validation/testing."
+        "Ping #invite_notifications as before",
+        "Michelle Eakin’s team picks up and executes the unhire",
+        "No change to recruiter workflow entry point"
       ],
-      "source": "IOPE Newsletter – June 15, 2026",
-      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
+      "source": "#invite-pes, June 18",
+      "sourceUrl": null,
       "priority": "medium",
       "tags": [
         "all"
@@ -82,76 +102,186 @@
       "tp": {
         "priority": "green",
         "audience": "All recruiters",
-        "point": "If you're aware of any upcoming process changes that touch Greenhouse, flag them to IOPE early — don't wait until it's urgent."
+        "point": "Good news: you no longer have to process unhires directly. Ping #invite_notifications and it’s handled."
       }
     },
     {
-      "title": "Hiring Committee: Invite Leadership Now Facilitating",
-      "summary": "Invite Leadership (PEs) are now facilitating HC sessions and follow-ups. Invite Ops is still supporting with candidate preps.",
+      "title": "Process/System Change Flag Protocol — Submit Tickets Early",
+      "summary": "IOPE flagged an uptick in last-minute system change requests. Any process changes that require GH configuration (custom fields, verbiage, etc.) must be submitted via go/phc ticket early. Rush changes carry quality risk.",
       "bullets": [
-        "For questions or updates on submitted candidates, reach out to your Invite PE — not Invite Ops.",
-        "Invite Ops continues to handle candidate prep support."
+        "Covers: custom offer detail fields, verbiage changes, any GH configuration",
+        "Submit a go/phc ticket when in doubt",
+        "Rush changes put quality and testing at risk — flag early"
       ],
-      "source": "IOPE Newsletter – June 15, 2026",
+      "source": "IOPE Newsletter June 15",
       "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
-      "priority": "medium",
+      "priority": "low",
       "tags": [
         "all"
       ],
-      "tp": {
-        "priority": "yellow",
-        "audience": "All recruiters",
-        "point": "HC ownership has shifted — Invite PEs are now running HC sessions and follow-ups. Direct candidate status questions to your PE, not Invite Ops."
-      }
-    },
-    {
-      "title": "Variable Cash Award Field in Greenhouse Offer Details",
-      "summary": "New question added to GH offer details: 'Are they receiving a % Variable Cash Award?' with three options.",
-      "bullets": [
-        "No - Hourly/Not Eligible: no VC verbiage in offer",
-        "Yes - US Candidate: populates US-based VC verbiage",
-        "Yes - CANADA Candidate: populates Canada-based VC verbiage",
-        "Variable targets range 5–10% depending on level (L1-L3: 5%, L4: 7.5%, L5: 10%); 50% individual / 50% company split.",
-        "Double-check offer details before sending — accuracy is critical."
-      ],
-      "source": "IOPE Newsletter – June 15, 2026",
-      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
-      "priority": "high",
-      "tags": [
-        "all"
-      ],
-      "tp": {
-        "priority": "red",
-        "audience": "All recruiters extending offers",
-        "point": "New Variable Cash Award field is live in Greenhouse. You must select the correct option for every offer — it determines which VC verbiage appears in the offer letter."
-      }
+      "tp": null
     }
   ],
   "keyEvents": [
     {
-      "theme": "Current Cycle Priorities (InviteOS & Ops)",
+      "theme": "FY27 Cycle 2 Launch",
       "tags": [
         "all"
       ],
       "items": [
         {
-          "heading": "Auto-Population of Offer Details — In Progress",
+          "heading": "C2 Is Live — Kicked Off June 15",
           "bullets": [
-            "Invite Ops + PeopleTech are working to auto-populate job-related fields in offer details to reduce manual effort.",
-            "More details coming soon."
+            "Six Invite C2 initiatives: Map TA Skill Gaps; Define L&D Roadmap & Learning Facilitation Plan; Run End-to-End Recruiter AI Workflow Discovery; Design & Pilot Standardized Intake Process; Build V1 Centralized Recruiting Reporting Dashboard; Headcount & Capacity Planning Discovery & Framework",
+            "Kristin and Laura are modeling in-office/hub-based hiring numbers this week; results coming to People Staff",
+            "InviteOS and PeopleOS features continue to roll out alongside C2 work"
           ],
-          "source": "IOPE Newsletter – June 15, 2026",
-          "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
+          "source": "#invite-team, June 16",
+          "sourceUrl": null,
+          "tp": {
+            "priority": "green"
+          }
+        }
+      ]
+    },
+    {
+      "theme": "People Staff Passdowns",
+      "tags": [
+        "all"
+      ],
+      "items": [
+        {
+          "heading": "FY27 Company OKRs — People Team Owns Objective 5",
+          "bullets": [
+            "Objective 5: 'Grow Impact per Gustie' — 4 KRs currently being scoped",
+            "Several OKRs directly affect how we hire; more detail to come"
+          ],
+          "source": "#invite-team, June 16",
+          "sourceUrl": null,
+          "tp": {
+            "priority": "yellow"
+          }
+        },
+        {
+          "heading": "New Head of Talent Development: Erin Waldron",
+          "bullets": [
+            "Joins from Amazon (~6 years) with a product management lens on talent work",
+            "C2 priorities: redesigning compliance training and mapping the PE user journey",
+            "Close partner to Invite going forward"
+          ],
+          "source": "#invite-team, June 16",
+          "sourceUrl": null,
           "tp": null
         },
         {
-          "heading": "IKB Migration to Notion — Ongoing",
+          "heading": "Finance FinClose AI Demo — Relevant to Invite’s AI Path",
           "bullets": [
-            "Ops continues migrating Invite Knowledge Base (IKB) resources into Notion.",
-            "Goal: consolidated, simpler navigation for all IKB resources."
+            "Finance built an agentic platform to automate their monthly close; days of work now takes minutes",
+            "Design principle: AI off individual desktops and into a governed, durable platform with human review at key gates",
+            "Scott shared this with People Team specifically because Invite is on the same path in C2"
           ],
-          "source": "IOPE Newsletter – June 15 & June 8, 2026",
-          "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
+          "source": "#invite-team, June 16",
+          "sourceUrl": null,
+          "tp": null
+        }
+      ]
+    },
+    {
+      "theme": "Denver Onsite — July 13–14",
+      "tags": [
+        "all"
+      ],
+      "items": [
+        {
+          "heading": "Welcome Party Confirmed: Bierstadt Lagerhaus",
+          "bullets": [
+            "Private bar (3 hrs) + buffet (2 hrs) + large games; timing 5–8 or 5:30–8:30 PM",
+            "4 teams of 10 (one team of 11); Jaime owning bookings",
+            "Hackathon pre-work and Tuesday activity agenda still TBD — PEs asked to weigh in"
+          ],
+          "source": "#invite-pes, June 15",
+          "sourceUrl": "https://docs.google.com/spreadsheets/d/1CD7Bkax-_e-aSVQzhnw-NmUJHXRiE_5WdWuklkoD810/edit",
+          "tp": {
+            "priority": "yellow"
+          }
+        }
+      ]
+    },
+    {
+      "theme": "InviteOS / PeopleOS",
+      "tags": [
+        "all"
+      ],
+      "items": [
+        {
+          "heading": "Recruiters Asked to Log In Daily and Submit Feedback",
+          "bullets": [
+            "PeopleOS is live — log in via Okta every day",
+            "New features actively rolling in; team’s feedback directly shapes what gets built",
+            "Use the 'Share Feedback' button inside the app",
+            "Direct link: https://people-os.gusto.com/"
+          ],
+          "source": "#invite-team, June 15",
+          "sourceUrl": "https://people-os.gusto.com/",
+          "tp": {
+            "priority": "yellow"
+          }
+        }
+      ]
+    },
+    {
+      "theme": "Leadership & Ops Updates",
+      "tags": [
+        "all"
+      ],
+      "items": [
+        {
+          "heading": "Laura Lockwood Starting Leave June 23 — Elan Bailey Covering",
+          "bullets": [
+            "Elan being added to PE meetings and #invite-pes during leave",
+            "Kristin remains primary point of contact"
+          ],
+          "source": "#invite-pes, June 18",
+          "sourceUrl": null,
+          "tp": {
+            "priority": "yellow"
+          }
+        },
+        {
+          "heading": "AI Usage on Invite — Shared Language Coming Before QPRs",
+          "bullets": [
+            "Kristin flagged the need for a shared definition: what does ‘integrator’ mean on Invite re: AI?",
+            "Goal: united baseline POV across pods before QPR conversations",
+            "PEs will cover this with their teams in advance of QPRs"
+          ],
+          "source": "#invite-pes, June 18",
+          "sourceUrl": null,
+          "tp": {
+            "priority": "yellow"
+          }
+        },
+        {
+          "heading": "VMA Practice Simulator Pilot — 1 Nominee Needed Per Team by 7/22",
+          "bullets": [
+            "Lisa requesting 1 recruiter from each PE team to pilot the VMA Practice Simulator",
+            "Simulator lets interviewers practice signal ID, rubric application, and scorecard writing",
+            "Nominees due to Lisa by Monday July 22; she’ll follow up with access and next steps"
+          ],
+          "source": "#invite-pes, June 18 (Lisa Pham)",
+          "sourceUrl": null,
+          "tp": {
+            "priority": "yellow"
+          }
+        },
+        {
+          "heading": "Design Thinking Workshop Outputs Informing C2 Workstreams",
+          "bullets": [
+            "Last week’s Invite Workflow Design Thinking Workshop themes are directly shaping C2 priorities",
+            "Deck updated to include Group 1 content on hiring committee",
+            "PE team reviewing inputs over coming weeks; more sessions planned for future"
+          ],
+          "source": "#invite-team, June 18 (Kebone)",
+          "sourceUrl": "https://docs.google.com/presentation/d/12KZavRLzHD0vCNQmSspF5xhjSc-kEntY/edit",
           "tp": null
         }
       ]
