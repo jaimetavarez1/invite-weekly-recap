@@ -225,7 +225,10 @@ For each item:
 - Assign priority: `red` = action required or high urgency, `yellow` = important/FYI, `green` = informational
 
 
-**Leadership Hub (leadershipHub)** — sourced from Notion (Step 1c). Include all active cascade items and open action items as-is. Do not filter by date — these are standing items until marked Done/Cascaded in Notion. Surface them in both the PE JSON and the Notion recap page.
+**Leadership Hub items (from Step 1c):**
+Classify Leadership Hub items directly into existing buckets — no separate section:
+- **Cascade items** (not yet "Cascaded ✓") → add as `orgPolicy` items: `title` = the action, `bullets` = [notes if any, due date if any], `source` = "Leadership Hub", `priority` = "high", `tags` = ["all"]
+- **PE Action Items** (not Done/Archived) → add as a `keyEvents` group: `theme` = "PE Action Items", items each with `heading` = action, `bullets` = [priority label, due date if any, notes if any], `source` = "Leadership Hub", `tp.priority` = red/yellow/green based on 🔴/🟡/🟢 prefix
 
 **Departed employee filter:** The following people are no longer at Gusto — skip any message authored by them entirely, do not include in any section:
 - Roberto Segovia (roberto.segovia@gusto.com)
@@ -296,15 +299,7 @@ Push `data/<PE_KEY>.json` (e.g. `data/kebone.json`):
   "refreshedAt": "<use: datetime.datetime.utcnow().isoformat() + 'Z'>",  // ALWAYS compute at runtime — never hardcode
   "updates": [
     { "heading": "", "bullets": [] }
-  ],
-  "leadershipHub": {
-    "cascades": [
-      { "action": "", "status": "", "toBeCompletedBy": [], "dueDate": null, "notes": "" }
-    ],
-    "actionItems": [
-      { "action": "", "status": "", "priority": "", "dueDate": null, "notes": "" }
-    ]
-  }
+  ]
 }
 ```
 
@@ -394,10 +389,6 @@ Then:
 ## 📅 Key Events & Decisions
 (keyEvents items — ### per theme, - bullets, *italic* source citations)
 
----
-
-## 📣 Pass-Downs & Action Items
-(from the Leadership Hub — active cascades first, then open PE action items grouped by priority: 🔴 Urgent → 🟡 This Week → 🟢 This Cycle)
 ```
 
 Do NOT include PE-specific org updates in the Notion page. That data lives in the GitHub JSON and the live artifact only.
