@@ -305,9 +305,20 @@ def gh_push(path, data_dict, message):
 
 **If the GitHub push fails with a network or SSL error (e.g. `URLError`, `SSLEOFError`, HTTP 000, or 404):**
 
-> ⚠️ **GitHub connection failed.** This is usually a Cloudflare authentication issue.
-> **Fix:** Re-authenticate Cloudflare in your browser, then re-run the recap.
-> The Notion page and summary will still be created this run, but your data on the live artifact won't update until the push succeeds.
+Send a Slack DM to the running PE's Slack user ID (see roster below) using `slack_send_message` with this message:
+
+> ⚠️ *Invite Recap — GitHub Push Failed*
+> The recap ran successfully but your data couldn't be pushed to GitHub. The live artifact won't update until this is fixed.
+> *Fix:* Re-authenticate Cloudflare in your browser, then re-run the recap.
+
+PE Slack user IDs for DMs:
+- jaime → U02E8CN9Z7V
+- teresa → search slack for teresa.waggoner@gusto.com
+- lisa → search slack for lisa.pham@gusto.com
+- michelle → search slack for michelle.cordray@gusto.com
+- kebone → search slack for kebone.moloko@gusto.com
+
+Then continue to the Notion step — the page should still be created even if GitHub failed.
 
 ## Step 5 — Create Notion page
 
