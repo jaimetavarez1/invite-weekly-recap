@@ -303,6 +303,12 @@ def gh_push(path, data_dict, message):
         return json.loads(r.read())['commit']['sha'][:12]
 ```
 
+**If the GitHub push fails with a network or SSL error (e.g. `URLError`, `SSLEOFError`, HTTP 000, or 404):**
+
+> ⚠️ **GitHub connection failed.** This is usually a Cloudflare authentication issue.
+> **Fix:** Re-authenticate Cloudflare in your browser, then re-run the recap.
+> The Notion page and summary will still be created this run, but your data on the live artifact won't update until the push succeeds.
+
 ## Step 5 — Create Notion page
 
 **Parent page ID:** `376ad673-c6c2-8196-8e2e-e09dbc954986`
