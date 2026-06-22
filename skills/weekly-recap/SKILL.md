@@ -274,33 +274,42 @@ TOKEN = "PASTE_REAL_TOKEN_HERE"   # replace with actual github_token from config
 OWNER = "jaimetavarez1"
 REPO  = "invite-weekly-recap"
 
-def gh_push(path, data_dict, message):
+def gh_push(path, data_dict, message, retries=2):
+    import time
     url = f"https://api.github.com/repos/{OWNER}/{REPO}/contents/{path}"
-    req = urllib.request.Request(url, headers={
-        "Authorization": f"token {TOKEN}",
-        "Accept": "application/vnd.github.v3+json"
-    })
-    sha = None
-    try:
-        with urllib.request.urlopen(req) as r:
-            sha = json.loads(r.read())['sha']
-    except:
-        pass
-    content = base64.b64encode(
-        json.dumps(data_dict, indent=2, ensure_ascii=False).encode()
-    ).decode()
-    body = {"message": message, "content": content}
-    if sha:
-        body["sha"] = sha
-    req2 = urllib.request.Request(
-        url, data=json.dumps(body).encode(), method="PUT",
-        headers={
-            "Authorization": f"token {TOKEN}",
-            "Content-Type": "application/json"
-        }
-    )
-    with urllib.request.urlopen(req2) as r:
-        return json.loads(r.read())['commit']['sha'][:12]
+    last_error = None
+    for attempt in range(1, retries + 2):  # tries: 1, 2, 3 (initial + 2 retries)
+        try:
+            req = urllib.request.Request(url, headers={
+                "Authorization": f"token {TOKEN}",
+                "Accept": "application/vnd.github.v3+json"
+            })
+            sha = None
+            try:
+                with urllib.request.urlopen(req) as r:
+                    sha = json.loads(r.read())['sha']
+            except:
+                pass
+            content = base64.b64encode(
+                json.dumps(data_dict, indent=2, ensure_ascii=False).encode()
+            ).decode()
+            body = {"message": message, "content": content}
+            if sha:
+                body["sha"] = sha
+            req2 = urllib.request.Request(
+                url, data=json.dumps(body).encode(), method="PUT",
+                headers={
+                    "Authorization": f"token {TOKEN}",
+                    "Content-Type": "application/json"
+                }
+            )
+            with urllib.request.urlopen(req2) as r:
+                return json.loads(r.read())['commit']['sha'][:12]
+        except Exception as e:
+            last_error = e
+            if attempt <= retries:
+                time.sleep(3)  # wait 3s before retrying
+    raise last_error  # all attempts failed — caller handles notification
 ```
 
 **If the GitHub push fails with a network or SSL error (e.g. `URLError`, `SSLEOFError`, HTTP 000, or 404):**
