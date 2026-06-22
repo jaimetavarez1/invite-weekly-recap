@@ -1,55 +1,50 @@
 {
   "pe": "lisa",
-  "week": "June 8 – June 15, 2026",
-  "refreshedAt": "2026-06-15T17:00:00Z",
+  "week": "June 15 – June 22, 2026",
+  "refreshedAt": "2026-06-22T16:00:00Z",
   "updates": [
     {
-      "heading": "Gabe Cadavillo Departing End of Week",
+      "heading": "VMA Interviewers Needed — L1 Jr. Onboarding Associate Sprint",
       "bullets": [
-        "Gabe is leaving Gusto at the end of this week after 4+ years on the GTM pod",
-        "Leaving in great standing — please join in wishing him well",
-        "Backfill planning and req coverage will need to be addressed — reach out to Lisa with questions"
+        "Grace flagged 3–5 candidates likely needing VMAs between June 18–22",
+        "Existing VMA pool exhausted on short notice — Grace asked team for on-call coverage"
       ]
     },
     {
-      "heading": "Variable Comp: GTM Team Cleared to Communicate",
+      "heading": "Comp Range Access Check-In",
       "bullets": [
-        "Variable cash for salaried L1–L5 is now live — team is cleared to share verbally with candidates in pipeline",
-        "Variable targets: L1–L3: 5%, L4: 7.5%, L5: 10% (50% individual / 50% company performance split)",
-        "New Greenhouse offer field required — see org policy section for full details"
+        "Lisa checked in June 18 on whether team can access new Workday comp ranges",
+        "Anyone with difficulty should flag in the #gtm_invite_pod thread"
       ]
     },
     {
-      "heading": "HM Coverage Cadence Pilot — Testing Next Week",
+      "heading": "Denver Hub Guidance Resolved for Non-MSA Employees",
       "bullets": [
-        "Lisa is piloting a monthly HM sync structure where each recruiter owns a set of HM Talent Advisor relationships",
-        "Testing next week via 1:1s: Gina→Sara Rawson, Grace→Tim Labeau, JT→Shawn Wilson, Will→Jess Moore",
-        "Recruiters need to retitle their 1:1 in Google Calendar (exact format), use Granola to transcribe, and then say 'Sync [HM name]'s notes' to Claude to push to Notion",
-        "Lisa will walk through the 10 monthly sync topics during 1:1"
+        "Grace surfaced guidance for Denver-based folks outside the MSA",
+        "Lisa confirmed: use Grace’s guidance as the plan going forward",
+        "Relevant for JT, Will, and Gina for Denver-based hiring logistics"
       ]
     },
     {
-      "heading": "GTM Pod GEM Dashboard Now Live",
+      "heading": "Talent Insights Slide Deck Templates Shared",
       "bullets": [
-        "Lisa launched a new real-time GEM dashboard for the GTM pod — populated via Greenhouse and GEM",
-        "Shows real-time signal of weekly/monthly/quarterly performance; click into data points to see GH source",
-        "Individual dashboards per recruiter are in progress (have bugs — using shared dashboard for now)",
-        "Feedback requested: missing data? Accuracy issues? Share with Lisa"
+        "Grace shared slide deck templates from the team sync for talent insights presentations to HMs",
+        "Once the Greenhouse MCP is available, Grace will share a skill for auto-generating these slides",
+        "For now, data is being entered manually"
       ]
     },
     {
-      "heading": "Sales Enablement Training — August 3 Start Date Confirmed",
+      "heading": "PeopleOS — GTM Pod Check-In",
       "bullets": [
-        "August start date for Sales Enablement Training is confirmed as August 3",
-        "Applies to: Gina Panacci, Grace Stoughton, John Thomas"
+        "Lisa asked the team to log in to PeopleOS and report back on what they see (June 16)",
+        "Loom walkthrough of new features shared: https://www.loom.com/share/aabf4bd1aec243a39d47abba4df6c82b"
       ]
     },
     {
-      "heading": "Cycle 2 Initiative: Headcount & Capacity Planning Discovery (DRI: Lisa + Jaime)",
+      "heading": "Hiring Manager Survey — Active Push",
       "bullets": [
-        "Lisa and Jaime are DRIs on the Headcount & Capacity Planning Discovery & Framework initiative for Cycle 2",
-        "Headcount planning audit doc (6 sections) was due EOD June 10 from all PEs",
-        "Goal: understand how planning works across orgs today and build a better aligned process"
+        "Lisa reminded team to send the HM Survey at the close of every req with a successful hire",
+        "Responses are coming in; link in the HM Survey GSheet"
       ]
     }
   ]
