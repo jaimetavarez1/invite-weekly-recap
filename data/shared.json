@@ -1,8 +1,48 @@
 {
   "week": "June 15 – June 22, 2026",
-  "refreshedAt": "2026-06-22T16:00:00Z",
+  "refreshedAt": "2026-06-23T18:56:08.590869Z",
   "refreshedBy": "lisa",
   "orgPolicy": [
+    {
+      "title": "People Policy & SOP Repo — Phase 1 Launched",
+      "summary": "The centralized People Policy & SOP repository is now live. Recruiters and PEs should reference this for up-to-date SOPs.",
+      "bullets": [
+        "Phase 1 launched — legal sign-off complete",
+        "Single source of truth for People policies and standard operating procedures",
+        "Additional content being added through C2"
+      ],
+      "source": "People Central Updates",
+      "sourceUrl": "https://sites.google.com/gusto.com/people-central-updates/home",
+      "priority": "medium",
+      "tags": [
+        "all"
+      ],
+      "tp": {
+        "priority": "yellow",
+        "audience": "All Invite",
+        "point": "New SOP repo is live — bookmark it and share with your recruiters"
+      }
+    },
+    {
+      "title": "Greenhouse MCP Launched — AI Recruiting Tool Now Available",
+      "summary": "The Greenhouse MCP integration launched in May 2026, enabling AI-assisted recruiting workflows directly within Greenhouse.",
+      "bullets": [
+        "Launched May 2026 by People Tech",
+        "Enables AI-powered actions within Greenhouse (sourcing, screening, candidate comms)",
+        "Reach out to People Tech if your team hasn't been onboarded"
+      ],
+      "source": "People Central Updates",
+      "sourceUrl": "https://sites.google.com/gusto.com/people-central-updates/home",
+      "priority": "medium",
+      "tags": [
+        "all"
+      ],
+      "tp": {
+        "priority": "green",
+        "audience": "All Invite",
+        "point": "Greenhouse MCP is live — flag to your recruiters if they aren't using it yet"
+      }
+    },
     {
       "title": "California Relocation Documents — New Dropdown Required",
       "summary": "Effective June 18, a new dropdown now appears in Greenhouse when candidates opt into relocation. Recruiters must select whether the destination is California — this determines which relocation/clawback documents are generated (California Bill 692 compliance).",
@@ -123,6 +163,53 @@
     }
   ],
   "keyEvents": [
+    {
+      "theme": "People Central Update — June 17",
+      "tags": [
+        "all"
+      ],
+      "items": [
+        {
+          "heading": "Confluence Goes Read-Only July 2 — People Guide & CoC Launch Unblocks",
+          "bullets": [
+            "Confluence → Notion migration: Confluence goes read-only on July 2",
+            "People Guide + Code of Conduct launch was blocked on this migration — unblocks July 2",
+            "Prep your team: any Confluence content they rely on should be migrated or bookmarked before July 2"
+          ],
+          "source": "People Central Updates",
+          "sourceUrl": "https://sites.google.com/gusto.com/people-central-updates/home",
+          "tp": {
+            "priority": "red"
+          }
+        },
+        {
+          "heading": "FY27-C1 Closing → FY27-C2 Starting",
+          "bullets": [
+            "Wrapping FY27 Cycle 1 and entering Cycle 2 as of June 17",
+            "People team priorities are resetting — expect updated cycle goals from leadership",
+            "Invite Ops: Payout AI eligibility automation shipped (~1.5 hrs/week saved)"
+          ],
+          "source": "People Central Updates",
+          "sourceUrl": "https://sites.google.com/gusto.com/people-central-updates/home",
+          "tp": {
+            "priority": "yellow"
+          }
+        },
+        {
+          "heading": "InviteOS — Broader Rollout Blocked (People Tech)",
+          "bullets": [
+            "InviteOS broader rollout is currently blocked — People Tech tracking",
+            "No ETA provided; follow #ptech-project-updates for status",
+            "Relevant for any recruiters expecting expanded InviteOS access"
+          ],
+          "source": "People Central Updates",
+          "sourceUrl": "https://sites.google.com/gusto.com/people-central-updates/home",
+          "tp": {
+            "priority": "yellow"
+          }
+        }
+      ]
+    },
     {
       "theme": "FY27 Cycle 2 Launch",
       "tags": [
