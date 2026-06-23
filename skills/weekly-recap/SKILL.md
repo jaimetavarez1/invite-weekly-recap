@@ -107,6 +107,23 @@ Read the two most recent entries from the IOPE Newsletter Google Doc via Glean:
 
 Use the `read_document` tool (Glean). If inaccessible, note it and continue.
 
+
+## Step 2b — Read People Central Updates (Bi-weekly)
+
+Read the People Central Updates Google Site via Glean:
+`https://sites.google.com/gusto.com/people-central-updates/home`
+
+Use the `read_document` tool (Glean). If inaccessible, try a Glean search:
+`search` with query `"people central updates" site:sites.google.com` to find the most recent entries.
+
+This is a bi-weekly People team publication. Pull any entries published in the past **14 days** (two recap cycles). For each update found:
+- Classify into `orgPolicy` if it describes a policy, process, or tooling change affecting recruiting
+- Classify into `keyEvents` if it's an announcement, decision, or upcoming date
+- Tag with `["all"]` — these apply across all orgs
+- Set `source` = "People Central Updates" and `sourceUrl` = "https://sites.google.com/gusto.com/people-central-updates/home"
+
+If the site returns no new content within the past 14 days, skip silently.
+
 ## Step 3 — Synthesize content
 
 Classify everything you read into two buckets:
