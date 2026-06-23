@@ -1,0 +1,96 @@
+{
+  "pe": "michelle",
+  "week": "June 22 – June 28, 2026",
+  "refreshedAt": "2026-06-23T21:12:18.447126Z",
+  "updates": [
+    {
+      "heading": "Q1 QPR Cycle Opens August 3 — AI Fluency Updates",
+      "bullets": [
+        "QPR cycle opens August 3 (full timeline in thread from Dashini)",
+        "AI Fluency Rating: entirely your decision as PE — no draft ratings will be generated",
+        "AI Fluency Floors: High requires Integrator (3+), Exemplar requires Innovator/Amplifier (4+)",
+        "AI Usage Hub launching next week via Okta — monthly data refresh + training resources",
+        "Kristin flagging: define what ‘Integrator’ looks like on Invite before QPRs, discuss with pods in advance",
+        "Source: Dashini Jeyathurai — #pe-announcements Jun 18 / Kristin Ruehle — #invite-pes Jun 18"
+      ]
+    },
+    {
+      "heading": "CX PE Summit — Week of August 24, Denver (Save the Date)",
+      "bullets": [
+        "FY27 CX PE Summit: week of August 24, 2026 in Denver, CO",
+        "Travel details, exact dates, and schedule to follow",
+        "G-Cal banner added — block the week",
+        "Source: Meaghan Cuniffe — #cx-pe, June 18, 2026"
+      ]
+    },
+    {
+      "heading": "Confluence → Notion Migration Complete — Action by July 1",
+      "bullets": [
+        "Migration complete; Confluence went live June 15",
+        "Confluence contract ends July 1 — external Confluence links will break after that",
+        "Flag any Confluence links now so they can be updated before go-live",
+        "Source: Scott Helmes — #people-team, June 18, 2026"
+      ]
+    },
+    {
+      "heading": "InviteOS: Multiple New Features Shipped This Week",
+      "bullets": [
+        "Pending Actions — recruiter daily command center (scorecards, referrals, candidate emails)",
+        "Offer Flow — 3-step guided offer prep",
+        "In-App Support — submit bugs/features directly to People Tech Jira",
+        "Refined UI — layout and navigation polish",
+        "Loom: https://www.loom.com/share/aabf4bd1aec243a39d47abba4df6c82b",
+        "Source: Elan Bailey — #people-team, June 17, 2026"
+      ]
+    },
+    {
+      "heading": "CX FY27 Q1 All Hands Materials Available",
+      "bullets": [
+        "Deck, recording, and Q&A doc available for anyone who missed the kickoff",
+        "Deck: https://docs.google.com/presentation/d/1_GV3AEL62WgRTVtaUzax8nLpvE9poMza_bJyUE-lRJo",
+        "Source: Ian Watson — #cx-all, June 17, 2026"
+      ]
+    },
+    {
+      "heading": "Advising Sprint: 27 Offers Accepted, Nearly Complete",
+      "bullets": [
+        "27 total offers accepted: Denver 13, Phoenix 14 — 3 more going out",
+        "DEN cohort confirmed for virtual training; PHX remains onsite",
+        "Special shoutout to Addison Koback for leading the charge",
+        "Source: Addison Koback / Michelle Cordray — #advising-hiring-sprint, June 22–23"
+      ]
+    },
+    {
+      "heading": "Fulfillment Sprint: Strong Momentum",
+      "bullets": [
+        "7 candidates moving to offer this week",
+        "55 in interview round, 31 in recruiter screen as of end of last week",
+        "Source: Hannah Muhonen — #fulfillment-hiring-sprint, June 22"
+      ]
+    },
+    {
+      "heading": "OA June Sprint: Active Batch Week, Managing Candidate Drop-Off",
+      "bullets": [
+        "Interviews scheduled June 24 + June 29",
+        "Some drop-off noted — team sending reminder emails with prep PDF; considering texts/voicemails",
+        "Source: Michelle Cordray / Addison Koback / Janielle Rodriguez — #oa-june-hiring-sprint, June 22–23"
+      ]
+    },
+    {
+      "heading": "BenCare Sprint (Aug 17): Kicking Off",
+      "bullets": [
+        "Scorecards live — team can start taking calls",
+        "Gem project set up; Hannah sharing outreach templates and Boolean sourcing Claude skill",
+        "Source: Hannah Muhonen / Merriam Yunus — #temp-bencare-hiring-sprint-august17, June 16–18"
+      ]
+    },
+    {
+      "heading": "Money/Advanced Care Sprint: Batch Week Underway",
+      "bullets": [
+        "Great pipeline built during the week of June 16",
+        "Michelle back from vacation and checking in with team",
+        "Source: Michelle Cordray — #temp-money-advanced-care-sprint, June 23"
+      ]
+    }
+  ]
+}
