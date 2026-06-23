@@ -1,0 +1,57 @@
+{
+  "pe_key": "michelle",
+  "org_channels": [
+    {
+      "id": "C03AZG60AP3",
+      "name": "#cx-invite-pod"
+    },
+    {
+      "id": "C0AU95TMQ3W",
+      "name": "#advising-hiring-sprint"
+    },
+    {
+      "id": "C0B44FA4T9Q",
+      "name": "#fulfillment-hiring-sprint"
+    },
+    {
+      "id": "C0APZJ16WS1",
+      "name": "#oa-june-hiring-sprint"
+    },
+    {
+      "id": "C0BA4T373D2",
+      "name": "#temp-bencare-hiring-sprint-august17"
+    },
+    {
+      "id": "C055B6U2Y8Y",
+      "name": "#cx-gtm-invite-team"
+    },
+    {
+      "id": "GDA0DLJ3F",
+      "name": "#cx-pe"
+    },
+    {
+      "id": "C03UXLC830C",
+      "name": "#cx-people-staff"
+    },
+    {
+      "id": "CKYFFUL8Y",
+      "name": "#cx-all"
+    },
+    {
+      "id": "G1RUWFCB0",
+      "name": "#people-team"
+    },
+    {
+      "id": "GJNHJLM8E",
+      "name": "#people_team_pe"
+    },
+    {
+      "id": "C04P11LLE",
+      "name": "#pe-announcements"
+    },
+    {
+      "id": "C0B7T915RQE",
+      "name": "#temp-money-advanced-care-sprint"
+    }
+  ]
+}
