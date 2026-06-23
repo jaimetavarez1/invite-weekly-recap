@@ -66,3 +66,5 @@ If there is no connected workspace folder (no mounted folder visible), tell the 
 ## Updating config later
 
 If the PE wants to update their channels or token, they can re-run setup (it will overwrite the existing config) or edit `pe-config.json` directly in their workspace folder.
+
+<!-- updated -->
