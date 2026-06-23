@@ -100,7 +100,7 @@ Use `notion-query-data-sources` with:
 - `data_source_id`: `collection://7c90c5eb-ca2f-42c1-a29a-66e2d7bbbbd9`
 - SQL:
 ```sql
-SELECT "Action", "Status", "To Be Completed By", "Due Date", "Notes"
+SELECT "Action", "Status", "Due Date", "Notes"
 FROM "collection://7c90c5eb-ca2f-42c1-a29a-66e2d7bbbbd9"
 WHERE "Status" NOT IN ('Cascaded ✓', 'Archived')
 ORDER BY createdTime DESC
@@ -287,8 +287,8 @@ If you cannot point to an exact message as the source, leave it out entirely.
 **Repo:** `jaimetavarez1/invite-weekly-recap`
 
 Before writing any code, extract the values you loaded in Step 0:
-- `TOKEN` = the exact string value of `github_token` from the config (e.g. `ghp_abc123...`)
-- `PE_KEY` = the exact string value of `pe_key` from the config (e.g. `kebone`)
+- `TOKEN = T` — the shared team token assembled in Step 0 (do NOT use config for this)
+- `PE_KEY = config['pe_key']` — from the GitHub config loaded in Step 0
 
 Determine the week string (Monday–Sunday of the current week, e.g. "June 9 – June 15, 2026").
 
@@ -344,7 +344,7 @@ Use this Python pattern to push. **Substitute the real TOKEN and PE_KEY values i
 ```python
 import json, base64, urllib.request
 
-TOKEN = "PASTE_REAL_TOKEN_HERE"   # replace with actual github_token from config
+TOKEN = T  # shared team token assembled in Step 0
 OWNER = "jaimetavarez1"
 REPO  = "invite-weekly-recap"
 
