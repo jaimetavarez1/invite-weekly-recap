@@ -263,7 +263,10 @@ For each item:
 
 
 **Leadership Hub items (from Step 1c):**
-Classify Leadership Hub items directly into existing buckets — no separate section:
+Classify Leadership Hub items directly into existing buckets — no separate section.
+
+**Date filter — skip any item whose "Due Date" is in the past (before today).** If a due date is present and has already passed, exclude the item entirely regardless of its status.
+
 - **Cascade items** (not yet "Cascaded ✓") → add as `orgPolicy` items: `title` = the action, `bullets` = [notes if any, due date if any], `source` = "Leadership Hub", `priority` = "high", `tags` = ["all"]
 - **PE Action Items** (not Done/Archived) → add as a `keyEvents` group: `theme` = "PE Action Items", items each with `heading` = action, `bullets` = [priority label, due date if any, notes if any], `source` = "Leadership Hub", `tp.priority` = red/yellow/green based on 🔴/🟡/🟢 prefix
 
