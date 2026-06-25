@@ -1,78 +1,57 @@
 {
   "week": "June 22 – June 28, 2026",
-  "refreshedAt": "2026-06-23T21:12:18.447126Z",
-  "refreshedBy": "michelle",
+  "refreshedAt": "2026-06-25T19:30:25.200886Z",
+  "refreshedBy": "teresa",
   "orgPolicy": [
     {
-      "title": "Invite PEs Now Have Elevated Self-Service in Greenhouse",
-      "summary": "PEs can now create Evergreens & Confidential reqs directly in GH, and close/re-open reqs without submitting a ticket.",
+      "title": "🆕 Invite PEs: Expanded Greenhouse Self-Service",
+      "summary": "PEs can now create Evergreen & Confidential reqs and close/reopen reqs directly in Greenhouse — no ticket needed.",
       "bullets": [
-        "Create Evergreens & Confidential reqs directly in Greenhouse — no ticket needed",
-        "Close & Re-Open your reqs in Greenhouse — no ticket needed",
-        "EIB bulk req uploads still submitted via PHC ticket, but processed by HRIS Ops"
+        "Create Evergreen and Confidential requisitions directly in Greenhouse.",
+        "Close and re-open your reqs in Greenhouse without submitting a PHC ticket.",
+        "EIB bulk req uploads are still ticket-based (via PHC), but questions go to HRIS Ops team now — not Invite Ops."
       ],
-      "source": "IOPE Newsletter — June 22, 2026",
+      "source": "IOPE Newsletter – June 22, 2026",
       "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
       "priority": "high",
       "tags": [
         "all"
       ],
       "tp": {
-        "priority": "green",
-        "audience": "All Recruiters",
-        "point": "New GH self-service perms for PEs — fewer tickets needed"
+        "priority": "yellow",
+        "audience": "All Invite PEs",
+        "point": "You now have more self-service in Greenhouse — share this with your team so they know the updated process."
       }
     },
     {
-      "title": "Updated Relocation Document for California (Effective June 18)",
-      "summary": "New dropdown in offer details asking whether a relocating candidate is moving to California. Required to generate correct relocation documents per CA Bill 692.",
+      "title": "🔴 Gusto Role & Team Language Update: Domains, Actions, No Seniority Titles",
+      "summary": "Per Josh: Gusto is shifting away from 'Apps' and 'Products' terminology. Job postings and team comms must be updated.",
       "bullets": [
-        "Effective June 18: new dropdown appears when candidate opts into relocation",
-        "Select 'Yes' if relocating TO California, 'No' if not",
-        "Determines which relocation docs are generated — California has specific clawback language requirements",
-        "Impacts CX & Sales roles with relocation candidates"
+        "Replace 'Apps' and 'Products' → 'Domains' and 'Actions' in all job postings and team communications.",
+        "Remove the following words from job postings and team comms: Senior, Principal, Director, Manager, Lead.",
+        "Goal: Focus language on role, responsibility, and scope rather than seniority labels."
       ],
-      "source": "Alli Belamide — #invite-team, June 18, 2026 / IOPE Newsletter June 22, 2026",
-      "sourceUrl": null,
+      "source": "Leadership Hub (Cascade) – June 24, 2026",
+      "sourceUrl": "https://app.notion.com/p/383ad673c6c2816886d2d98e7e1996f3",
       "priority": "high",
       "tags": [
         "all"
       ],
       "tp": {
         "priority": "red",
-        "audience": "All Recruiters",
-        "point": "New CA relocation dropdown required — select correctly or wrong docs generate"
+        "audience": "All recruiters",
+        "point": "Language update required for all job postings — share with your team and make sure open reqs are updated. 'Domains/Actions' replaces 'Apps/Products'; seniority title words should be removed."
       }
     },
     {
-      "title": "New Broker License Verbiage in Offer Letters (CX & Sales Roles)",
-      "summary": "Updated language for the broker license offer question — new verbiage now populates in offer letters when 'Yes' is selected.",
+      "title": "Recruiters No Longer Handle Unhires",
+      "summary": "Recruiters will no longer be responsible for processing unhires directly. Michelle Eakin's team is taking this over.",
       "bullets": [
-        "Applies to CX & Sales roles only",
-        "Updated verbiage covers licensing requirement, 3-month timeline, and cost reimbursement",
-        "No action needed unless creating an offer — be aware of what will populate"
+        "The existing process remains: recruiters ping in #invite_notifications.",
+        "Michelle Eakin's team now owns the actual unhire action in the system.",
+        "No action required from recruiters beyond the existing notification step."
       ],
-      "source": "IOPE Newsletter — June 22, 2026",
-      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
-      "priority": "medium",
-      "tags": [
-        "all"
-      ],
-      "tp": {
-        "priority": "yellow",
-        "audience": "CX & Sales Recruiters",
-        "point": "Broker license offer verbiage updated — new language auto-populates when 'Yes' selected"
-      }
-    },
-    {
-      "title": "Unhire Process Update: Recruiters No Longer Unhire Candidates Directly",
-      "summary": "Michelle Eakin's team now handles unhires. Recruiters still ping #invite_notifications as before.",
-      "bullets": [
-        "Recruiters still initiate by pinging #invite_notifications",
-        "Michelle Eakin's team now owns the actual unhire action",
-        "No change to how recruiters kick off the request"
-      ],
-      "source": "Kristin Ruehle — #invite-pes, June 18, 2026",
+      "source": "#invite-pes – Kristin Ruehle, June 18, 2026",
       "sourceUrl": null,
       "priority": "medium",
       "tags": [
@@ -80,211 +59,222 @@
       ],
       "tp": {
         "priority": "green",
-        "audience": "All Recruiters",
-        "point": "Unhire process simplified — still ping #invite_notifications, but you no longer action it"
+        "audience": "All recruiters",
+        "point": "Good news — recruiters no longer process unhires directly. The notification step in #invite_notifications stays the same."
+      }
+    },
+    {
+      "title": "Laura Lockwood on Leave — Elan Bailey is Day-to-Day Contact",
+      "summary": "Laura is on leave effective June 22. Elan Bailey is the People Central day-to-day point of contact for the duration.",
+      "bullets": [
+        "Effective June 22, Laura Lockwood is on leave.",
+        "Elan Bailey is now the day-to-day contact for People Central.",
+        "Saumya Chopra and Kristin Ruehle available for escalations.",
+        "Elan has been added to PE meetings and #invite-pes channel."
+      ],
+      "source": "#invite-team / #invite-pes – Kristin Ruehle, June 23, 2026",
+      "sourceUrl": null,
+      "priority": "medium",
+      "tags": [
+        "all"
+      ],
+      "tp": {
+        "priority": "yellow",
+        "audience": "All recruiters",
+        "point": "Laura is out — direct People Central questions to Elan Bailey. Escalations go to Saumya or Kristin."
+      }
+    },
+    {
+      "title": "Workday ↔ Google Calendar Integration Now Live",
+      "summary": "Time off submitted in Workday now automatically syncs to your Google Calendar and your PE's calendar.",
+      "bullets": [
+        "No more manual calendar blocks — Workday time off auto-syncs to Google Calendar.",
+        "Your PE's calendar will also reflect your approved time off automatically."
+      ],
+      "source": "#invite-team – Kristin Ruehle, June 23, 2026",
+      "sourceUrl": null,
+      "priority": "low",
+      "tags": [
+        "all"
+      ],
+      "tp": {
+        "priority": "green",
+        "audience": "All Gusties",
+        "point": "Workday PTO now syncs to Google Calendar automatically — no manual entry needed."
       }
     }
   ],
   "keyEvents": [
     {
-      "theme": "Action Required This Week",
+      "theme": "🗓️ Upcoming Dates",
       "tags": [
         "all"
       ],
       "items": [
         {
-          "heading": "Onsite Activity Survey — Due EOD Wednesday June 24",
+          "heading": "People Team All Hands — Friday June 26",
           "bullets": [
-            "Vote on activities for the July onsite (axes, art museum, rage room, mini golf, and more)",
-            "Takes 2 minutes — groups assigned based on votes",
-            "Survey: https://docs.google.com/forms/d/e/1FAIpQLScL5cCDvr-W7kqcMW-fRAFj4LQX3ClpeHFaNDH59Cqhk1Hrng/viewform"
+            "Topics: FY27 Company Goals and how People Team fits in, Cycle 2 initiatives, PeopleOS demos, and celebrations.",
+            "Worth tuning in — major strategic direction being shared."
           ],
-          "source": "Jaime Tavarez — #invite-team, June 22, 2026",
+          "source": "#invite-team – Kristin Ruehle, June 23, 2026",
           "sourceUrl": null,
           "tp": {
             "priority": "red"
           }
         },
         {
-          "heading": "Project Orbit Survey — Due Friday June 26, 5pm PT (FTEs Only)",
+          "heading": "🔴 Independence Day (Observed) — Gusto Closed Friday July 3",
           "bullets": [
-            "Quarterly PE mentorship & coaching program — one coaching conversation per quarter, rotating pairings",
-            "Survey takes 10–12 minutes; honest answers = better match",
-            "If not completed, pairings made without your input",
-            "Survey: https://docs.google.com/forms/d/e/1FAIpQLSdPEN0sG4G0kwiLNAZ7FcdozdKrMcQ_SzEyLXxSTLyxjJit8g/viewform"
+            "Gusto is closed Friday, July 3rd.",
+            "Plan interview scheduling, offers, and candidate comms around this date — 8 days away.",
+            "Source: Gusto FY27 Holiday Calendar + #invite-team, June 23"
           ],
-          "source": "Teresa Waggoner — #invite-team, June 22, 2026",
+          "source": "Gusto FY27 Holiday Calendar + #invite-team",
           "sourceUrl": null,
           "tp": {
-            "priority": "red"
+            "priority": "yellow"
+          }
+        },
+        {
+          "heading": "Invite Onsite — July 13–14 in Denver",
+          "bullets": [
+            "July 13 PE schedule: arrive 9am, finalize onsite details 9:30–12pm, team lunch 12–3:30pm, Pedal Hopper around RiNo 3:30–5pm, Welcome Party at Bierstadt Lagerhaus from 5pm.",
+            "More details coming from PEs. Activity voting survey was open (EOD Wednesday June 25).",
+            "Temp channel for onsite comms: #temp-invite-onsite-july-2026"
+          ],
+          "source": "#invite-pes – Kristin Ruehle, June 22, 2026",
+          "sourceUrl": null,
+          "tp": {
+            "priority": "yellow"
           }
         }
       ]
     },
     {
-      "theme": "PE Action Items",
+      "theme": "📣 Org Strategy & Leadership Updates",
       "tags": [
         "all"
       ],
       "items": [
         {
-          "heading": "🔴 Fill out Workday Req Approval Assignments Spreadsheet — Due June 24",
+          "heading": "FY27 Company KRs — Ratification Expected July 1",
           "bullets": [
-            "Priority: Urgent — due TOMORROW",
-            "All PEs — Link: https://docs.google.com/spreadsheets/d/1DRItgF-fgUweWlN33fxWf5gxJZ4_xh42/edit"
+            "Five objectives total; new Product/Agentic category focused on Gus (Gusto's agentic platform).",
+            "Objective 5 KRs most relevant to Invite: job family consolidation and hiring within Gusto hubs.",
+            "DRIs finalizing recommended targets this week ahead of State of Gusto."
           ],
-          "source": "Leadership Hub — PE Action Items",
+          "source": "#invite-team – Kristin Ruehle, June 23, 2026",
+          "sourceUrl": null,
+          "tp": {
+            "priority": "yellow"
+          }
+        },
+        {
+          "heading": "Cycle 2 People Team Priorities Set",
+          "bullets": [
+            "Theme 1 — AI-Native Gusties: role redesign and raising the talent bar across the employee lifecycle (including VMA+ evolution).",
+            "Theme 2 — Modernize Delivery of People Work: vendor decisions (scheduling tool, Risotto replacement, VMS), getting off Lattice, policy/practices repo, total rewards automation.",
+            "Kristin is a named DRI on 'Raising the Talent Bar' alongside Dashini Jeyathurai."
+          ],
+          "source": "#invite-team – Kristin Ruehle, June 23, 2026",
+          "sourceUrl": null,
+          "tp": {
+            "priority": "yellow"
+          }
+        },
+        {
+          "heading": "Invite PE Hub Launched in Notion",
+          "bullets": [
+            "New centralized hub for PE action items, cascade messages, and meeting notes.",
+            "React to any #invite-pes message with 📋 to auto-log as an action item.",
+            "Hub: https://app.notion.com/p/383ad673c6c2816886d2d98e7e1996f3"
+          ],
+          "source": "#invite-pes – Kristin Ruehle, June 22, 2026",
           "sourceUrl": "https://app.notion.com/p/383ad673c6c2816886d2d98e7e1996f3",
+          "tp": {
+            "priority": "yellow"
+          }
+        },
+        {
+          "heading": "Project Orbit — Mentorship Program Launched",
+          "bullets": [
+            "Quarterly PE mentorship program pairing ICs with PE mentors outside their day-to-day.",
+            "Survey for FTE team members due Friday June 26, 5pm PT.",
+            "Survey link: https://docs.google.com/forms/d/e/1FAIpQLSdPEN0sG4G0kwiLNAZ7FcdozdKrMcQ_SzEyLXxSTLyxjJit8g/viewform"
+          ],
+          "source": "#invite-team – Teresa Waggoner, June 22, 2026",
+          "sourceUrl": null,
           "tp": {
             "priority": "red"
           }
         },
         {
-          "heading": "🔴 Team Activities Survey — Due June 20 (Overdue)",
+          "heading": "VMA Practice Simulator Pilot — Nominate 1 Recruiter by July 22",
           "bullets": [
-            "Priority: Urgent — deadline has passed, confirm with Kristin if still required"
+            "Lisa Pham is coordinating a pilot for the new VMA Practice Simulator.",
+            "Looking for 1 recruiter per team to test and provide feedback.",
+            "Send your nominee to Lisa by Monday, July 22."
           ],
-          "source": "Leadership Hub — PE Action Items",
+          "source": "#invite-pes – Lisa Pham, June 18, 2026",
+          "sourceUrl": null,
+          "tp": {
+            "priority": "yellow"
+          }
+        },
+        {
+          "heading": "Goose — People Insights Tool Demo'd",
+          "bullets": [
+            "Arthur Gonzalez (People Insights) demoed Goose today.",
+            "People Insights will work with Invite PEs to align on communication, usage, and functionality before broader launch."
+          ],
+          "source": "#invite-team – Kristin Ruehle, June 23, 2026",
+          "sourceUrl": null,
+          "tp": null
+        }
+      ]
+    },
+    {
+      "theme": "✅ PE Action Items (from Invite PE Hub)",
+      "tags": [
+        "all"
+      ],
+      "items": [
+        {
+          "heading": "🟡 Mid-Quarter Check-In Prep — Due July 3",
+          "bullets": [
+            "Come to next 1:1s with high-level thoughts on team performance and IC tracking.",
+            "Due: July 3"
+          ],
+          "source": "Leadership Hub – June 24, 2026",
           "sourceUrl": "https://app.notion.com/p/383ad673c6c2816886d2d98e7e1996f3",
           "tp": {
-            "priority": "red"
+            "priority": "yellow"
+          }
+        },
+        {
+          "heading": "🟡 Define AI Levels for Invite — Due July 3",
+          "bullets": [
+            "Define what 'Integrator,' 'Innovator,' and 'Amplifier' look like for Invite with specific examples.",
+            "Share with Scott for approval.",
+            "Due: July 3"
+          ],
+          "source": "Leadership Hub – June 24, 2026",
+          "sourceUrl": "https://app.notion.com/p/383ad673c6c2816886d2d98e7e1996f3",
+          "tp": {
+            "priority": "yellow"
           }
         },
         {
           "heading": "🟢 Build Quarterly All Hands Template — Due July 15",
           "bullets": [
-            "Priority: This Cycle — All Hands scheduled for July 31",
-            "All PEs"
+            "Build the All Hands template ahead of the team All Hands scheduled July 31st.",
+            "Due: July 15"
           ],
-          "source": "Leadership Hub — PE Action Items",
+          "source": "Leadership Hub – June 18, 2026",
           "sourceUrl": "https://app.notion.com/p/383ad673c6c2816886d2d98e7e1996f3",
           "tp": {
             "priority": "green"
-          }
-        }
-      ]
-    },
-    {
-      "theme": "Cascade to Your Teams",
-      "tags": [
-        "all"
-      ],
-      "items": [
-        {
-          "heading": "Communicate PeopleOS / InviteOS to Recruiters (In Progress, Due Date June 18 Passed)",
-          "bullets": [
-            "Ensure your team knows about and is using InviteOS",
-            "New features shipped: Pending Actions, Offer Flow, In-App Support, Refined UI",
-            "Loom walkthrough: https://www.loom.com/share/aabf4bd1aec243a39d47abba4df6c82b"
-          ],
-          "source": "Leadership Hub — Cascade to Your Teams",
-          "sourceUrl": "https://app.notion.com/p/383ad673c6c2816886d2d98e7e1996f3",
-          "tp": {
-            "priority": "red"
-          }
-        }
-      ]
-    },
-    {
-      "theme": "Invite Onsite — July 13–14, Denver",
-      "tags": [
-        "all"
-      ],
-      "items": [
-        {
-          "heading": "July 13 Schedule Confirmed",
-          "bullets": [
-            "9–9:30am: Meet in office; 9:30am–12pm: Run of show",
-            "12:30–3:30pm: Lunch; 3:30–5pm: Pedal Hopper around RiNo",
-            "5pm+: Welcome Party at Bierstadt Lagerhaus",
-            "All onsite comms moving to #temp-invite-onsite-july-2026"
-          ],
-          "source": "Kristin Ruehle — #invite-pes, June 22–23, 2026",
-          "sourceUrl": null,
-          "tp": {
-            "priority": "yellow"
-          }
-        }
-      ]
-    },
-    {
-      "theme": "Invite PE Hub Launched in Notion",
-      "tags": [
-        "all"
-      ],
-      "items": [
-        {
-          "heading": "New centralized PE tracker is live",
-          "bullets": [
-            "Cascade items, PE action items, parking lot, and weekly meeting notes all in one place",
-            "React to any #invite-pes message with 📋 to auto-log it as an action item",
-            "Fill in your agenda section before Wednesday PE meetings",
-            "Hub: https://app.notion.com/p/383ad673c6c2816886d2d98e7e1996f3"
-          ],
-          "source": "Kristin Ruehle — #invite-pes, June 22, 2026",
-          "sourceUrl": "https://app.notion.com/p/383ad673c6c2816886d2d98e7e1996f3",
-          "tp": {
-            "priority": "yellow"
-          }
-        }
-      ]
-    },
-    {
-      "theme": "VMA Practice Simulator Pilot",
-      "tags": [
-        "all"
-      ],
-      "items": [
-        {
-          "heading": "Nominate 1 recruiter per team by July 22",
-          "bullets": [
-            "Practice simulator for VMA interviewers — identifying signals, rubric, scorecard writing",
-            "Send your nominee to Lisa Pham by Monday July 22"
-          ],
-          "source": "Lisa Pham — #invite-pes, June 18, 2026",
-          "sourceUrl": null,
-          "tp": {
-            "priority": "yellow"
-          }
-        }
-      ]
-    },
-    {
-      "theme": "Team Changes",
-      "tags": [
-        "all"
-      ],
-      "items": [
-        {
-          "heading": "Laura Lockwood on Leave — Elan Bailey Covering",
-          "bullets": [
-            "Laura's leave started the week of June 22",
-            "Elan Bailey added to PE meetings and #invite-pes channel"
-          ],
-          "source": "Kristin Ruehle — #invite-pes, June 18, 2026",
-          "sourceUrl": null,
-          "tp": {
-            "priority": "yellow"
-          }
-        }
-      ]
-    },
-    {
-      "theme": "Upcoming Holiday",
-      "tags": [
-        "all"
-      ],
-      "items": [
-        {
-          "heading": "Independence Day — Friday July 3, 2026",
-          "bullets": [
-            "Company holiday — 10 days away",
-            "Plan interview scheduling, offers, and candidate comms around this date"
-          ],
-          "source": "Gusto FY27 Holiday Calendar",
-          "sourceUrl": null,
-          "tp": {
-            "priority": "yellow"
           }
         }
       ]
