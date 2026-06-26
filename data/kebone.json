@@ -1,12 +1,22 @@
 {
   "pe": "kebone",
-  "week": "June 9 – June 15, 2026",
-  "refreshedAt": "2026-06-15T23:14:35.205600Z",
+  "week": "June 19 – June 26, 2026",
+  "refreshedAt": "2026-06-26T17:00:00Z",
   "updates": [
     {
-      "heading": "Kebone test",
+      "heading": "PM/PD Channel Access — Source Gap",
       "bullets": [
-        "test bullet"
+        "PM/PD-specific Slack channels (e.g. #pm-invite, #product-invite) were not accessible via channel search — they may be private or named differently.",
+        "Cross-org updates are fully covered in shared data above.",
+        "If you'd like to add PM/PD-specific updates, share the channel name and I'll pull them in on the next run."
+      ]
+    },
+    {
+      "heading": "VMA Practice Simulator Pilot — Recruiter Nominee Needed",
+      "bullets": [
+        "Lisa Pham needs 1 recruiter nominee from the PM/PD team for the VMA Practice Simulator pilot.",
+        "Deadline: Monday, July 22.",
+        "Start identifying who to tap from your team."
       ]
     }
   ]
