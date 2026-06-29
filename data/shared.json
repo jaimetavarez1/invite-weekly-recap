@@ -1,255 +1,211 @@
 {
-  "week": "June 29 – July 5, 2026",
-  "refreshedAt": "2026-06-29T17:03:09.222553Z",
-  "refreshedBy": "teresa",
+  "week": "June 22 – June 29, 2026",
+  "refreshedAt": "2026-06-29T23:28:35Z",
+  "refreshedBy": "jaime",
   "orgPolicy": [
     {
-      "title": "Hire Error Notifications Moving to Pod Slack Channels",
-      "summary": "HRIS will soon share recruiter-related hire errors in dedicated pod Slack channels (e.g., R&D, CX) instead of individual DMs. Recruiters will be added to their pod channels and HRIS will tag the appropriate recruiter when action is needed.",
+      "title": "Hire error notifications moving to pod Slack channels",
+      "summary": "HRIS is shifting recruiter-related hire error triage from individual DMs to dedicated pod Slack channels (e.g., R&D, CX). Recruiters will be added to their pod channel and tagged when action is needed.",
       "bullets": [
-        "Hire errors will route to pod Slack channels instead of direct messages",
-        "Recruiters will be added to their respective pod channels",
-        "HRIS will tag the recruiter when action is required",
-        "Coming very soon — watch your pod channel"
+        "Watch for being added to your pod channel; HRIS will @-tag the recruiter who needs to act.",
+        "Goal is more scalable, transparent hire-error triage."
       ],
-      "source": "#invite-team + IOPE Newsletter (June 29, 2026)",
+      "source": "#invite-team (Alli Belamide, 6/26) + IOPE Newsletter 6/29",
+      "sourceUrl": null,
+      "priority": "high",
+      "tags": ["all"],
+      "tp": { "priority": "yellow", "audience": "recruiters", "point": "Hire-error pings are moving to pod channels — keep an eye on the pod channel, not your DMs." }
+    },
+    {
+      "title": "In-office designation method simplifying to a single 65-mile radius",
+      "summary": "Leadership is merging the two existing methods (commute time + MSA boundaries) into one standard: a 65-mile radius (130-mile diameter) from each hub — the current comp-band method. Commute-in approvals are paused where the candidate's comp zone differs from the office.",
+      "bullets": [
+        "Only 1 employee fell outside 65 miles but under 120 min, so both methods tell the same story.",
+        "Recruiting has STOPPED approving candidates to commute in when their comp zone differs from the office (also impacts benefits).",
+        "Ask from Tracie/Kristin: confirm whether you use anything other than the standard zip-code sheet."
+      ],
+      "source": "#invite-pes (Kristin Ruehle / Tracie Kelly, 6/29)",
+      "sourceUrl": null,
+      "priority": "high",
+      "tags": ["all"],
+      "tp": { "priority": "red", "audience": "recruiters", "point": "Don't approve commute-in candidates whose comp zone differs from the office — flag to your PE." }
+    },
+    {
+      "title": "FY27 Company KRs — ratification expected July 1",
+      "summary": "Five objectives, including a new Product/Agentic category focused on Gus (Gusto's agentic platform). Objective 5 is most relevant to Invite: job family consolidation and hiring within Gusto hubs.",
+      "bullets": [
+        "DRIs are finalizing target numbers ahead of the State of G.",
+        "Four KRs directly affect how and where we hire.",
+        "More detail shared at the People Team All Hands."
+      ],
+      "source": "#invite-team (Kristin Ruehle, 6/23)",
+      "sourceUrl": null,
+      "priority": "high",
+      "tags": ["all"],
+      "tp": { "priority": "yellow", "audience": "recruiting team", "point": "FY27 goals land ~July 1; expect hiring focus on job-family consolidation and Gusto hubs." }
+    },
+    {
+      "title": "Cycle 2 People Team priorities set",
+      "summary": "Two themes anchor C2: (1) AI-Native Gusties — role redesign and raising the talent bar across the lifecycle; (2) Modernize Delivery of People Work — vendor decisions (scheduling tool, Risotto replacement, VMS), getting off Lattice, policy/practices repo, and total-rewards automation.",
+      "bullets": [
+        "\"Raising the Talent Bar\" spans pre-hire (VMA+ evolution), PE enablement, and FY27 talent-system design.",
+        "Kristin Ruehle and Dashini Jeyathurai are named DRIs."
+      ],
+      "source": "#invite-team (Kristin Ruehle, 6/23)",
       "sourceUrl": null,
       "priority": "medium",
-      "tags": [
-        "all"
-      ],
-      "tp": {
-        "priority": "yellow",
-        "audience": "All recruiters",
-        "point": "Watch for hire errors in your pod channel, not DMs"
-      }
+      "tags": ["all"],
+      "tp": null
     },
     {
-      "title": "InviteOS Release 3 is Live — Debrief Agent + Feature Release Tracker",
-      "summary": "Two new Cycle 2 features launched June 26: (1) Debrief Agent auto-pulls and organizes scorecard data into a structured debrief summary; (2) Feature Release Tracker gives a real-time view of every feature build and allows idea submission and voting.",
+      "title": "InviteOS Release 3 is live",
+      "summary": "First wave of Cycle 2 launches: a Debrief Agent that auto-organizes interview scorecard data into a structured debrief summary, and a Feature Release Tracker for submitting/voting/tracking builds. PeopleOS Release Notes now documented in Notion.",
       "bullets": [
-        "Debrief Agent: AI automatically organizes scorecard data into structured debrief summary — watch the Loom walkthrough",
-        "Feature Release Tracker: real-time view of what's live, in progress, and coming next",
-        "Submit new ideas and vote on features directly from OS",
-        "PeopleOS Release Notes now live in Notion (linked from PeopleOS Hub)",
-        "Log into PeopleOS via Okta every day — use it, explore it, share feedback"
+        "Debrief Agent cuts manual debrief prep — review/edit the AI summary before debriefs.",
+        "Ongoing ask: log into PeopleOS via Okta daily, explore, and submit feedback."
       ],
-      "source": "#invite-team (Elan Bailey, June 26, 2026)",
-      "sourceUrl": "https://app.notion.com/p/PeopleOS-Release-Notes-376ad673c6c2816fa6a1fc41f4ebce5c#267b58fd2bd2474292d279cf01ccb97f",
+      "source": "#invite-team (Elan Bailey, 6/26)",
+      "sourceUrl": "https://app.notion.com/p/PeopleOS-Release-Notes-376ad673c6c2816fa6a1fc41f4ebce5c",
       "priority": "medium",
-      "tags": [
-        "all"
-      ],
-      "tp": {
-        "priority": "yellow",
-        "audience": "All recruiters",
-        "point": "Log into PeopleOS daily and use the new Debrief Agent for your debrief prep"
-      }
+      "tags": ["all"],
+      "tp": { "priority": "green", "audience": "recruiters", "point": "Try the new Debrief Agent in InviteOS — it auto-builds your debrief summary from scorecards." }
     },
     {
-      "title": "Invite PE Elevated Self-Service in Greenhouse",
-      "summary": "PEs now have elevated permissions in Greenhouse, enabling more self-service. PEs can create Evergreens and Confidential reqs directly in GH, and close & re-open reqs — no ticket needed.",
+      "title": "Greenhouse elevated self-service for Invite PEs",
+      "summary": "Invite PEs now have elevated Greenhouse permissions: create Evergreen & Confidential reqs directly, and close/re-open reqs — no ticket required. EIB bulk req uploads are now processed by the HRIS Ops team (still submit via PHC).",
       "bullets": [
-        "PEs can now create Evergreens & Confidential reqs directly in Greenhouse",
-        "PEs can close & re-open reqs in Greenhouse without submitting a ticket",
-        "EIB bulk req uploads now processed by HRIS Ops team (still submit via PHC ticket)"
+        "No more tickets to open/close/reopen reqs or to spin up Evergreen/Confidential reqs.",
+        "Bulk req-upload questions now go to HRIS Ops."
       ],
-      "source": "IOPE Newsletter (June 22, 2026)",
-      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4/edit",
+      "source": "IOPE Newsletter 6/22",
+      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4",
       "priority": "medium",
-      "tags": [
-        "all"
-      ],
-      "tp": {
-        "priority": "green",
-        "audience": "PEs",
-        "point": "Self-serve on GH req creation and closures — no ticket needed"
-      }
+      "tags": ["all"],
+      "tp": null
     },
     {
-      "title": "Cascade: Share Gusto Role & Team Name Updates with Recruiters",
-      "summary": "Gusto is transitioning away from calling areas 'Apps' or 'Products' — they are now 'Domains' and we do 'Actions' for customers within those Domains. Certain seniority words should be removed from job postings and team communications.",
+      "title": "Laura Lockwood on leave — Elan Bailey is day-to-day POC",
+      "summary": "Effective June 22, Elan Bailey is the day-to-day point of contact for People Central, with Saumya Chopra and Kristin Ruehle available for escalations.",
       "bullets": [
-        "Refer to business areas as 'Domains' (not 'Apps' or 'Products')",
-        "Remove the following words from job postings and team communications: Senior, Principal, Director, Manager, Lead",
-        "Focus on role, responsibility, and scope of work in job descriptions"
+        "Anything that normally goes to Laura should loop in Elan first."
       ],
-      "source": "Leadership Hub (Cascade to Your Teams)",
-      "sourceUrl": "https://app.notion.com/p/383ad673c6c2816886d2d98e7e1996f3",
-      "priority": "high",
-      "tags": [
-        "all"
+      "source": "#invite-team (Kristin Ruehle, 6/23)",
+      "sourceUrl": null,
+      "priority": "medium",
+      "tags": ["all"],
+      "tp": null
+    },
+    {
+      "title": "Offer-letter SOP updates: broker license + California relocation",
+      "summary": "Two SOP changes from the prior IOPE entry remain relevant: updated broker-license requirement verbiage for CX & Sales offers, and a new 'relocating to California?' dropdown that drives CA-specific relocation (clawback) language.",
+      "bullets": [
+        "Select Yes/No on the new California relocation field so the correct documents generate.",
+        "Broker-license verbiage now auto-populates when 'Does this role require a broker license?' = Yes."
       ],
-      "tp": {
-        "priority": "red",
-        "audience": "All PEs → recruiters",
-        "point": "Update job postings and comms to remove seniority words and use 'Domains'"
-      }
+      "source": "IOPE Newsletter 6/22",
+      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4",
+      "priority": "medium",
+      "tags": ["all"],
+      "tp": null
+    },
+    {
+      "title": "Workday ↔ Google Calendar integration live",
+      "summary": "Time off submitted in Workday now auto-syncs to your calendar and your PE's calendar — no more manual calendar blocks.",
+      "bullets": [],
+      "source": "#invite-team (Kristin Ruehle, 6/23)",
+      "sourceUrl": null,
+      "priority": "low",
+      "tags": ["all"],
+      "tp": null
+    },
+    {
+      "title": "IOPE current focus areas",
+      "summary": "Invite Ops in-flight workstreams: recruiter intake process redesign, a Hiring Committee Checklist Agent, the Invite Targets Tracker, and a near-complete IKB revamp (migration to Notion).",
+      "bullets": [
+        "No Action Required items and no new SOPs in the 6/29 newsletter."
+      ],
+      "source": "IOPE Newsletter 6/29",
+      "sourceUrl": "https://docs.google.com/document/d/1cv_04zDPx7PtSCZtXnDnpSDdHqaNdG5jJZiy0I12fC4",
+      "priority": "low",
+      "tags": ["all"],
+      "tp": null
     }
   ],
   "keyEvents": [
     {
-      "theme": "Upcoming Holiday",
-      "tags": [
-        "all"
-      ],
+      "theme": "Invite Onsite — July 13–14, Denver",
+      "tags": ["all"],
       "items": [
         {
-          "heading": "Independence Day — Friday July 3",
+          "heading": "Event assignments out; book your event",
           "bullets": [
-            "Gusto is closed Friday, July 3rd — company holiday",
-            "Plan interview scheduling, offers, and candidate comms around this date",
-            "July 3 is also the due date for several PE action items — plan accordingly"
+            "Jaime pre-assigned everyone to an onsite event based on survey rankings, with an Invite PE POC per pod.",
+            "Book your event (start after 5:30 PM), arrange dinner if not included, budget $250/person.",
+            "Monday 7/13 run of show: office AM, final onsite prep, lunch/hang, Pedal Hopper around RiNo, welcome party at Bierstadt Lagerhaus.",
+            "Onsite comms moved to #temp-invite-onsite-july-2026."
           ],
-          "source": "Gusto FY27 Holiday Calendar + #invite-team (Kristin Ruehle, June 23, 2026)",
+          "source": "#invite-pes (Jaime Tavarez, 6/29) + #invite-team",
           "sourceUrl": null,
-          "tp": {
-            "priority": "red"
-          }
+          "tp": { "priority": "green" }
         }
       ]
     },
     {
-      "theme": "Company Priorities & Leadership Updates",
-      "tags": [
-        "all"
-      ],
+      "theme": "Programs & enablement",
+      "tags": ["all"],
       "items": [
         {
-          "heading": "FY27 Company KRs — Ratification Expected July 1",
+          "heading": "Project Orbit launched (quarterly PE mentorship)",
           "bullets": [
-            "Five objectives total; Objective 5 KRs directly affect how and where we hire",
-            "Key themes: job family consolidation and hiring within Gusto hubs",
-            "New Product/Agentic category focused on Gus (Gusto's agentic platform)",
-            "DRIs landing recommended targets ahead of State of G — more at People All Hands"
+            "Quarterly mentorship/coaching program pairing FTEs with a PE mentor; matching survey was due Fri 6/26.",
+            "One required coaching 1:1 per quarter; pairings rotate."
           ],
-          "source": "#invite-team (Kristin Ruehle, June 23, 2026)",
+          "source": "#invite-team (Teresa Waggoner, 6/22)",
           "sourceUrl": null,
-          "tp": {
-            "priority": "yellow"
-          }
+          "tp": null
         },
         {
-          "heading": "Laura Lockwood on Leave — Elan Bailey is Day-to-Day POC",
+          "heading": "Invite PE Hub launched in Notion",
           "bullets": [
-            "Laura is on leave effective June 22",
-            "Elan Bailey is the day-to-day point of contact for People Central",
-            "Kristin Ruehle and Saumya Chopra available for escalations",
-            "If something typically goes to Laura, loop in Elan first"
+            "Central place for cascade-to-team items, PE action items, parking lot, and weekly meeting notes — replaces hunting across Slack/Docs.",
+            "React with :clipboard: in #invite-pes to log an action item automatically."
           ],
-          "source": "#invite-team (Kristin Ruehle, June 23, 2026)",
-          "sourceUrl": null,
-          "tp": {
-            "priority": "yellow"
-          }
+          "source": "#invite-pes (Kristin Ruehle, 6/22)",
+          "sourceUrl": "https://app.notion.com/p/383ad673c6c2816886d2d98e7e1996f3",
+          "tp": null
         },
         {
-          "heading": "Goose is Coming — People Insights + Invite PEs to Align",
+          "heading": "People Team All Hands — Fri 6/26",
           "bullets": [
-            "Live demo from Arthur Gonzalez to People Staff",
-            "People Insights will work with Invite PEs on communication, usage, and functionality before broader launch",
-            "More details to come"
+            "Covered FY27 Company Goals + how People fits in, Cycle 2 initiatives, and PeopleOS demos."
           ],
-          "source": "#invite-team (Kristin Ruehle, June 23, 2026)",
+          "source": "#invite-team (Kristin Ruehle, 6/23)",
           "sourceUrl": null,
-          "tp": {
-            "priority": "yellow"
-          }
-        },
-        {
-          "heading": "Raising the Talent Bar — Kristin Named DRI",
-          "bullets": [
-            "Kristin is a named DRI alongside Dashini Jeyathurai on this Cycle 2 priority",
-            "Spans pre-hire (VMA+ evolution), development (PE enablement), and quarterly performance (FY27 talent system design)",
-            "Expect more from Kristin as execution ramps"
-          ],
-          "source": "#invite-team (Kristin Ruehle, June 23, 2026)",
-          "sourceUrl": null,
-          "tp": {
-            "priority": "green"
-          }
-        },
-        {
-          "heading": "Workday ↔ Google Calendar Integration Now Live",
-          "bullets": [
-            "Time off submitted in Workday now automatically syncs to your calendar and your PE's calendar",
-            "No more manual calendar blocks needed"
-          ],
-          "source": "#invite-team (Kristin Ruehle, June 23, 2026)",
-          "sourceUrl": null,
-          "tp": {
-            "priority": "green"
-          }
+          "tp": null
         }
       ]
     },
     {
-      "theme": "Upcoming Events",
-      "tags": [
-        "all"
-      ],
+      "theme": "Wins & reminders",
+      "tags": ["all"],
       "items": [
         {
-          "heading": "Invite Onsite — July 13–14, Denver",
+          "heading": "CX Benefits Advising hiring sprint closed",
           "bullets": [
-            "July 13 (PE day): 9am meet, 9:30am–12pm final run-of-show, lunch, Pedal Hopper around RiNo → Bierstadt Lagerhaus Welcome Party",
-            "July 14: Full team onsite day (activity TBD by survey votes)",
-            "Use #temp-invite-onsite-july-2026 for all onsite comms (not #invite-team)",
-            "Onsite activity voting closed EOD June 25 — results TBD"
+            "30 hires with a 7/6 start date — through a new role type, pre-announcement hiring, TBD comp band, and a mid-sprint pivot to licensed-only candidates."
           ],
-          "source": "#invite-pes (Kristin Ruehle, June 22–23, 2026)",
+          "source": "#invite-team (Michelle Cordray, 6/26)",
           "sourceUrl": null,
-          "tp": {
-            "priority": "yellow"
-          }
-        }
-      ]
-    },
-    {
-      "theme": "PE Action Items",
-      "tags": [
-        "all"
-      ],
-      "items": [
-        {
-          "heading": "Mid-Quarter Check-In Prep — Due July 3",
-          "bullets": [
-            "🟡 This Week priority",
-            "Come to next 1:1s with high-level thoughts on team performance and IC tracking",
-            "Due: July 3, 2026"
-          ],
-          "source": "Leadership Hub (PE Action Items)",
-          "sourceUrl": "https://app.notion.com/389ad673c6c281129388c93f4d2022c4",
-          "tp": {
-            "priority": "yellow"
-          }
+          "tp": null
         },
         {
-          "heading": "Define AI Levels for Invite — Due July 3",
+          "heading": "Gusto closed Friday, July 3",
           "bullets": [
-            "🟡 This Week priority",
-            "Define what 'Integrator,' 'Innovator,' and 'Amplifier' look like with specific examples",
-            "Share with Scott for approval",
-            "Due: July 3, 2026"
+            "Plan candidate pipelines, offers, and deadlines around the closure."
           ],
-          "source": "Leadership Hub (PE Action Items)",
-          "sourceUrl": "https://app.notion.com/389ad673c6c2819ab41fc50f7bc86b8e",
-          "tp": {
-            "priority": "yellow"
-          }
-        },
-        {
-          "heading": "Build Quarterly All Hands Template — Due July 15",
-          "bullets": [
-            "🟢 This Cycle priority",
-            "All Hands scheduled for July 31st",
-            "Due: July 15, 2026"
-          ],
-          "source": "Leadership Hub (PE Action Items)",
-          "sourceUrl": "https://app.notion.com/383ad673c6c281999f91dc11626f0277",
-          "tp": {
-            "priority": "green"
-          }
+          "source": "#invite-team (Kristin Ruehle, 6/23)",
+          "sourceUrl": null,
+          "tp": { "priority": "yellow" }
         }
       ]
     }
