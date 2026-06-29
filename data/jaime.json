@@ -1,31 +1,32 @@
 {
   "pe": "jaime",
-  "week": "June 22, 2026",
-  "refreshedAt": "2026-06-22T19:05:20.401191Z",
+  "week": "June 22 – June 29, 2026",
+  "refreshedAt": "2026-06-29T23:28:35Z",
   "updates": [
     {
-      "heading": "R&D Open Reqs Tracker Built by Kebone",
+      "heading": "Open: clarify job-board seniority-label guidance for R&D",
       "bullets": [
-        "Kebone built a Google Apps Script-based open reqs tracker for all of R&D, inspired by Brandon's PM tracker",
-        "Auto-updates daily at 9am — should reflect current state each morning",
-        "JD tracker section needs manual updates; Kebone plans to tackle that later this week",
-        "Source: #r-and-d-invite-leadership (June 15)"
+        "Ashleigh Huffman asked you and Kristin (6/29) whether the passdown to edit seniority labels means removing Senior/Staff/Principal from IC postings, or only from PE/leadership titles (Director, VP, Manager).",
+        "Flag: Senior/Staff/Principal on IC roles is impactful to top-of-funnel strategy and comp alignment, and maps to defined internal levels — pod wants confirmation before actioning.",
+        "Action: respond with the scope of the seniority-label change for R&D IC reqs."
       ]
     },
     {
-      "heading": "Kebone Requested Engineering HC Doc Access (Data Eng Historical Data)",
+      "heading": "Open: PTO coverage gap flagged",
       "bullets": [
-        "Kebone requested access to the R&D Engineering Hiring Committee feedback doc",
-        "Purpose: deep dive into historical Data Engineering role signal and feedback",
-        "Flagged in #r-and-d-invite-leadership June 17 — follow up to confirm access was granted"
+        "Kevin Gadd asked (6/25) who is covering for Jacob while he's on PTO — confirm coverage is assigned."
       ]
     },
     {
-      "heading": "Talent Market Signal: Robinhood Cutting ~300 Roles",
+      "heading": "You drove the onsite logistics for the whole Invite team",
       "bullets": [
-        "Robinhood announced a restructuring cutting nearly 300 roles",
-        "Could surface engineering and product talent — worth monitoring for passive sourcing on active R&D reqs",
-        "Source: #r-and-d-invite-all (June 16)"
+        "Onsite activity voting and per-pod event assignments (with a PE POC each) went out under your name this week."
+      ]
+    },
+    {
+      "heading": "R&D org channels were quiet this week",
+      "bullets": [
+        "Only #r-and-d-invite-all had activity; #r-and-d-invite-leadership, #fy26-r-and-d-admin-invite, and #invite_pes_and_people_insights had no messages in the 7-day window."
       ]
     }
   ]
