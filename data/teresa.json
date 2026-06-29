@@ -1,6 +1,48 @@
 {
   "pe": "teresa",
-  "week": "June 22 – June 28, 2026",
-  "refreshedAt": "2026-06-25T19:30:25.200886Z",
-  "updates": []
+  "week": "June 29 – July 5, 2026",
+  "refreshedAt": "2026-06-29T17:03:09.222553Z",
+  "updates": [
+    {
+      "heading": "Foundation Tracker — Track All Roles (Action Required)",
+      "bullets": [
+        "Teresa asked the Foundation team (Dylan Cook, Helen Oh, Isabel Macias) to add ALL roles they're working on to the Foundation tracker — not just Foundation-org roles",
+        "For non-Foundation roles, leave column C blank; fill in column I with the hiring team",
+        "More Foundation + flex roles coming down the pipe — this enables better workload visibility",
+        "Source: #foundation_pod (Teresa Waggoner, June 26, 2026)"
+      ]
+    },
+    {
+      "heading": "Prospect Posting Location Format Reminder",
+      "bullets": [
+        "Locations in prospect postings must follow the format: 'United States - CITY, STATE'",
+        "Ensure spelling is correct — align with all other job req postings",
+        "Source: #talent-insights-and-engagement-team (Teresa Waggoner, June 24, 2026)"
+      ]
+    },
+    {
+      "heading": "AI Workshop Cancelled June 26 — People All Hands Themes Coming",
+      "bullets": [
+        "Teresa cancelled the AI workshop (FTEs only) for June 26 given team workload",
+        "For those who couldn't join the People Team All Hands, Teresa will share key themes and need-to-knows early next week in #flnp_invite_pod",
+        "Source: #flnp_invite_pod (Teresa Waggoner, June 26, 2026)"
+      ]
+    },
+    {
+      "heading": "Stale Apps/Referrals Cleanup — Foundation Pod",
+      "bullets": [
+        "Teresa flagged stale candidates in apps/referrals and asked team to review the Req Audit 6/24 tab",
+        "Cleanup of stale apps, referrals, and candidates was due end of week June 26",
+        "Source: #foundation_pod (Teresa Waggoner, June 24, 2026)"
+      ]
+    },
+    {
+      "heading": "Paul West Nominated & Won People Using AI Award",
+      "bullets": [
+        "Paul West had two submissions in the #people-using-ai competition and won the recognition",
+        "Team celebrated in #flnp_invite_pod",
+        "Source: #flnp_invite_pod (Teresa Waggoner + team, June 26, 2026)"
+      ]
+    }
+  ]
 }
