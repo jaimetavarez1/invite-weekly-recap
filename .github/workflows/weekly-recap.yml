@@ -1,0 +1,51 @@
+name: PE Recap System — Weekly Recap
+
+on:
+  schedule:
+    - cron: "0 15 * * 1"   # 8am MT / 9am ET Monday
+  workflow_dispatch:        # allow manual runs from the Actions tab
+
+jobs:
+  generate-recap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node (for Claude Code CLI)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Generate recap
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.slack_bot_token }}
+          RECAP_GH_TOKEN: ${{ secrets.RECAP_GH_TOKEN }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: python3 scripts/generate_recap.py
+
+# No deploy/build step here on purpose — the site is plain index.html at the
+# repo root, and GitHub Pages (Settings > Pages > Deploy from branch > main / root)
+# serves it directly whenever main updates. Netlify has been removed from the
+# pipeline; the old netlify.app site is left running but nothing pushes to it
+# anymore.
+#
+# CLAUDE_CODE_OAUTH_TOKEN is optional — without it the script still runs, but
+# falls back to a raw message dump (no write-up synthesis), logging clearly
+# that it did so rather than failing silently. Generate it once by running
+# `claude setup-token` locally (requires a Claude Pro or Max subscription) —
+# it bills synthesis against that subscription instead of a metered API key.
+#
+# There is intentionally no NOTION_TOKEN here. The IOPE Newsletter +
+# Leadership Hub reads and the weekly Notion page creation happen in a
+# separate Runlayer-hosted agent ("Invite Weekly Recap — Notion", scheduled
+# Mondays 7:45am MT), not in this workflow. It's self-contained and doesn't
+# feed data/shared.json or vice versa.
