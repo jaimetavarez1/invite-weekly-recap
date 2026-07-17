@@ -42,15 +42,17 @@ creation do NOT happen here — that's a separate Runlayer-hosted agent
 ("Invite Weekly Recap — Notion", scheduled Mondays 7:45am MT, ~15 min before
 this script runs) that creates the Notion page directly via the Notion
 connector, with no NOTION_TOKEN needed. That agent hands its orgPolicy/
-keyEvents findings to this script by posting a marked JSON message into a
-dedicated Slack relay channel (see fetch_notion_relay / NOTION_RELAY_CHANNEL_ID)
-— the recap bot needs to be invited to that channel like any other. If the
-relay message is missing, stale (>4h old), or unparseable, this script logs
-that plainly and just proceeds without it rather than failing the whole run.
+keyEvents findings to this script by DMing this bot (Slack user ID
+U0BGUH5QX7H) a marked JSON message (see fetch_notion_relay) — deliberately a
+DM, not a shared channel, so no new channel membership is needed. If the
+relay DM is missing, stale (>4h old), or unparseable, this script logs that
+plainly and just proceeds without it rather than failing the whole run.
 
 Secrets expected in the environment (set as GitHub Actions repo secrets):
   SLACK_BOT_TOKEN        — bot token (xoxb-...), scopes: channels:history,
-                           groups:history, channels:read, groups:read
+                           groups:history, channels:read, groups:read,
+                           im:read, im:history (the last two for the Notion
+                           relay DM)
   RECAP_GH_TOKEN         — GitHub PAT with push access to this repo
   CLAUDE_CODE_OAUTH_TOKEN — optional; from running `claude setup-token`
                            locally (requires a Claude Pro/Max subscription).
@@ -230,42 +232,48 @@ def channel_messages_since(channel_id, oldest_ts, token):
     return messages
 
 
-# ── Notion relay (via Slack) ─────────────────────────────────────────────
+# ── Notion relay (via Slack DM) ──────────────────────────────────────────
 # The "Invite Weekly Recap — Notion" Runlayer agent reads the IOPE Newsletter
-# + Leadership Hub directly (no NOTION_TOKEN here — see module docstring) and
-# posts its findings into this channel as a marker + JSON code block, ~15
-# minutes before this script runs. The recap bot needs to be invited to this
-# channel like any other, or this silently finds nothing.
-NOTION_RELAY_CHANNEL_ID = "C0BJSPFUEUQ"
+# + Leadership Hub directly (no NOTION_TOKEN here — see module docstring),
+# then DMs this bot (Slack user ID U0BGUH5QX7H) a marker + JSON code block,
+# ~15 minutes before this script runs. Deliberately NOT a shared channel —
+# a DM is only visible to the two participants, so no new channel membership
+# is needed. Requires the bot's token to have im:read (list its own DMs) and
+# im:history (read them) scopes in addition to the channel ones.
 NOTION_RELAY_MARKER = "RECAP_NOTION_CACHE_V1"
 NOTION_RELAY_MAX_AGE_HOURS = 4  # older than this = treat as stale, not missing
 
 
 def fetch_notion_relay(token, now):
-    """Reads the latest RECAP_NOTION_CACHE_V1 message in the relay channel.
-    Returns (orgPolicy_items, keyEvents_items, status) where status is one of
-    "ok", "missing" (no marker message found), or "stale" (found but too old)."""
-    if NOTION_RELAY_CHANNEL_ID == "RELAY_CHANNEL_ID_TBD":
-        return [], [], "not_configured"
+    """Scans the bot's own DM conversations for the latest RECAP_NOTION_CACHE_V1
+    message. Returns (orgPolicy_items, keyEvents_items, status) where status is
+    one of "ok", "missing" (no marker message found in any DM), "stale" (found
+    but too old), or "error: ..." (the im:read/im:history scopes are probably
+    missing)."""
     try:
-        resp = slack_call("conversations.history", {"channel": NOTION_RELAY_CHANNEL_ID, "limit": 10}, token)
+        resp = slack_call("conversations.list", {"types": "im", "limit": 50}, token)
     except RuntimeError as e:
         return [], [], f"error: {e}"
-    for msg in resp.get("messages", []):
-        text = msg.get("text", "")
-        if NOTION_RELAY_MARKER not in text:
-            continue
-        ts = float(msg.get("ts", 0))
-        age_hours = (now.timestamp() - ts) / 3600
-        if age_hours > NOTION_RELAY_MAX_AGE_HOURS:
-            return [], [], "stale"
-        json_part = text.split(NOTION_RELAY_MARKER, 1)[1]
-        start, end = json_part.find("{"), json_part.rfind("}") + 1
+    for dm in resp.get("channels", []):
         try:
-            payload = json.loads(json_part[start:end])
-        except (ValueError, json.JSONDecodeError):
-            return [], [], "unparseable"
-        return payload.get("orgPolicy", []), payload.get("keyEvents", []), "ok"
+            hist = slack_call("conversations.history", {"channel": dm["id"], "limit": 5}, token)
+        except RuntimeError:
+            continue
+        for msg in hist.get("messages", []):
+            text = msg.get("text", "")
+            if NOTION_RELAY_MARKER not in text:
+                continue
+            ts = float(msg.get("ts", 0))
+            age_hours = (now.timestamp() - ts) / 3600
+            if age_hours > NOTION_RELAY_MAX_AGE_HOURS:
+                return [], [], "stale"
+            json_part = text.split(NOTION_RELAY_MARKER, 1)[1]
+            start, end = json_part.find("{"), json_part.rfind("}") + 1
+            try:
+                payload = json.loads(json_part[start:end])
+            except (ValueError, json.JSONDecodeError):
+                return [], [], "unparseable"
+            return payload.get("orgPolicy", []), payload.get("keyEvents", []), "ok"
     return [], [], "missing"
 
 
