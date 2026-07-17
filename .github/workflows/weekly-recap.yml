@@ -29,7 +29,7 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.slack_bot_token }}
           RECAP_GH_TOKEN: ${{ secrets.RECAP_GH_TOKEN }}
-          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.ANTHROP_TOKEN }}
         run: python3 scripts/generate_recap.py
 
 # No deploy/build step here on purpose — the site is plain index.html at the
@@ -38,11 +38,11 @@ jobs:
 # pipeline; the old netlify.app site is left running but nothing pushes to it
 # anymore.
 #
-# CLAUDE_CODE_OAUTH_TOKEN is optional — without it the script still runs, but
-# falls back to a raw message dump (no write-up synthesis), logging clearly
-# that it did so rather than failing silently. Generate it once by running
-# `claude setup-token` locally (requires a Claude Pro or Max subscription) —
-# it bills synthesis against that subscription instead of a metered API key.
+# The ANTHROP_TOKEN secret (subscription token from `claude setup-token`,
+# requires a Claude Pro or Max subscription) is optional — without it the
+# script still runs, but falls back to a raw message dump (no write-up
+# synthesis), logging clearly that it did so rather than failing silently.
+# It bills synthesis against that subscription instead of a metered API key.
 #
 # There is intentionally no NOTION_TOKEN here. The IOPE Newsletter +
 # Leadership Hub reads and the weekly Notion page creation happen in a
