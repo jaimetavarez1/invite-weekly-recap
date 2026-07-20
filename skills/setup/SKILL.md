@@ -2,10 +2,9 @@
 name: setup-invite-recap
 description: >
   WREN onboarding for new Invite PEs. Introduces WREN (Weekly Recap, Events, News),
-  walks through adding WREN to the right Slack channels, explains how to flag items
-  from private channels or DMs, and saves the PE's config. No plugin download needed.
-  Trigger on "set up my weekly recap", "configure my recap", "invite recap setup",
-  "set up WREN", "onboard me to WREN", "first time setup", or
+  walks through adding WREN to the right Slack channels, and saves the PE's config.
+  No plugin download needed. Trigger on "set up my weekly recap", "configure my recap",
+  "invite recap setup", "set up WREN", "onboard me to WREN", "first time setup", or
   "my channels aren't configured yet".
 ---
 
@@ -82,9 +81,6 @@ Common patterns by org:
 - `#[org]-invite-leadership` — PE and leadership discussions
 - `#fy[year]-[org]-admin-invite` — headcount and admin
 
-**You do NOT need to add WREN to private channels or DMs** — see the next section for
-how to handle those.
-
 The three shared channels WREN already reads for everyone (no setup needed):
 - #invite-team
 - #invite-pes
@@ -100,36 +96,7 @@ the ID is in the URL and starts with `C`.
 
 Collect the name and ID for each channel the PE adds.
 
-## Step 4 — How to flag items from private channels or DMs
-
-Explain the "add to recap" feature clearly — this is how PEs include things WREN can't
-see on its own:
-
----
-
-**WREN can't read private channels or DMs — but you can still include them.**
-
-If something important happens in a 1:1 DM, a private channel, or an off-the-record
-conversation that belongs in your next recap, just send a DM directly to @WREN:
-
-> `add to recap: [brief description of the item]`
-
-**Examples:**
-- `add to recap: HM for Eng-DataPlatform wants to pause the search for 2 weeks — capacity issue`
-- `add to recap: Heard from leadership that Q3 headcount is being revisited — details TBD`
-- `add to recap: Recruiter Aisha OOO next week, 3 reqs may slow`
-- `add to recap: Closed Eng-Backend req — filled by internal transfer, not external hire`
-
-WREN logs these as they come in and automatically includes them in your PE org updates
-section the next time you run your recap. You can send as many as you want throughout
-the week — WREN collects them all.
-
-**This is also how you surface wins, blockers, or anything your team told you in a
-direct conversation that deserves a callout in the shared recap.**
-
----
-
-## Step 5 — Save config to GitHub
+## Step 4 — Save config to GitHub
 
 Now save the PE's channel list to the shared GitHub config so WREN remembers their
 channels for every future recap run.
@@ -175,7 +142,7 @@ with urllib.request.urlopen(req) as r:
     print("Config saved — commit " + json.loads(r.read())['commit']['sha'][:12])
 ```
 
-## Step 6 — Confirm and set expectations
+## Step 5 — Confirm and set expectations
 
 Tell the PE:
 
@@ -187,10 +154,6 @@ Tell the PE:
 Say `give me my weekly recap` (or `run my recap`) in Cowork. WREN reads your channels,
 synthesizes everything, and delivers a Notion page + live dashboard — usually in under
 2 minutes.
-
-**To flag items from DMs or private channels:**
-DM @WREN anytime: `add to recap: [description]`
-It'll be included under your org's section next time you run.
 
 **To add a new channel later:**
 Invite WREN to the channel (`/invite @WREN`), then tell Cowork:
@@ -207,7 +170,6 @@ Invite WREN to the channel (`/invite @WREN`), then tell Cowork:
 | Invite PE Leadership Hub | Pass-downs and open PE action items (Notion) |
 | Gusto FY27 holiday calendar | Auto — no setup needed |
 | Gusto work anniversaries | Auto — pulled from Glean/Workday |
-| Your WREN DMs | Any items you flagged with "add to recap:" |
 
 **Live dashboard (bookmark this):**
 🔴 [invite-weekly-recap.github.io](https://jaimetavarez1.github.io/invite-weekly-recap/)
