@@ -38,7 +38,8 @@
 
     .section{margin-bottom:40px}
     .sec-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-    .sec-hd-text{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--tx2);white-space:nowrap}
+    .sec-pill{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;background:var(--tx);color:#fff;border-radius:var(--r);padding:4px 13px;white-space:nowrap;flex-shrink:0}
+    .sec-hd-text{font-size:23px;font-weight:700;color:var(--tx);letter-spacing:-.5px;white-space:nowrap}
     .sec-hd-line{flex:1;height:1px;background:var(--bd)}
     .sec-count{font-size:10px;font-weight:700;background:var(--bg);border:1px solid var(--bd2);border-radius:var(--r);padding:2px 8px;color:var(--tx2);margin-right:6px}
 
@@ -146,33 +147,6 @@
     .inst-dismiss{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:14px;padding:0 0 0 4px;flex-shrink:0;line-height:1;transition:color .12s}
     .inst-dismiss:hover{color:var(--tx)}
 
-    .filter-bar{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:5px;margin-bottom:28px;align-items:center}
-    .filter-bar::-webkit-scrollbar{display:none}
-    .filter-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--tx3);margin-right:1px;white-space:nowrap;flex-shrink:0}
-    .f-btn{padding:5px 9px;border-radius:var(--r);border:1.5px solid var(--bd2);background:var(--surf);font-size:11px;font-weight:600;color:var(--tx2);cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
-    .f-btn:hover{border-color:var(--t);color:var(--t);background:var(--t-lt)}
-    .f-btn.active{background:var(--t);border-color:var(--t);color:white;box-shadow:0 2px 8px rgba(244,93,72,.25)}
-
-    .status-bar{background:linear-gradient(135deg,#FEF0EE 0%,#FAF7F3 40%,#EEF5F0 75%,#EBF2FB 100%);border:1px solid var(--bd);border-radius:16px;margin-bottom:24px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.06),0 4px 20px rgba(244,93,72,.06)}
-    .status-bar-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
-    .status-note{font-size:10.5px;color:var(--tx3);margin-bottom:11px;line-height:1.4}
-    .status-bar-label{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--tx3)}
-    .status-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
-    .status-pe{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);border-radius:10px;padding:9px 10px;display:flex;align-items:flex-start;gap:8px;cursor:default;transition:background .12s}
-    .status-pe:hover{background:rgba(255,255,255,.92)}
-    .status-pe.ok{background:rgba(232,245,239,.65);border-color:rgba(44,122,85,.18)}
-    .status-pe.ok:hover{background:rgba(232,245,239,.9)}
-    .status-pe-avatar{width:26px;height:26px;border-radius:7px;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:-.3px;margin-top:1px}
-    .status-pe-info{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
-    .status-pe-name{font-size:11px;font-weight:700;color:var(--tx);line-height:1.3;word-break:break-word}
-    .status-pe-org{font-size:9px;color:var(--tx3);line-height:1.3;word-break:break-word}
-    .status-pe-sub{font-size:9px;color:var(--tx3);line-height:1.2;margin-top:2px}
-    .status-pe-sub.ok{color:#2C7A55;font-weight:600}
-    .status-refresh-btn{background:none;border:1px solid rgba(0,0,0,.12);border-radius:5px;padding:2px 7px;font-size:10px;font-weight:700;color:var(--tx2);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .12s;line-height:1.4;margin-top:1px}
-    .status-refresh-btn:hover{border-color:var(--t);color:var(--t);background:var(--t-lt)}
-    .status-refresh-btn:disabled{opacity:.25;cursor:default}
-    .status-reload{background:none;border:none;padding:0;font-size:11px;font-weight:600;color:var(--tx2);cursor:pointer;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:5px}
-    .status-reload:hover{color:var(--t)}
     .status-loading{display:flex;align-items:center;gap:8px;color:var(--tx3);font-size:12px;padding:20px 0;justify-content:center}
     .status-spinner{width:14px;height:14px;border:2px solid var(--bd);border-top-color:var(--t);border-radius:50%;animation:spin .7s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
@@ -249,26 +223,6 @@
     kebone:   { label: 'Kebone Moloko',   sub: 'PM · Design · Data',           initials: 'KM', bg: '#F2EDFB', color: '#7C4FBF' }
   };
 
-  const PE_CHANNELS = {
-    jaime:    { channels: ['C05V6DJ5QPQ','C08SVC00BLN','C0706MX3Q6B','C0B0PPHSCUA'] },
-    teresa:   { channels: [] },
-    lisa:     { channels: [] },
-    michelle: { channels: [] },
-    kebone:   { channels: [] }
-  };
-
-  const ORG_FILTERS = [
-    { key: 'all',        label: 'All' },
-    { key: 'r&d',        label: 'Jaime · Engineering' },
-    { key: 'foundation', label: 'Teresa · Foundation' },
-    { key: 'gtm',        label: 'Lisa · GTM' },
-    { key: 'cx',         label: 'Michelle · CX' },
-    { key: 'pm',         label: 'Kebone · PM · Design · Data' }
-  ];
-
-  const ORG_TO_PE = { 'r&d': 'jaime', foundation: 'teresa', gtm: 'lisa', cx: 'michelle', pm: 'kebone' };
-
-  let activeFilter = 'all';
   let selIdCounter = 0;
   let summaryText = '';
 
@@ -532,17 +486,6 @@
     }
   }
 
-  // ── Filter ───────────────────────────────────────────────────────────────────
-  function setFilter(org) {
-    activeFilter = org;
-    document.querySelectorAll('.f-btn').forEach(b => b.classList.toggle('active', b.dataset.org === org));
-    document.querySelectorAll('[data-orgs]').forEach(el => {
-      const orgs = el.dataset.orgs.split(',');
-      el.classList.toggle('hidden-item', org !== 'all' && !orgs.includes('all') && !orgs.includes(org));
-    });
-    if (org !== 'all' && ORG_TO_PE[org]) switchPE(ORG_TO_PE[org]);
-  }
-
   // ── PE tab switching ─────────────────────────────────────────────────────────
   function switchPE(key) {
     document.querySelectorAll('.pe-tab').forEach(t => t.classList.toggle('active', t.dataset.key === key));
@@ -554,44 +497,6 @@
     window._instrDismissed = true;
     const b = document.getElementById('instrBanner');
     if (b) b.style.display = 'none';
-  }
-
-  // ── PE refresh ───────────────────────────────────────────────────────────────
-  function refreshPE(peKey) {
-    const meta = PE_META[peKey];
-    if (typeof sendPrompt === 'function') {
-      sendPrompt(`Update the weekly recap with fresh data for ${meta.label}'s org (${meta.sub}). Push to data/${peKey}.json on GitHub and refresh the artifact.`);
-    } else {
-      alert(`To refresh ${meta.label}'s org data:\n\n1. Open Cowork on your computer\n2. Run the Weekly Recap skill\n3. Reload this page to see updated data`);
-    }
-  }
-
-  // ── Render status bar ─────────────────────────────────────────────────────────
-  function renderStatusBar(shared, peFiles) {
-    let h = `<div class="status-bar" id="statusBar">
-      <div class="status-bar-hdr">
-        <span class="status-bar-label">PE Status</span>
-        <button class="status-reload" onclick="triggerReload()">↻ Refresh</button>
-      </div>
-      <p class="status-note">To ensure the most relevant information for your org, each PE should click <strong>Refresh</strong> at the start of each week.</p>
-      <div class="status-row">`;
-    Object.keys(PE_META).forEach(k => {
-      const meta    = PE_META[k];
-      const f       = peFiles[k];
-      const ts      = f?.data?.refreshedAt;
-      const isOk    = !!ts;
-      const subText = isOk ? `✓ ${relTime(ts)}` : 'Not yet refreshed';
-      h += `<div class="status-pe ${isOk ? 'ok' : ''}">
-        <div class="status-pe-avatar" style="background:${meta.bg};color:${meta.color}">${meta.initials}</div>
-        <div class="status-pe-info">
-          <span class="status-pe-name">${meta.label}</span>
-          <span class="status-pe-org">${meta.sub}</span>
-          <span class="status-pe-sub ${isOk ? 'ok' : ''}">${subText}</span>
-        </div>
-      </div>`;
-    });
-    h += `</div></div>`;
-    return h;
   }
 
   // ── Render recap content ─────────────────────────────────────────────────────
@@ -609,16 +514,14 @@
       </div>`;
     }
 
-    // Filter bar
-    h += `<div class="filter-bar">
-      <span class="filter-lbl">Filter by org:</span>
-      ${ORG_FILTERS.map(f => `<button class="f-btn${f.key === 'all' ? ' active' : ''}" data-org="${f.key}" onclick="setFilter('${f.key}')">${f.label}</button>`).join('')}
-    </div>`;
-
     // PE Org Updates
     const peKeys = Object.keys(PE_META);
     h += `<div class="section">
-      <div class="sec-hd"><span class="sec-hd-text">PE org updates</span><div class="sec-hd-line"></div></div>
+      <div class="sec-hd">
+        <span class="sec-pill">PE Org</span>
+        <span class="sec-hd-text">Updates</span>
+        <div class="sec-hd-line"></div>
+      </div>
       <div class="card"><div class="pe-nav">`;
     peKeys.forEach((k, i) => {
       const pe  = (data.peOrgUpdates || {})[k] || { updates: [] };
@@ -662,7 +565,8 @@
     const policyItems = data.orgPolicy || [];
     h += `<div class="section">
       <div class="sec-hd">
-        <span class="sec-hd-text">Org &amp; policy updates</span>
+        <span class="sec-pill">Org &amp; Policy</span>
+        <span class="sec-hd-text">Updates</span>
         ${policyItems.length ? `<span class="sec-count">${policyItems.length}</span>` : ''}
         <div class="sec-hd-line"></div>
       </div>
@@ -696,7 +600,8 @@
     const evTotal  = evGroups.reduce((s, g) => s + (g.items || []).length, 0);
     h += `<div class="section">
       <div class="sec-hd">
-        <span class="sec-hd-text">Key events &amp; decisions</span>
+        <span class="sec-pill">Key Events</span>
+        <span class="sec-hd-text">&amp; Decisions</span>
         ${evTotal ? `<span class="sec-count">${evTotal}</span>` : ''}
         <div class="sec-hd-line"></div>
       </div>
@@ -736,14 +641,10 @@
   }
 
   // ── Reload button handler ────────────────────────────────────────────────────
-  // In Cowork: triggers the weekly recap skill via sendPrompt
-  // On GitHub Pages: prompts user to open Cowork
   function triggerReload() {
     if (typeof sendPrompt === 'function') {
-      // Inside Cowork — trigger skill directly
       sendPrompt('refresh weekly recap data — pull fresh Slack and IOPE data, push to GitHub only, skip Notion');
     } else {
-      // Show modal first, then open Claude on confirm
       navigator.clipboard.writeText('refresh weekly recap data — pull fresh Slack and IOPE data, push to GitHub only, skip Notion').catch(() => {});
       const overlay = document.createElement('div');
       overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:flex;align-items:center;justify-content:center';
@@ -787,10 +688,7 @@
 
       selIdCounter = 0; // reset IDs for fresh render
 
-      const statusHtml = renderStatusBar(shared, peFiles);
-      const recapHtml  = renderRecap(merged);
-
-      document.getElementById('content').innerHTML = statusHtml + recapHtml;
+      document.getElementById('content').innerHTML = renderRecap(merged);
 
       const week = shared?.data?.week || '';
       const wc = document.getElementById('weekChip');
@@ -798,9 +696,6 @@
 
       document.getElementById('sub').textContent =
         'Invite PE team · Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-      // Re-apply active filter after re-render
-      if (activeFilter !== 'all') setFilter(activeFilter);
 
     } catch(err) {
       document.getElementById('content').innerHTML = '';
