@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PE Weekly Recruiting Recap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
   <style>
     :root {
       color-scheme: light;
@@ -37,11 +39,10 @@
     .error-box{background:var(--t-lt);border:1px solid var(--t-md);border-radius:12px;padding:14px 18px;color:var(--t-dk);font-size:13px;margin-bottom:24px}
 
     .section{margin-bottom:40px}
-    .sec-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-    .sec-pill{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;background:var(--tx);color:#fff;border-radius:var(--r);padding:4px 13px;white-space:nowrap;flex-shrink:0}
-    .sec-hd-text{font-size:23px;font-weight:700;color:var(--tx);letter-spacing:-.5px;white-space:nowrap}
+    .sec-hd{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .sec-hd-text{font-family:'DM Serif Display',Georgia,serif;font-size:26px;font-weight:400;color:var(--tx);letter-spacing:-.3px;white-space:nowrap}
     .sec-hd-line{flex:1;height:1px;background:var(--bd)}
-    .sec-count{font-size:10px;font-weight:700;background:var(--bg);border:1px solid var(--bd2);border-radius:var(--r);padding:2px 8px;color:var(--tx2);margin-right:6px}
+    .sec-count{font-size:10px;font-weight:700;background:var(--bg);border:1px solid var(--bd2);border-radius:var(--r);padding:2px 8px;color:var(--tx2);flex-shrink:0}
 
     .card{background:var(--surf);border-radius:16px;border:1px solid var(--bd);box-shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);overflow:hidden}
 
@@ -370,23 +371,17 @@
     for (const line of lines) {
       const t = line.trim();
       if (!t) { html += '<div style="height:10px"></div>'; continue; }
-      // Section header — bold line containing a section emoji
       if (/^\*/.test(t) && /[📋📅🎯📌]/.test(t)) {
         html += `<div style="font-size:13px;font-weight:700;color:var(--tx2);text-transform:uppercase;letter-spacing:.06em;margin:18px 0 6px;padding-bottom:5px;border-bottom:1px solid var(--bd)">${applyInline(t.replace(/\*/g,''))}</div>`;
-      // Page header — first bold line (no emoji, typically the title)
       } else if (/^\*[^*].+\*$/.test(t) && !html) {
         html += `<div style="font-size:15px;font-weight:700;color:var(--tx);margin-bottom:2px">${applyInline(t)}</div>`;
-      // Item heading — bold line
       } else if (/^\*[^*].+\*$/.test(t)) {
         html += `<div style="font-size:13.5px;font-weight:700;color:var(--tx);margin-top:12px;margin-bottom:1px">${applyInline(t)}</div>`;
-      // Italic summary / description line
       } else if (/^_[^_].+_$/.test(t)) {
         html += `<div style="font-size:12.5px;font-style:italic;color:var(--tx2);margin-bottom:4px">${applyInline(t)}</div>`;
-      // Bullet point
       } else if (/^•\s/.test(t)) {
         const inner = t.slice(2);
         html += `<div style="display:flex;gap:8px;padding:2px 0"><span style="flex-shrink:0;color:var(--t);font-size:13px;margin-top:1px">•</span><span style="font-size:13px;color:var(--tx2)">${applyInline(inner)}</span></div>`;
-      // Footer / plain line
       } else {
         html += `<div style="font-size:13px;color:var(--tx2);padding:2px 0">${applyInline(t)}</div>`;
       }
@@ -466,7 +461,6 @@
       btn.classList.add('copied');
       setTimeout(() => { btn.innerHTML = '📋 Copy message'; btn.classList.remove('copied'); }, 2000);
     };
-    // Build HTML version so Slack's rich-text editor renders bold/italic natively on paste
     const toHtml = s => s
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
       .replace(/\*([^*\n]+)\*/g,'<b>$1</b>')
@@ -518,8 +512,7 @@
     const peKeys = Object.keys(PE_META);
     h += `<div class="section">
       <div class="sec-hd">
-        <span class="sec-pill">PE Org</span>
-        <span class="sec-hd-text">Updates</span>
+        <span class="sec-hd-text">PE Org Updates</span>
         <div class="sec-hd-line"></div>
       </div>
       <div class="card"><div class="pe-nav">`;
@@ -565,8 +558,7 @@
     const policyItems = data.orgPolicy || [];
     h += `<div class="section">
       <div class="sec-hd">
-        <span class="sec-pill">Org &amp; Policy</span>
-        <span class="sec-hd-text">Updates</span>
+        <span class="sec-hd-text">Org &amp; Policy Updates</span>
         ${policyItems.length ? `<span class="sec-count">${policyItems.length}</span>` : ''}
         <div class="sec-hd-line"></div>
       </div>
@@ -600,8 +592,7 @@
     const evTotal  = evGroups.reduce((s, g) => s + (g.items || []).length, 0);
     h += `<div class="section">
       <div class="sec-hd">
-        <span class="sec-pill">Key Events</span>
-        <span class="sec-hd-text">&amp; Decisions</span>
+        <span class="sec-hd-text">Key Events &amp; Decisions</span>
         ${evTotal ? `<span class="sec-count">${evTotal}</span>` : ''}
         <div class="sec-hd-line"></div>
       </div>
@@ -686,7 +677,7 @@
       const [{ shared, peFiles }, hub] = await Promise.all([loadAllData(), loadLeadershipHub()]);
       const merged = injectLeadershipHub(mergeData(shared, peFiles), hub);
 
-      selIdCounter = 0; // reset IDs for fresh render
+      selIdCounter = 0;
 
       document.getElementById('content').innerHTML = renderRecap(merged);
 
