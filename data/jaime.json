@@ -1,32 +1,42 @@
 {
-  "pe": "jaime",
-  "week": "June 22 – June 29, 2026",
-  "refreshedAt": "2026-06-29T23:28:35Z",
+  "refreshedAt": "2026-07-20T18:00:00.000Z",
   "updates": [
     {
-      "heading": "Open: clarify job-board seniority-label guidance for R&D",
+      "heading": "Data Platform Eng — Closed After 6+ Months",
       "bullets": [
-        "Ashleigh Huffman asked you and Kristin (6/29) whether the passdown to edit seniority labels means removing Senior/Staff/Principal from IC postings, or only from PE/leadership titles (Director, VP, Manager).",
-        "Flag: Senior/Staff/Principal on IC roles is impactful to top-of-funnel strategy and comp alignment, and maps to defined internal levels — pod wants confirmation before actioning.",
-        "Action: respond with the scope of the seniority-label change for R&D IC reqs."
+        "Jeremy Murdy + Abby Wagner collaboration finally closed this long-running req",
+        "Ashleigh Huffman managed all in-flight offers, pending HC submission, and urgent scheduling while Abby was OOO",
+        "DocuSign emails for Growth Data Science roles expected soon"
       ]
     },
     {
-      "heading": "Open: PTO coverage gap flagged",
+      "heading": "Referral Rejections Surfaced at Eng All Hands",
       "bullets": [
-        "Kevin Gadd asked (6/25) who is covering for Jacob while he's on PTO — confirm coverage is assigned."
+        "Brandon Lassoff / Teal Stannard raised concern: referred engineers getting rejected quickly without recruiter contact",
+        "Likely cause: referrers not following hub location guidelines",
+        "Worth monitoring and clarifying referral process with eng leaders as needed"
       ]
     },
     {
-      "heading": "You drove the onsite logistics for the whole Invite team",
+      "heading": "SF Ruby Event — August 25 at Gusto SF",
       "bullets": [
-        "Onsite activity voting and per-pod event assignments (with a PE POC each) went out under your name this week."
+        "Kevin Gadd coordinating the next SF Ruby developer event at Gusto’s SF office",
+        "Looking for speakers (Mike Tria and/or Eddie) and Invite reps to participate",
+        "Good brand exposure opportunity for R&D"
       ]
     },
     {
-      "heading": "R&D org channels were quiet this week",
+      "heading": "VMA+ Training — Kevin Gadd, Deadline July 29",
       "bullets": [
-        "Only #r-and-d-invite-all had activity; #r-and-d-invite-leadership, #fy26-r-and-d-admin-invite, and #invite_pes_and_people_insights had no messages in the 7-day window."
+        "Kevin Gadd completing VMA+ training: Technical Interviewing Essentials + Interviewing with BrightHire + VMA+ module",
+        "Deadline July 29; goes into interviewer pool starting week of August 3"
+      ]
+    },
+    {
+      "heading": "Org Health Snapshot V1 Audit — Still Open",
+      "bullets": [
+        "Live audit at jaimetavarez1.github.io/org-health-invite-snapshot/ — PE input needed to close V1",
+        "Click Audit Mode to flag discrepancies or add Q1 commits for a more accurate pipeline view"
       ]
     }
   ]
