@@ -503,10 +503,21 @@ Then continue to the Notion step — the page should still be created even if Gi
 ## Step 5 — Create Notion page
 
 **Parent page ID:** `376ad673-c6c2-8196-8e2e-e09dbc954986`
-**Page title format:** `📋 Week of [today's date], [year]`
-(e.g. `📋 Week of July 20, 2026` — use today's date, the end of the 7-day window)
+
+**Page title format:** `Week of [today's date], [year]` — no emoji in the title text
+(e.g. `Week of July 20, 2026` — use today's date, the end of the 7-day window)
+
+Set the page **`icon`** to `📋` — this displays next to the title in the parent page list view without cluttering the title text itself.
 
 Always use `notion-create-pages` to create a new page. Do NOT search for or update an existing page — each run creates a fresh page to preserve history.
+
+The `notion-create-pages` call must pass both fields:
+```json
+{
+  "properties": { "title": "Week of July 20, 2026" },
+  "icon": "📋"
+}
+```
 
 **Page content:**
 
