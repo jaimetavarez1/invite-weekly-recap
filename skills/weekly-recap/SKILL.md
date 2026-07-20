@@ -521,8 +521,8 @@ Then include all four sections:
 
 ## 🎯 PE Org Updates
 
-For each PE, read their latest `data/<pe_key>.json` from GitHub and include their updates.
-If a PE's JSON is from a prior week (refreshedAt > 7 days ago), note it as "⚠️ Not yet refreshed this week."
+PE org data is automatically kept current by a GitHub Action — no manual refresh required.
+Read each PE's latest data file from GitHub and include their updates below.
 
 ### Jaime Tavarez — Engineering
 (updates from data/jaime.json)
@@ -560,7 +560,6 @@ for pe in ALL_PE_KEYS:
 
 For each PE section in the Notion page:
 - If `pe_data[pe]` is None → write "No data available yet."
-- If the `refreshedAt` is more than 7 days ago → write "⚠️ Last updated [date] — not yet refreshed this week."
 - Otherwise → write each update as `**heading**` followed by `-` bullets
 
 Use `---` dividers between sections. Bold key terms. Italicize source citations.
