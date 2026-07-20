@@ -240,16 +240,23 @@
   }
 
   function mergeData(shared, peFiles) {
+    const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+    const cutoff = Date.now() - SEVEN_DAYS_MS;
+
     const orgPolicy = shared?.data?.orgPolicy || [];
     const keyEvents = shared?.data?.keyEvents || [];
     const peOrgUpdates = {};
+
     Object.keys(PE_META).forEach(k => {
       const f = peFiles[k];
+      const refreshedAt = f?.data?.refreshedAt;
+      const isFresh = refreshedAt && new Date(refreshedAt).getTime() >= cutoff;
       peOrgUpdates[k] = {
-        updates:   f?.data?.updates || [],
-        sourceGap: f ? null : 'This PE has not refreshed yet this week.'
+        updates:   isFresh ? (f.data?.updates || []) : [],
+        sourceGap: isFresh ? null : 'No updates this week yet.'
       };
     });
+
     return { orgPolicy, keyEvents, peOrgUpdates };
   }
 
@@ -281,7 +288,6 @@
 
   function injectLeadershipHub(data, hub) {
     const HUB_URL = 'https://app.notion.com/p/383ad673c6c2816886d2d98e7e1996f3';
-    // Cascades → orgPolicy items (prepend)
     const cascadeItems = (hub.cascades || []).map(row => {
       const bullets = [];
       if (row['date:Due Date:start']) bullets.push('Due: ' + row['date:Due Date:start']);
@@ -291,14 +297,13 @@
     });
     if (cascadeItems.length) data.orgPolicy = [...cascadeItems, ...(data.orgPolicy || [])];
 
-    // Action Items → keyEvents group (prepend)
     const aiItems = (hub.actionItems || []).map(row => {
       const bullets = [];
       if (row.Priority) bullets.push(row.Priority);
       if (row['date:Due Date:start']) bullets.push('Due: ' + row['date:Due Date:start']);
       if (row.Notes) bullets.push(row.Notes);
-      const tpPriority = (row.Priority || '').includes('🔴') || (row.Priority || '').includes('🔴') ? 'red'
-                       : (row.Priority || '').includes('🟡') || (row.Priority || '').includes('🟡') ? 'yellow' : 'green';
+      const tpPriority = (row.Priority || '').includes('🔴') ? 'red'
+                       : (row.Priority || '').includes('🟡') ? 'yellow' : 'green';
       return { heading: row.Action, bullets, source: 'Leadership Hub', sourceUrl: HUB_URL,
                tp: { priority: tpPriority } };
     });
@@ -545,9 +550,9 @@
           }
         });
       } else {
-        h += `<div style="padding:16px 22px" class="empty">No specific updates this week.</div>`;
+        h += `<div style="padding:16px 22px" class="empty">No updates this week yet.</div>`;
       }
-      if (pe.sourceGap) {
+      if (pe.sourceGap && pe.updates.length === 0) {
         h += `<div class="gap-note" style="margin:0 12px 12px">⚠️ ${esc(pe.sourceGap)}</div>`;
       }
       h += `</div>`;
