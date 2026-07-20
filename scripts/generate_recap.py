@@ -20,6 +20,7 @@ What it does, in order:
      re-scanned every week — only genuinely new channels get resolved.
   3. Pull the last 7 days of messages from each PE's channels (their assigned
      channels + the 3 shared Invite channels every PE gets automatically).
+     In REFRESH mode, pulls only messages since the last refreshedAt timestamp.
   4. jaime only: flags messages matching R&D-wide keywords (deep work week,
      R&D hiring/recruiting) from channels already fetched, in place of the
      old live Slack search (search.messages needs a user token; bots can't
@@ -36,6 +37,14 @@ What it does, in order:
      silently shipping a worse recap unlabeled.
   8. Writes data/shared.json + data/{pe}.json back via the GitHub Contents
      API using RECAP_GH_TOKEN.
+     In REFRESH mode, merges new items into existing JSON rather than
+     overwriting — deduped by heading (PE updates) and title/theme+heading
+     (shared org policy / key events).
+
+Run modes (set via MODE env var, defaults to "full"):
+  full    — overwrites all JSON files for the current week (default, Mondays)
+  refresh — reads existing JSON, fetches only messages since refreshedAt,
+            merges new items additively (never removes existing items)
 
 Note: the IOPE Newsletter + Leadership Hub reads and the weekly Notion page
 creation do NOT happen here — that's a separate Runlayer-hosted agent
@@ -155,7 +164,7 @@ def rnd_keyword_matches(messages):
     return matches
 
 
-# ── Slack helpers ────────────────────────────────────────────────────────
+# ── Slack helpers ────────────────────────────────────────────────────────────────────────
 def slack_call(method, params, token):
     url = f"{SLACK_API}/{method}"
     data = urllib.parse.urlencode(params).encode()
@@ -232,14 +241,7 @@ def channel_messages_since(channel_id, oldest_ts, token):
     return messages
 
 
-# ── Notion relay (via Slack DM) ──────────────────────────────────────────
-# The "Invite Weekly Recap — Notion" Runlayer agent reads the IOPE Newsletter
-# + Leadership Hub directly (no NOTION_TOKEN here — see module docstring),
-# then DMs this bot (Slack user ID U0BGUH5QX7H) a marker + JSON code block,
-# ~15 minutes before this script runs. Deliberately NOT a shared channel —
-# a DM is only visible to the two participants, so no new channel membership
-# is needed. Requires the bot's token to have im:read (list its own DMs) and
-# im:history (read them) scopes in addition to the channel ones.
+# ── Notion relay (via Slack DM) ──────────────────────────────────────────────────────────────
 NOTION_RELAY_MARKER = "RECAP_NOTION_CACHE_V1"
 NOTION_RELAY_MAX_AGE_HOURS = 4  # older than this = treat as stale, not missing
 
@@ -277,7 +279,7 @@ def fetch_notion_relay(token, now):
     return [], [], "missing"
 
 
-# ── GitHub helpers ───────────────────────────────────────────────────────
+# ── GitHub helpers ───────────────────────────────────────────────────────────────────────
 def gh_get(path, token):
     req = urllib.request.Request(
         f"{API}/repos/{REPO}/contents/{path}",
@@ -317,7 +319,7 @@ def gh_put_json(path, data_dict, token, message):
         return json.loads(r.read())["commit"]["sha"][:12]
 
 
-# ── Channel -> PE resolution (cached) ────────────────────────────────────
+# ── Channel -> PE resolution (cached) ────────────────────────────────────────────────────
 def resolve_channel_map(channels, bot_user_id, slack_token, gh_token):
     cache = gh_get_json("data/channel-map.json", gh_token, default={})
     unclassified = []
@@ -348,7 +350,7 @@ def resolve_channel_map(channels, bot_user_id, slack_token, gh_token):
     return cache, unclassified
 
 
-# ── Write-up synthesis ───────────────────────────────────────────────────
+# ── Write-up synthesis ───────────────────────────────────────────────────────────────────────
 def synthesize_with_claude(pe, week_label, messages, oauth_token, highlight_note=None):
     """Ask Claude (via the Claude Code CLI, billed against Jaime's Pro/Max
     subscription rather than a metered API key) to turn raw Slack messages
@@ -388,7 +390,7 @@ def synthesize_with_claude(pe, week_label, messages, oauth_token, highlight_note
         + (f"- {highlight_note}\n" if highlight_note else "")
         + f"\nMESSAGES:\n{raw_text}"
     )
-    env = {**os.environ, "CLAUDE_CODE_OAUTH_TOKEN": oauth_token}
+    env = {**os.environ, "CLAUDE_CODE_OAUTH_TOKEN": ********}
     result = subprocess.run(
         ["claude", "-p", "--output-format", "text"],
         input=prompt, capture_output=True, text=True, env=env, timeout=120,
@@ -417,18 +419,36 @@ def fallback_dump(messages):
     return blocks
 
 
-# ── Main ──────────────────────────────────────────────────────────────────
+# ── Main ──────────────────────────────────────────────────────────────────────────────────
 ARTIFACT_URL = "https://jaimetavarez1.github.io/invite-weekly-recap/"
 
 
 def main():
-    slack_token = os.environ["SLACK_BOT_TOKEN"]
-    gh_token = os.environ["RECAP_GH_TOKEN"]
+    slack_token = ********["SLACK_BOT_TOKEN"]
+    gh_token = ********["RECAP_GH_TOKEN"]
     claude_oauth_token = os.environ.get("CLAUDE_CODE_OAUTH_TOKEN")
+    MODE = os.environ.get("MODE", "full").lower()
 
     now = datetime.datetime.utcnow()
-    oldest_ts = time.time() - LOOKBACK_DAYS * 86400
     week_label = f"{(now - datetime.timedelta(days=LOOKBACK_DAYS)).strftime('%B %-d')} – {now.strftime('%B %-d, %Y')}"
+
+    # In REFRESH mode use the existing shared.json's refreshedAt as the fetch
+    # cutoff so only messages posted since the last run are pulled. If no
+    # existing JSON is found, fall back to FULL mode.
+    existing_shared_doc = None
+    if MODE == "refresh":
+        existing_shared_doc = gh_get_json("data/shared.json", gh_token, default=None)
+        if existing_shared_doc and existing_shared_doc.get("refreshedAt"):
+            oldest_ts = datetime.datetime.fromisoformat(
+                existing_shared_doc["refreshedAt"].replace("Z", "+00:00")
+            ).timestamp()
+            print(f"REFRESH mode: fetching messages since {existing_shared_doc['refreshedAt']}")
+        else:
+            print("REFRESH mode: no existing shared.json found — falling back to FULL")
+            MODE = "full"
+            oldest_ts = time.time() - LOOKBACK_DAYS * 86400
+    else:
+        oldest_ts = time.time() - LOOKBACK_DAYS * 86400
 
     bot_user_id = slack_bot_user_id(slack_token)
     channels = list_bot_channels(slack_token)
@@ -476,13 +496,28 @@ def main():
         else:
             updates = fallback_dump(pe_messages)
 
-        pe_doc = {
-            "pe": pe,
-            "week": week_label,
-            "refreshedAt": now.isoformat() + "Z",
-            "refreshedBy": "github-actions",
-            "updates": updates,
-        }
+        if MODE == "refresh":
+            existing_pe = gh_get_json(f"data/{pe}.json", gh_token, default={"updates": []})
+            existing_headings = {
+                u.get("heading", "") for u in existing_pe.get("updates", [])
+                if isinstance(u, dict) and u.get("heading")
+            }
+            new_updates = [
+                u for u in updates
+                if isinstance(u, dict) and u.get("heading", "") not in existing_headings
+            ]
+            merged_updates = existing_pe.get("updates", []) + new_updates
+            pe_doc = {**existing_pe, "refreshedAt": now.isoformat() + "Z", "updates": merged_updates}
+            print(f"  {pe}: {len(new_updates)} new update(s) merged ({len(existing_pe.get('updates', []))} existing)")
+        else:
+            pe_doc = {
+                "pe": pe,
+                "week": week_label,
+                "refreshedAt": now.isoformat() + "Z",
+                "refreshedBy": "github-actions",
+                "updates": updates,
+            }
+
         commit_shas[pe] = gh_put_json(f"data/{pe}.json", pe_doc, gh_token, f"recap: {pe} — {week_label}")
 
     org_policy = list(glean_cache.get("orgPolicy", []))
@@ -495,18 +530,47 @@ def main():
     org_policy += relay_policy
     key_events += relay_events
 
-    shared_doc = {
-        "week": week_label,
-        "refreshedAt": now.isoformat() + "Z",
-        "refreshedBy": "github-actions",
-        "orgPolicy": org_policy,
-        "keyEvents": key_events,
-        "anniversaries": glean_cache.get("anniversaries", []),  # still Cowork/Glean-sourced — see README
-    }
+    if MODE == "refresh" and existing_shared_doc:
+        # Merge orgPolicy: dedup by title
+        existing_titles = {p.get("title", "") for p in existing_shared_doc.get("orgPolicy", [])}
+        new_org_policy = [p for p in org_policy if p.get("title", "") not in existing_titles]
+        merged_org_policy = existing_shared_doc["orgPolicy"] + new_org_policy
+
+        # Merge keyEvents: dedup by theme + heading
+        existing_themes_map = {t["theme"]: t for t in existing_shared_doc.get("keyEvents", [])}
+        for new_theme in key_events:
+            name = new_theme["theme"]
+            if name in existing_themes_map:
+                existing_item_headings = {
+                    i.get("heading", "") for i in existing_themes_map[name].get("items", [])
+                }
+                for item in new_theme.get("items", []):
+                    if item.get("heading", "") not in existing_item_headings:
+                        existing_themes_map[name]["items"].append(item)
+            else:
+                existing_themes_map[name] = new_theme
+
+        shared_doc = {
+            **existing_shared_doc,
+            "refreshedAt": now.isoformat() + "Z",
+            "orgPolicy": merged_org_policy,
+            "keyEvents": list(existing_themes_map.values()),
+        }
+        print(f"  shared: {len(new_org_policy)} new org policy item(s), merged key events by theme")
+    else:
+        shared_doc = {
+            "week": week_label,
+            "refreshedAt": now.isoformat() + "Z",
+            "refreshedBy": "github-actions",
+            "orgPolicy": org_policy,
+            "keyEvents": key_events,
+            "anniversaries": glean_cache.get("anniversaries", []),  # still Cowork/Glean-sourced — see README
+        }
+
     commit_shas["shared"] = gh_put_json("data/shared.json", shared_doc, gh_token, f"recap: shared — {week_label}")
     commit_shas["channel-map"] = gh_put_json("data/channel-map.json", channel_map, gh_token, "recap: update channel map")
 
-    print(f"Done. Week: {week_label}")
+    print(f"Done. Mode: {MODE.upper()}. Week: {week_label}")
     print(f"Channels: {len(channels)} total, {len(channel_map)} mapped, {len(unclassified)} unclassified")
     print(f"Synthesis: {'Claude Code CLI' if claude_oauth_token else 'RAW DUMP — set CLAUDE_CODE_OAUTH_TOKEN for real write-ups'}")
     print(f"Notion relay: {relay_status} ({len(relay_policy)} orgPolicy, {len(relay_events)} keyEvents)")
