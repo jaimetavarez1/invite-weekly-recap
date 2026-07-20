@@ -165,7 +165,6 @@ For each result:
 
 If the PE's `pe_key` is not `jaime`, skip this step entirely. Other PEs should add equivalent org-wide search queries to this step when their plugin is configured.
 
-
 ## Step 1c — Read Leadership Hub (Notion)
 
 Pull active pass-downs and open action items from the Invite PE Leadership Hub.
@@ -198,6 +197,36 @@ Store results for filtering in Step 3. If either query fails or returns no resul
 
 **Important — 7-day relevance filter:** Leadership Hub items will only be included in the final recap if they were explicitly mentioned or referenced in Slack messages or the IOPE Newsletter within the current 7-day review window. Do not surface action items solely because they exist in the Leadership Hub — they must have been actively discussed or referenced this week.
 
+## Step 1d — Read WREN DMs for PE-flagged items
+
+Check whether the running PE has sent any items to WREN via DM for inclusion in this recap. PEs can flag items from private conversations, DMs, or anything WREN can't see by messaging WREN directly.
+
+Search for messages sent by the running PE that contain `add to recap` using `slack_search_public_and_private`:
+
+```
+query: "add to recap" from:<PE_Slack_user_ID>
+after: <7-days-ago timestamp>
+```
+
+PE Slack user IDs:
+- jaime → `U02E8CN9Z7V`
+- teresa → look up via `slack_search_users` with email `teresa.waggoner@gusto.com`
+- lisa → look up via `slack_search_users` with email `lisa.pham@gusto.com`
+- michelle → look up via `slack_search_users` with email `michelle.cordray@gusto.com`
+- kebone → look up via `slack_search_users` with email `kebone.moloko@gusto.com`
+
+For each matching message:
+1. Extract the text after `add to recap:` (match case-insensitively)
+2. Trim whitespace
+3. Add to the **PE-specific updates bucket** as a flagged item:
+   - `heading`: the extracted text (verbatim — do not paraphrase)
+   - `source`: "Flagged via WREN DM"
+   - `priority`: `"yellow"` by default; use `"red"` if the text contains words like `urgent`, `critical`, `asap`, `🔴`, or `red`
+
+**These items bypass the org-wide filter and source integrity rules.** They are explicitly submitted by the PE and must always be included, regardless of whether they mention a specific individual or are not org-wide in scope.
+
+If no messages are found, skip silently — do not mention it in the recap output.
+
 ## Step 2 — Read the IOPE Newsletter
 
 The IOPE Newsletter is now a Notion gallery database. Read the two most recent entries:
@@ -215,7 +244,6 @@ LIMIT 2
 For each result, fetch the full page content using `notion-fetch` with the page ID.
 
 If inaccessible, note it and continue.
-
 
 ## Step 2b — Read People Central Updates (Bi-weekly)
 
@@ -332,9 +360,11 @@ For each anniversary printed, add a keyEvent item with:
 
 Group all anniversaries in the same week into a single keyEvent theme block.
 
-**PE-specific (updates)** — sourced from each PE's org channels only. Anything that belongs only to their org and is not already covered in shared.
+**PE-specific (updates)** — sourced from each PE's org channels, Step 1b R&D searches, and Step 1d WREN DM flags. Anything that belongs only to their org and is not already covered in shared.
 
 **Org-wide filter — required:** Only include updates that affect the org broadly. Do NOT include updates about specific named individuals' personal actions or accomplishments (e.g., "Jane completed VMA training", "John attended a conference"). An update qualifies as org-wide if it would be relevant to multiple people in the org — announcements, pipeline signals, exec decisions, team-level events, open role closures, process changes. If an update is only about one person's individual activity, exclude it.
+
+**Exception: WREN DM flags are exempt from the org-wide filter.** Items submitted by the PE via `add to recap:` DM should always be included as written, even if they reference a specific individual or situation.
 
 For each PE-specific item:
 - Limit to the past 7 days
