@@ -3,7 +3,16 @@ name: PE Recap System — Weekly Recap
 on:
   schedule:
     - cron: "0 15 * * 1"   # 8am MT / 9am ET Monday
-  workflow_dispatch:        # allow manual runs from the Actions tab
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Run mode — full rewrites the week; refresh adds new items without removing existing'
+        required: false
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - refresh
 
 jobs:
   generate-recap:
@@ -30,6 +39,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.slack_bot_token }}
           RECAP_GH_TOKEN: ${{ secrets.RECAP_GH_TOKEN }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.ANTHROP_TOKEN }}
+          MODE: ${{ github.event.inputs.mode || 'full' }}
         run: python3 scripts/generate_recap.py
 
 # No deploy/build step here on purpose — the site is plain index.html at the
