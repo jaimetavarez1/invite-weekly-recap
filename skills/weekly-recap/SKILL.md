@@ -6,7 +6,8 @@ description: >
   Newsletter, pushes structured JSON to the shared GitHub repo, and creates a
   new Notion page. Trigger on "give me my weekly recap", "run my recap",
   "weekly update", "what happened this week in recruiting", or "run the invite
-  recap".
+  recap". Also handles mid-week live artifact refreshes — trigger on "refresh my
+  recap", "refresh the live artifact", "add new updates", or "update my recap".
 ---
 
 Generate the weekly recruiting recap for the PE running this skill.
@@ -60,7 +61,56 @@ Extract from config:
 
 The shared team token `T` is assembled above — no local file or folder needed.
 
-## Step 0b — Channel discovery (auto-assign newly added channels)
+## Step 0b — Detect run mode
+
+Determine whether this is a **full run** or a **refresh** based on what the PE said:
+
+| Trigger phrases | Mode |
+|---|---|
+| "give me my weekly recap", "run my recap", "weekly update", "what happened this week" | `FULL` |
+| "refresh my recap", "refresh the live artifact", "add new updates", "update my recap", "refresh" | `REFRESH` |
+
+Set `MODE = "FULL"` or `MODE = "REFRESH"` and carry it through every subsequent step.
+
+**Full mode** — runs on Mondays (or whenever the PE explicitly wants a fresh weekly recap). Overwrites all JSON data, creates a new Notion page. This is the clean-slate weekly reset.
+
+**Refresh mode** — runs mid-week to add new updates to the live artifact without removing anything that's already there. Only looks for content since the last `refreshedAt` timestamp. Does NOT create a Notion page. Does NOT clear or overwrite existing data.
+
+If `MODE = "REFRESH"`, load the current `data/shared.json` and `data/<PE_KEY>.json` from GitHub now — these are the baseline you will merge into:
+
+```python
+import urllib.request, json, base64
+
+def gh_read(path):
+    url = f"https://api.github.com/repos/jaimetavarez1/invite-weekly-recap/contents/{path}"
+    req = urllib.request.Request(url, headers={
+        "Authorization": f"token {T}", "Accept": "application/vnd.github.v3+json"
+    })
+    try:
+        with urllib.request.urlopen(req) as r:
+            raw = json.loads(r.read())
+            return json.loads(base64.b64decode(raw['content']).decode()), raw['sha']
+    except:
+        return None, None
+
+existing_shared, shared_sha = gh_read("data/shared.json")
+existing_pe, pe_sha = gh_read(f"data/{PE_KEY}.json")
+```
+
+Also extract the `refreshedAt` timestamp from `existing_shared` to use as the `oldest` cutoff in Step 1:
+
+```python
+import datetime
+
+if existing_shared and existing_shared.get("refreshedAt"):
+    last_refresh = datetime.datetime.fromisoformat(existing_shared["refreshedAt"].replace("Z", "+00:00"))
+    oldest = str(last_refresh.timestamp())
+else:
+    # Fall back to 7 days ago if no prior refresh found
+    oldest = str((datetime.datetime.utcnow() - datetime.timedelta(days=7)).timestamp())
+```
+
+## Step 0c — Channel discovery (auto-assign newly added channels)
 
 After loading config, check whether any Slack channels have been newly added to the bot since the last recap. This only needs to run once per new channel — once a channel is mapped to a PE's config, it is stored permanently and does not need to be re-checked.
 
@@ -90,7 +140,7 @@ for pe in ALL_PE_KEYS:
 
 Use `slack_search_channels` with the query `invite-weekly-recap` (or the bot's name) to find channels where it was recently added. Alternatively, use `slack_list_channel_members` on the shared channels already known, and check for any channels that appear in the bot's workspace membership but are not in `known_channels`.
 
-If no new channels are found, skip the rest of Step 0b entirely.
+If no new channels are found, skip the rest of Step 0c entirely.
 
 **3. For each new channel not yet in any PE config:**
 
@@ -105,7 +155,6 @@ d. Map their email to a PE key using the table in Step 0. If no match is found, 
 e. Add the new channel to the matched PE's `org_channels` list in their GitHub config file. Push the updated config:
 
 ```python
-# Load existing PE config
 pe_url = f"https://api.github.com/repos/jaimetavarez1/invite-weekly-recap/contents/config/{matched_pe}.json"
 req = urllib.request.Request(pe_url, headers={"Authorization": f"token {T}", "Accept": "application/vnd.github.v3+json"})
 with urllib.request.urlopen(req) as r:
@@ -113,10 +162,8 @@ with urllib.request.urlopen(req) as r:
     existing_sha = raw['sha']
     pe_config = json.loads(base64.b64decode(raw['content']).decode())
 
-# Add new channel
 pe_config["org_channels"].append({"id": new_channel_id, "name": new_channel_name})
 
-# Push update
 updated_content = base64.b64encode(json.dumps(pe_config, indent=2).encode()).decode()
 body = {"message": f"Add channel #{new_channel_name} to {matched_pe} config", "content": updated_content, "sha": existing_sha}
 req2 = urllib.request.Request(pe_url, data=json.dumps(body).encode(), method="PUT",
@@ -129,13 +176,15 @@ f. If the new channel belongs to the running PE, re-read the running PE's config
 
 **Do not re-check channel ownership on subsequent runs** — once a channel is stored in a PE's config it stays there. Only newly discovered channels (not yet in any config) go through this process.
 
-## Step 1 — Read Slack channels (past 7 days)
+## Step 1 — Read Slack channels
 
-Calculate the Unix timestamp for 7 days ago at runtime using Python or bash:
+**Full mode:** Use 7 days ago as `oldest`:
 ```python
 import datetime
 oldest = str((datetime.datetime.utcnow() - datetime.timedelta(days=7)).timestamp())
 ```
+
+**Refresh mode:** Use the `oldest` timestamp computed from `refreshedAt` in Step 0b — this limits reads to only content that appeared since the last run.
 
 Read the following channels with `oldest` set to that timestamp and `limit: 100`:
 
@@ -151,25 +200,25 @@ If a channel returns an error or no messages, note it and continue.
 
 ## Step 1b — Search Slack for R&D org-wide updates (R&D PEs only)
 
-If the PE's `pe_key` is `jaime` (R&D org), run the following Slack searches using `slack_search_public_and_private` with `after` set to the 7-day-ago timestamp. These catch org-wide R&D announcements that don't appear in invite-specific channels:
+If the PE's `pe_key` is `jaime` (R&D org), run the following Slack searches using `slack_search_public_and_private` with `after` set to the appropriate timestamp (7 days ago for full, `refreshedAt` for refresh). These catch org-wide R&D announcements that don't appear in invite-specific channels:
 
 Search queries to run (one at a time):
-- `"deep work week" in:#r-and-d-invite-all` — R&D no-meetings weeks that affect recruiting scheduling
-- `"R&D" "week" in:#invite-team` — any R&D-specific callouts in the invite-team channel
-- `"r-and-d" hiring OR recruiting` — org-wide hiring announcements
+- `"deep work week" in:#r-and-d-invite-all`
+- `"R&D" "week" in:#invite-team`
+- `"r-and-d" hiring OR recruiting`
 
 For each result:
 - Apply the same source integrity and thread age filters from Step 3
-- Only include items where the original message is within the past 7 days
+- Only include items where the original message is within the search window
 - Add valid results to the PE-specific updates bucket for synthesis in Step 3
 
-If the PE's `pe_key` is not `jaime`, skip this step entirely. Other PEs should add equivalent org-wide search queries to this step when their plugin is configured.
+If the PE's `pe_key` is not `jaime`, skip this step entirely.
 
 ## Step 1c — Read Leadership Hub (Notion)
 
 Pull active pass-downs and open action items from the Invite PE Leadership Hub.
 
-**Cascade to Your Teams** (pass-downs from Kristin/leadership — things that need to move downstream to your recruiters):
+**Cascade to Your Teams:**
 
 Use `notion-query-data-sources` with:
 - `data_source_id`: `collection://7c90c5eb-ca2f-42c1-a29a-66e2d7bbbbd9`
@@ -181,7 +230,7 @@ WHERE "Status" NOT IN ('Cascaded ✓', 'Archived')
 ORDER BY createdTime DESC
 ```
 
-**PE Action Items** (open tasks owned by PEs):
+**PE Action Items:**
 
 Use `notion-query-data-sources` with:
 - `data_source_id`: `collection://07af0c0a-3fe8-4531-af0a-fe315fda0aed`
@@ -195,7 +244,7 @@ ORDER BY createdTime DESC
 
 Store results for filtering in Step 3. If either query fails or returns no results, note it and continue.
 
-**Important — 7-day relevance filter:** Leadership Hub items will only be included in the final recap if they were explicitly mentioned or referenced in Slack messages or the IOPE Newsletter within the current 7-day review window. Do not surface action items solely because they exist in the Leadership Hub — they must have been actively discussed or referenced this week.
+**Important — 7-day relevance filter:** Leadership Hub items will only be included in the final recap if they were explicitly mentioned or referenced in Slack messages or the IOPE Newsletter within the current search window.
 
 ## Step 2 — Read the IOPE Newsletter
 
@@ -220,26 +269,25 @@ If inaccessible, note it and continue.
 Read the People Central Updates Google Site via Glean:
 `https://sites.google.com/gusto.com/people-central-updates/home`
 
-Use the `read_document` tool (Glean). If inaccessible, try a Glean search:
-`search` with query `"people central updates" site:sites.google.com` to find the most recent entries.
+Use the `read_document` tool (Glean). If inaccessible, try a Glean search for `"people central updates" site:sites.google.com`.
 
-This is a bi-weekly People team publication. Pull any entries published in the past **14 days** (two recap cycles). For each update found:
+Pull any entries published in the past **14 days**. For each update found:
 - Classify into `orgPolicy` if it describes a policy, process, or tooling change affecting recruiting
 - Classify into `keyEvents` if it's an announcement, decision, or upcoming date
-- Tag with `["all"]` — these apply across all orgs
-- Set `source` = "People Central Updates" and `sourceUrl` = "https://sites.google.com/gusto.com/people-central-updates/home"
+- Tag with `["all"]`
+- Set `source` = "People Central Updates"
 
-If the site returns no new content within the past 14 days, skip silently.
+If no new content within 14 days, skip silently.
 
 ## Step 3 — Synthesize content
 
 Classify everything you read into two buckets:
 
-**Shared (orgPolicy + keyEvents)** — sourced from #invite-team, #invite-pes, #invite_pes_and_people_insights, and the IOPE Newsletter only. These are updates that affect all Invite recruiters regardless of org.
-- `orgPolicy` = process/tooling/SOP changes (new fields in GH, scorecard rules, offer calculator updates, VMA changes)
-- `keyEvents` = decisions, departures, launches, roadmap updates, upcoming dates, company-wide holidays, org-wide events that affect recruiting schedules
+**Shared (orgPolicy + keyEvents)** — sourced from #invite-team, #invite-pes, #invite_pes_and_people_insights, and the IOPE Newsletter only.
+- `orgPolicy` = process/tooling/SOP changes
+- `keyEvents` = decisions, departures, launches, roadmap updates, upcoming dates, holidays, org-wide events
 
-**Holiday auto-detection:** At the start of Step 3, run this Python to find any Gusto holidays that fall within the next 14 days and add them to `keyEvents` automatically — do not wait for Slack to mention them:
+**Holiday auto-detection:**
 
 ```python
 import datetime
@@ -254,211 +302,156 @@ GUSTO_HOLIDAYS_FY27 = [
 ]
 
 today = datetime.date.today()
-upcoming = []
 for name, date in GUSTO_HOLIDAYS_FY27:
     days_away = (date - today).days
     if 0 <= days_away <= 14:
-        upcoming.append((name, date, days_away))
-
-for name, date, days in upcoming:
-    day_str = date.strftime("%A %B %-d, %Y")
-    print(f"ADD TO keyEvents: {name} — {day_str} ({days} days away)")
+        print(f"ADD TO keyEvents: {name} — {date.strftime('%A %B %-d, %Y')} ({days_away} days away)")
 ```
 
 For each holiday printed, add a keyEvent item with:
 - `theme`: "Upcoming Holiday"
-- `heading`: "{Holiday Name} — {Day Month Date}" (e.g. "Juneteenth — Friday June 19")
-- `bullets`: ["[Full holiday name] is {date} — company holiday", "Plan interview scheduling, offers, and candidate comms around this date"]
+- `heading`: "{Holiday Name} — {Day Month Date}"
+- `bullets`: ["Company holiday — plan interview scheduling and candidate comms accordingly"]
 - `source`: "Gusto FY27 Holiday Calendar"
 - `tp.priority`: "yellow" if >7 days away, "red" if ≤7 days away
 
-**Work anniversary auto-detection:** After holiday detection, query Glean to find upcoming work anniversaries across the entire Invite team. Use the following approach to get complete coverage:
+**Work anniversary auto-detection:** Query Glean via `employee_search` for each PE manager (Jaime Tavarez, Teresa Waggoner, Kebone Moloko, Michelle Cordray, Lisa Pham). Extract each manager and their `directReports`. Deduplicate by email, then find anyone whose work anniversary falls within the next 14 days. Add as keyEvent items with `theme`: "Work Anniversary".
 
-Search each PE manager by name — their profile includes the full `directReports` list. Run these 5 `employee_search` calls:
+**PE-specific (updates)** — sourced from each PE's org channels and Step 1b R&D searches.
 
-- `query="Jaime Tavarez"` → returns Jaime's profile with all direct reports
-- `query="Teresa Waggoner"` → returns Teresa's profile with all direct reports
-- `query="Kebone Moloko"` → returns Kebone's profile with all direct reports
-- `query="Michelle Cordray"` → returns Michelle's profile with all direct reports
-- `query="Lisa Pham"` → returns Lisa's profile with all direct reports
+**Org-wide filter — required:** Only include updates relevant to multiple people in the org. Exclude updates about specific individuals' personal actions or accomplishments.
 
-From each result, extract:
-1. The manager themselves (name + startDate from the top-level person)
-2. All people in their `directReports` array (name + startDate)
+**Leadership Hub — 7-day relevance filter:** Only include if explicitly mentioned in Slack or the IOPE Newsletter this week.
 
-Deduplicate the combined list by email, then run:
+**Date filter:** Skip any Leadership Hub item whose "Due Date" is strictly before today.
 
-```python
-import datetime
+**Departed employee filter:** Skip all messages from Roberto Segovia (roberto.segovia@gusto.com) and Todd Hazen (todd.hazen@gusto.com).
 
-# team_members = list of (name, start_date_str) from all Glean queries, deduplicated by email
-today = datetime.date.today()
-upcoming_anniversaries = []
+**Source integrity:** Every item must be traceable to a specific message. Do not synthesize or infer.
 
-for name, start_date_str in team_members:
-    start = datetime.date.fromisoformat(start_date_str)
-    if start.year >= today.year:
-        continue
-    years_this = today.year - start.year
-    try:
-        anniversary_this = start.replace(year=today.year)
-    except ValueError:
-        anniversary_this = start.replace(year=today.year, day=28)
-    if anniversary_this >= today:
-        anniversary = anniversary_this
-        years = years_this
-    else:
-        years = years_this + 1
-        try:
-            anniversary = start.replace(year=today.year + 1)
-        except ValueError:
-            anniversary = start.replace(year=today.year + 1, day=28)
-    days_away = (anniversary - today).days
-    if 0 <= days_away <= 14:
-        upcoming_anniversaries.append((name, anniversary, years, days_away))
-
-for name, date, years, days in upcoming_anniversaries:
-    print(f"ADD TO keyEvents: {name} — {years}-year anniversary on {date.strftime('%A %B %-d')} ({days} days away)")
-```
-
-For each anniversary printed, add a keyEvent item with:
-- `theme`: "Work Anniversary"
-- `heading`: "{Name} — {N}-Year Anniversary · {Month Day}"
-- `bullets`: ["{Name} celebrates {N} year{'s' if N>1 else ''} at Gusto on {date}!", "Consider a shoutout in #invite-team or a personal note"]
-- `source`: "Glean / Workday"
-- `tp.priority`: "yellow" if >7 days away, "red" if ≤7 days away (≤3 days = definitely red)
-
-Group all anniversaries in the same week into a single keyEvent theme block.
-
-**PE-specific (updates)** — sourced from each PE's org channels and Step 1b R&D searches. Anything that belongs only to their org and is not already covered in shared.
-
-**Org-wide filter — required:** Only include updates that affect the org broadly. Do NOT include updates about specific named individuals' personal actions or accomplishments (e.g., "Jane completed VMA training", "John attended a conference"). An update qualifies as org-wide if it would be relevant to multiple people in the org — announcements, pipeline signals, exec decisions, team-level events, open role closures, process changes. If an update is only about one person's individual activity, exclude it.
-
-For each PE-specific item:
-- Limit to the past 7 days
-- Flag items that are ongoing (not new this week) explicitly
-- Always cite the source channel and date
-- Assign priority: `red` = action required or high urgency, `yellow` = important/FYI, `green` = informational
-
-**Leadership Hub items — 7-day filter:** Only include Leadership Hub items (from Step 1c) if they were explicitly mentioned or referenced in Slack messages or the IOPE Newsletter within the current 7-day window. Cross-reference the item title/action text against the Slack content you read in Step 1. If no matching mention is found, exclude the item entirely.
-
-**Date filter — skip any item whose "Due Date" is in the past.** Compute today's date at runtime and exclude any item where the due date is strictly before it:
-
-```python
-import datetime
-today = datetime.date.today()
-# For each item with a due date:
-# due = datetime.date.fromisoformat("YYYY-MM-DD")
-# if due < today: skip this item entirely
-```
-
-- **Cascade items** (not yet "Cascaded ✓") → add as `orgPolicy` items: `title` = the action, `bullets` = [notes if any, due date if any], `source` = "Leadership Hub", `priority` = "high", `tags` = ["all"]
-- **PE Action Items** (not Done/Archived) → add as a `keyEvents` group: `theme` = "PE Action Items", items each with `heading` = action, `bullets` = [priority label, due date if any, notes if any], `source` = "Leadership Hub", `tp.priority` = red/yellow/green based on 🔴/🟡/🟢 prefix
-
-**Departed employee filter:** The following people are no longer at Gusto — skip any message authored by them entirely, do not include in any section:
-- Roberto Segovia (roberto.segovia@gusto.com)
-- Todd Hazen (todd.hazen@gusto.com)
-
-**Source integrity — critical:** Every item you include must be directly traceable to a specific message you actually read. Do NOT:
-- Synthesize or infer summaries that weren't explicitly stated in a channel
-- Combine fragments from multiple messages into a new item that didn't exist as a single post
-- Include any item you cannot cite with a specific channel, author, and date
-
-If you cannot point to an exact message as the source, leave it out entirely.
-
-**Thread age filter — strict:** Slack returns threads that had *any* activity in the past 7 days, including old threads with new replies. Always check the timestamp of the **original/parent message**:
-- If the original message is older than 7 days → **exclude entirely, regardless of what the replies say**
-- Only include items where the original message itself was posted within the past 7 days
+**Thread age filter:** Only include items where the **original** parent message was posted within the search window. Exclude threads whose parent is older, even if there were recent replies.
 
 ## Step 4 — Push JSON to GitHub
 
 **Repo:** `jaimetavarez1/invite-weekly-recap`
 
-Before writing any code, extract the values you loaded in Step 0:
-- `TOKEN = T` — the shared team token assembled in Step 0 (do NOT use config for this)
-- `PE_KEY = config['pe_key']` — from the GitHub config loaded in Step 0
-
-**Determine the week string** using the past 7 days ending today:
 ```python
 import datetime
 today = datetime.date.today()
 start = today - datetime.timedelta(days=7)
 week_str = f"{start.strftime('%B %-d')} – {today.strftime('%B %-d, %Y')}"
-# e.g. if run on July 20: "July 13 – July 20, 2026"
+now_iso = datetime.datetime.utcnow().isoformat() + "Z"
 ```
 
-Push `data/shared.json`:
+---
+
+### Full mode — overwrite
+
+Build `shared.json` and `data/<PE_KEY>.json` from scratch using the synthesized content and push with `gh_push`. This completely replaces any existing data.
+
+`data/shared.json` shape:
 ```json
 {
-  "week": "<week string>",
-  "refreshedAt": "<use: datetime.datetime.utcnow().isoformat() + 'Z'>",
+  "week": "<week_str>",
+  "refreshedAt": "<now_iso>",
   "refreshedBy": "<PE_KEY>",
-  "orgPolicy": [
-    {
-      "title": "",
-      "summary": "",
-      "bullets": [],
-      "source": "",
-      "sourceUrl": null,
-      "priority": "high|medium|low",
-      "tags": ["all"],
-      "tp": { "priority": "red|yellow|green", "audience": "", "point": "" }
-    }
-  ],
-  "keyEvents": [
-    {
-      "theme": "",
-      "tags": ["all"],
-      "items": [
-        {
-          "heading": "",
-          "bullets": [],
-          "source": "",
-          "sourceUrl": null,
-          "tp": { "priority": "red|yellow|green" }
-        }
-      ]
-    }
-  ]
+  "orgPolicy": [ ... ],
+  "keyEvents": [ ... ]
 }
 ```
 
-Push `data/<PE_KEY>.json` (e.g. `data/jaime.json`):
+`data/<PE_KEY>.json` shape:
 ```json
 {
   "pe": "<PE_KEY>",
-  "week": "<week string>",
-  "refreshedAt": "<use: datetime.datetime.utcnow().isoformat() + 'Z'>",
-  "updates": [
-    { "heading": "", "bullets": [] }
-  ]
+  "week": "<week_str>",
+  "refreshedAt": "<now_iso>",
+  "updates": [ ... ]
 }
 ```
 
-Use this Python pattern to push. **Substitute the real TOKEN and PE_KEY values inline before running** — do not leave any placeholder strings:
+---
+
+### Refresh mode — merge, never remove
+
+Load `existing_shared` and `existing_pe` (already fetched in Step 0b). Merge newly synthesized items INTO the existing data. **Never delete or overwrite existing items.**
+
+**Deduplication rules:**
+- `orgPolicy`: skip any new item whose `title` already exists in `existing_shared["orgPolicy"]`
+- `keyEvents`: for each new theme, find the matching theme by `theme` name in the existing list:
+  - If the theme exists, append only items whose `heading` is not already present in that theme
+  - If the theme doesn't exist yet, append the entire theme block
+- PE `updates`: skip any new item whose `heading` already exists in `existing_pe["updates"]`
+
 ```python
-import json, base64, urllib.request
+import json, base64, urllib.request, datetime
 
-TOKEN = T  # shared team token assembled in Step 0
-OWNER = "jaimetavarez1"
-REPO  = "invite-weekly-recap"
+now_iso = datetime.datetime.utcnow().isoformat() + "Z"
 
-def gh_push(path, data_dict, message, retries=2):
+# --- Merge shared.json ---
+merged_shared = existing_shared.copy() if existing_shared else {
+    "week": week_str, "orgPolicy": [], "keyEvents": []
+}
+merged_shared["refreshedAt"] = now_iso
+merged_shared["refreshedBy"] = PE_KEY
+
+# Merge orgPolicy
+existing_titles = {p["title"] for p in merged_shared.get("orgPolicy", [])}
+for item in new_org_policy_items:
+    if item["title"] not in existing_titles:
+        merged_shared["orgPolicy"].append(item)
+        existing_titles.add(item["title"])
+
+# Merge keyEvents
+existing_themes = {t["theme"]: t for t in merged_shared.get("keyEvents", [])}
+for new_theme in new_key_event_themes:
+    name = new_theme["theme"]
+    if name in existing_themes:
+        existing_headings = {i["heading"] for i in existing_themes[name].get("items", [])}
+        for item in new_theme.get("items", []):
+            if item["heading"] not in existing_headings:
+                existing_themes[name]["items"].append(item)
+                existing_headings.add(item["heading"])
+    else:
+        merged_shared["keyEvents"].append(new_theme)
+        existing_themes[name] = new_theme
+
+# --- Merge PE json ---
+merged_pe = existing_pe.copy() if existing_pe else {
+    "pe": PE_KEY, "week": week_str, "updates": []
+}
+merged_pe["refreshedAt"] = now_iso
+
+existing_headings = {u["heading"] for u in merged_pe.get("updates", [])}
+for item in new_pe_updates:
+    if item["heading"] not in existing_headings:
+        merged_pe["updates"].append(item)
+        existing_headings.add(item["heading"])
+```
+
+Push `merged_shared` to `data/shared.json` and `merged_pe` to `data/<PE_KEY>.json` using the SHAs loaded in Step 0b.
+
+---
+
+**Push helper (both modes):**
+
+```python
+def gh_push(path, data_dict, message, sha=None, retries=2):
     import time
-    url = f"https://api.github.com/repos/{OWNER}/{REPO}/contents/{path}"
+    url = f"https://api.github.com/repos/jaimetavarez1/invite-weekly-recap/contents/{path}"
     last_error = None
     for attempt in range(1, retries + 2):
         try:
-            req = urllib.request.Request(url, headers={
-                "Authorization": f"token {TOKEN}",
-                "Accept": "application/vnd.github.v3+json"
-            })
-            sha = None
-            try:
-                with urllib.request.urlopen(req) as r:
-                    sha = json.loads(r.read())['sha']
-            except:
-                pass
+            if sha is None:
+                req = urllib.request.Request(url, headers={
+                    "Authorization": f"token {T}",
+                    "Accept": "application/vnd.github.v3+json"
+                })
+                try:
+                    with urllib.request.urlopen(req) as r:
+                        sha = json.loads(r.read())['sha']
+                except:
+                    pass
             content = base64.b64encode(
                 json.dumps(data_dict, indent=2, ensure_ascii=False).encode()
             ).decode()
@@ -467,10 +460,7 @@ def gh_push(path, data_dict, message, retries=2):
                 body["sha"] = sha
             req2 = urllib.request.Request(
                 url, data=json.dumps(body).encode(), method="PUT",
-                headers={
-                    "Authorization": f"token {TOKEN}",
-                    "Content-Type": "application/json"
-                }
+                headers={"Authorization": f"token {T}", "Content-Type": "application/json"}
             )
             with urllib.request.urlopen(req2) as r:
                 return json.loads(r.read())['commit']['sha'][:12]
@@ -481,38 +471,34 @@ def gh_push(path, data_dict, message, retries=2):
     raise last_error
 ```
 
-**If the GitHub push fails with a network or SSL error (e.g. `URLError`, `SSLEOFError`, HTTP 000, or 404):**
-
-Send a Slack DM to the running PE's Slack user ID (see roster below) using `slack_send_message` with this message:
+**If push fails:** Send a Slack DM to the PE's user ID:
 
 > ⚠️ *Invite Recap — GitHub Push Failed*
-> The recap ran successfully but your data couldn't be pushed to GitHub. The live artifact won't update until this is fixed.
-> *Fix:* Re-authenticate Cloudflare in your browser, then re-run the recap.
+> Your data couldn't be pushed to GitHub. The live artifact won't update until this is fixed.
+> *Fix:* Re-authenticate Cloudflare in your browser, then try again.
 
-PE Slack user IDs for DMs:
+PE Slack user IDs:
 - jaime → U02E8CN9Z7V
-- teresa → search slack for teresa.waggoner@gusto.com
-- lisa → search slack for lisa.pham@gusto.com
-- michelle → search slack for michelle.cordray@gusto.com
-- kebone → search slack for kebone.moloko@gusto.com
+- teresa → search for teresa.waggoner@gusto.com
+- lisa → search for lisa.pham@gusto.com
+- michelle → search for michelle.cordray@gusto.com
+- kebone → search for kebone.moloko@gusto.com
 
-Then continue to the Notion step — the page should still be created even if GitHub failed.
+## Step 5 — Create Notion page (full mode only)
 
-## Step 5 — Create Notion page
+**Skip this step entirely in refresh mode.** Refreshes update the live artifact only — no new Notion page.
+
+**Full mode only:**
 
 **Parent page ID:** `376ad673-c6c2-8196-8e2e-e09dbc954986`
 
-**Page title format:** `Week of [today's date], [year]` — no emoji in the title text
-(e.g. `Week of July 20, 2026` — use today's date, the end of the 7-day window)
+**Page title format:** `Week of [today's date], [year]` (e.g. `Week of July 20, 2026`)
 
-Set the page **`icon`** to `📋` — this displays next to the title in the parent page list view without cluttering the title text itself.
+Set page `icon` to `📋`.
 
-Always use `notion-create-pages` to create a new page. Do NOT search for or update an existing page — each run creates a fresh page to preserve history.
-
-The `notion-create-pages` call must pass both fields:
 ```json
 {
-  "properties": { "title": "Week of July 20, 2026" },
+  "properties": { "title": "Week of [today's date], [year]" },
   "icon": "📋"
 }
 ```
@@ -537,31 +523,18 @@ Then include all four sections:
 
 ## 🎯 PE Org Updates
 
-PE org data is automatically kept current by a GitHub Action — no manual refresh required.
-Read each PE's latest data file from GitHub and include their updates below.
-
 ### Jaime Tavarez — Engineering
-(updates from data/jaime.json)
-
 ### Teresa Waggoner — Foundation, I&O, Finance
-(updates from data/teresa.json)
-
 ### Lisa Pham — GTM, Sales, Marketing
-(updates from data/lisa.json)
-
 ### Michelle Cordray — Customer Experience
-(updates from data/michelle.json)
-
 ### Kebone Moloko — PM/PD, Data
-(updates from data/kebone.json)
 ```
 
-To read all PE JSON files for the Notion page, fetch each one from GitHub before creating the page:
+Fetch each PE's data file from GitHub before creating the page:
 
 ```python
 ALL_PE_KEYS = ["jaime", "teresa", "lisa", "michelle", "kebone"]
 pe_data = {}
-
 for pe in ALL_PE_KEYS:
     url = f"https://api.github.com/repos/jaimetavarez1/invite-weekly-recap/contents/data/{pe}.json"
     req = urllib.request.Request(url, headers={
@@ -571,18 +544,22 @@ for pe in ALL_PE_KEYS:
         with urllib.request.urlopen(req) as r:
             pe_data[pe] = json.loads(base64.b64decode(json.loads(r.read())['content']).decode())
     except:
-        pe_data[pe] = None  # file doesn't exist yet
+        pe_data[pe] = None
 ```
 
-For each PE section in the Notion page:
-- If `pe_data[pe]` is None → write "No data available yet."
-- Otherwise → write each update as `**heading**` followed by `-` bullets
-
-Use `---` dividers between sections. Bold key terms. Italicize source citations.
+For each PE section: if `None` → "No data available yet." Otherwise render each update as `**heading**` + `-` bullets.
 
 ## Step 6 — Confirm
 
+**Full mode:**
 Tell the PE the recap is done. Share:
 - The Notion page link
 - The live artifact link: https://jaimetavarez1.github.io/invite-weekly-recap/
 - A 2–3 sentence plain-language summary of the most important things this week
+
+**Refresh mode:**
+Tell the PE what was added. Share:
+- How many new items were added (orgPolicy, keyEvents, PE updates — by count)
+- The live artifact link: https://jaimetavarez1.github.io/invite-weekly-recap/
+- Note that existing updates were preserved and nothing was removed
+- Example: "Added 2 new org policy items and 1 PE update to the live artifact. Everything from earlier this week is still there."
