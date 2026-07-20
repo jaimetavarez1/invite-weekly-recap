@@ -189,6 +189,7 @@
         </div>
       </div>
     </div>
+    <button class="refresh-btn" id="refreshUpdatesBtn" onclick="dispatchRefresh()">↻ Refresh Updates</button>
   </div>
 </div>
 
@@ -202,6 +203,12 @@
 <script>
   // ── GitHub config ────────────────────────────────────────────────────────────
   const GH = { owner: 'jaimetavarez1', repo: 'invite-weekly-recap' };
+  // Fine-grained PAT (actions:write on this repo only) — enables the Refresh
+  // button to trigger a new WREN run from the dashboard. Create one at
+  // github.com/settings/tokens with only "Actions > Read and Write" scoped to
+  // jaimetavarez1/invite-weekly-recap, then paste it here.
+  // If empty, the button still reloads the latest JSON data (no new Slack fetch).
+  const DISPATCH_TOKEN = '';
 
   async function ghFetch(path) {
     try {
@@ -634,6 +641,69 @@
     h += `</div></div>`;
 
     return h;
+  }
+
+  // ── Refresh dispatch ──────────────────────────────────────────────────────────
+  // Triggers a GitHub Actions workflow_dispatch (mode=refresh) so WREN fetches
+  // new Slack messages and merges them in — without removing existing items.
+  // Requires DISPATCH_TOKEN to be set (fine-grained PAT, actions:write only).
+  // Without a token, falls back to reloading the current JSON from GitHub.
+  async function dispatchRefresh() {
+    const btn = document.getElementById('refreshUpdatesBtn');
+    if (!btn) return;
+
+    if (!DISPATCH_TOKEN) {
+      btn.disabled = true;
+      btn.innerHTML = '<span style="display:inline-block;width:11px;height:11px;border:1.5px solid var(--bd);border-top-color:var(--t);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px"></span>Reloading…';
+      await reloadAll();
+      btn.disabled = false;
+      btn.innerHTML = '↻ Refresh Updates';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span style="display:inline-block;width:11px;height:11px;border:1.5px solid var(--bd);border-top-color:var(--t);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px"></span>Starting…';
+
+    try {
+      const r = await fetch(
+        `https://api.github.com/repos/${GH.owner}/${GH.repo}/actions/workflows/weekly-recap.yml/dispatches`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${DISPATCH_TOKEN}`,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json',
+            'X-GitHub-Api-Version': '2022-11-28',
+          },
+          body: JSON.stringify({ ref: 'main', inputs: { mode: 'refresh' } }),
+        }
+      );
+
+      if (r.status === 204) {
+        // Workflow triggered — count down ~90s then auto-reload
+        let secs = 90;
+        const tick = setInterval(() => {
+          secs--;
+          if (secs > 0) {
+            btn.innerHTML = `⏳ Running… (${secs}s)`;
+          } else {
+            clearInterval(tick);
+            reloadAll().then(() => {
+              btn.disabled = false;
+              btn.innerHTML = '↻ Refresh Updates';
+            });
+          }
+        }, 1000);
+      } else {
+        console.error('Dispatch failed:', r.status, await r.text().catch(() => ''));
+        btn.disabled = false;
+        btn.innerHTML = '↻ Refresh Updates';
+      }
+    } catch(e) {
+      console.error('Dispatch error:', e);
+      btn.disabled = false;
+      btn.innerHTML = '↻ Refresh Updates';
+    }
   }
 
   // ── Reload button handler ────────────────────────────────────────────────────
