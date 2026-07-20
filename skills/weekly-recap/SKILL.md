@@ -504,7 +504,7 @@ Always use `notion-create-pages` to create a new page. Do NOT search for or upda
 **Page content:**
 
 First block:
-> 🔴 **[→ Open Live Interactive Recap](https://invite-weekly-recap.netlify.app/)** — tabs, filters, and one-click Slack summary
+> 🔴 **[→ Open Live Interactive Recap](https://jaimetavarez1.github.io/invite-weekly-recap/)** — tabs, filters, and one-click Slack summary
 
 Then include all four sections:
 
@@ -568,5 +568,5 @@ Use `---` dividers between sections. Bold key terms. Italicize source citations.
 
 Tell the PE the recap is done. Share:
 - The Notion page link
-- The live artifact link: https://invite-weekly-recap.netlify.app/
+- The live artifact link: https://jaimetavarez1.github.io/invite-weekly-recap/
 - A 2–3 sentence plain-language summary of the most important things this week
