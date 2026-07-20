@@ -380,7 +380,14 @@ Before writing any code, extract the values you loaded in Step 0:
 - `TOKEN = T` — the shared team token assembled in Step 0 (do NOT use config for this)
 - `PE_KEY = config['pe_key']` — from the GitHub config loaded in Step 0
 
-Determine the week string using Monday–Sunday of the current week (e.g. "June 9 – June 15, 2026").
+**Determine the week string** using the past 7 days ending today:
+```python
+import datetime
+today = datetime.date.today()
+start = today - datetime.timedelta(days=7)
+week_str = f"{start.strftime('%B %-d')} – {today.strftime('%B %-d, %Y')}"
+# e.g. if run on July 20: "July 13 – July 20, 2026"
+```
 
 Push `data/shared.json`:
 ```json
@@ -496,8 +503,8 @@ Then continue to the Notion step — the page should still be created even if Gi
 ## Step 5 — Create Notion page
 
 **Parent page ID:** `376ad673-c6c2-8196-8e2e-e09dbc954986`
-**Page title format:** `📋 Week of [end date], [year]`
-(e.g. `📋 Week of July 20, 2026` — use the Sunday end date of the week, not a date range)
+**Page title format:** `📋 Week of [today's date], [year]`
+(e.g. `📋 Week of July 20, 2026` — use today's date, the end of the 7-day window)
 
 Always use `notion-create-pages` to create a new page. Do NOT search for or update an existing page — each run creates a fresh page to preserve history.
 
