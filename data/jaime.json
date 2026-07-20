@@ -1,43 +1,6 @@
 {
-  "refreshedAt": "2026-07-20T18:00:00.000Z",
-  "updates": [
-    {
-      "heading": "Data Platform Eng — Closed After 6+ Months",
-      "bullets": [
-        "Jeremy Murdy + Abby Wagner collaboration finally closed this long-running req",
-        "Ashleigh Huffman managed all in-flight offers, pending HC submission, and urgent scheduling while Abby was OOO",
-        "DocuSign emails for Growth Data Science roles expected soon"
-      ]
-    },
-    {
-      "heading": "Referral Rejections Surfaced at Eng All Hands",
-      "bullets": [
-        "Brandon Lassoff / Teal Stannard raised concern: referred engineers getting rejected quickly without recruiter contact",
-        "Likely cause: referrers not following hub location guidelines",
-        "Worth monitoring and clarifying referral process with eng leaders as needed"
-      ]
-    },
-    {
-      "heading": "SF Ruby Event — August 25 at Gusto SF",
-      "bullets": [
-        "Kevin Gadd coordinating the next SF Ruby developer event at Gusto’s SF office",
-        "Looking for speakers (Mike Tria and/or Eddie) and Invite reps to participate",
-        "Good brand exposure opportunity for R&D"
-      ]
-    },
-    {
-      "heading": "VMA+ Training — Kevin Gadd, Deadline July 29",
-      "bullets": [
-        "Kevin Gadd completing VMA+ training: Technical Interviewing Essentials + Interviewing with BrightHire + VMA+ module",
-        "Deadline July 29; goes into interviewer pool starting week of August 3"
-      ]
-    },
-    {
-      "heading": "Org Health Snapshot V1 Audit — Still Open",
-      "bullets": [
-        "Live audit at jaimetavarez1.github.io/org-health-invite-snapshot/ — PE input needed to close V1",
-        "Click Audit Mode to flag discrepancies or add Q1 commits for a more accurate pipeline view"
-      ]
-    }
-  ]
+  "pe": "jaime",
+  "week": "July 20 – July 26, 2026",
+  "refreshedAt": "2026-07-20T19:35:42Z",
+  "updates": []
 }
