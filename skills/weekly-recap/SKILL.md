@@ -90,10 +90,15 @@ write access needed. Parse it as JSON.
   'set up my weekly recap' first — it only takes a minute."
 - Extract `org_channels` — a list of `{id, name}` objects for the PE's org-specific channels.
 
-The three shared Invite channels are always included for every PE (no config needed):
+**Shared channels — always included for every PE (no config needed):**
 - `C0517BVP04V` — #invite-team
 - `C0AFC07JJKA` — #invite-pes
 - `C0B0PPHSCUA` — #invite_pes_and_people_insights
+- `C04P11LLE` — #pe-announcements
+- `C03SRCXS35L` — #pe-community
+- `GJNHJLM8E` — #people_team_pe
+- `G1RUWFCB0` — #people-team
+- `C039P9JHC` — #all-announcements
 
 ## Step 0b — Detect run mode
 
@@ -118,7 +123,7 @@ merge.
 ## Step 1 — Read Slack channels (via the PE's Slack connector)
 
 Set `oldest` per the window above. Using `slack_read_channel` (limit 100), read:
-- The three shared channels (IDs above)
+- The shared channels (all IDs listed in Step 0)
 - Every channel ID in the PE's `org_channels`
 
 Because this uses the PE's own Slack access, private channels the PE belongs to are readable
@@ -176,8 +181,9 @@ the past 14 days; classify into `orgPolicy` or `keyEvents`, tag `["all"]`, `sour
 
 ## Step 3 — Synthesize content
 
-**Shared (orgPolicy + keyEvents)** — from #invite-team, #invite-pes,
-#invite_pes_and_people_insights, and the IOPE Newsletter only.
+**Shared (orgPolicy + keyEvents)** — from the shared channels (#invite-team, #invite-pes,
+#invite_pes_and_people_insights, #pe-announcements, #pe-community, #people_team_pe,
+#people-team, #all-announcements) and the IOPE Newsletter.
 - `orgPolicy` = process/tooling/SOP changes
 - `keyEvents` = decisions, departures, launches, roadmap updates, upcoming dates, holidays,
   org-wide events
