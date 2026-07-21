@@ -31,6 +31,33 @@ Throughout, use the connector tools available in the session (e.g. `slack_read_c
 `notion-create-pages`, and the GitHub connector's issue-create and file-read tools). Do
 **not** use raw `urllib` calls with a hardcoded token — there is no shared token anymore.
 
+## Preflight — confirm the PE's connectors are connected
+
+**Do this before anything else.** This skill depends on three connectors. If any is missing
+or unauthorized, **stop and prompt the PE to connect it** — do not push ahead and fail midway.
+
+Required connectors:
+- **Slack** — to read the PE's channels.
+- **GitHub** — to open the delivery issue.
+- **Notion** — to read the Leadership Hub / IOPE Newsletter and create the weekly page.
+
+Check each with a lightweight, read-only call:
+- **Slack** — a trivial call such as listing/reading one channel or `auth.test`.
+- **GitHub** — a `get_me` or a read of `config/<pe_key>.json`.
+- **Notion** — a `notion-fetch` of the recaps parent page `376ad673-c6c2-8196-8e2e-e09dbc954986`.
+
+If a connector's tools aren't available, or a call fails with an authorization/permission
+error, pause and tell the PE exactly which one to connect (name the specific connector):
+
+> ⚠️ Your **[Slack / GitHub / Notion]** connector isn't connected in Cowork yet. Open Cowork's
+> connector settings, connect **[name]**, then say "continue" and I'll pick up right where I
+> left off.
+
+If more than one is missing, list all of them in a single message. Only proceed once all three
+respond successfully. If a connector is connected but only *partially* scoped (e.g. Notion is
+connected but lacks access to a specific page), continue and note the gap in the relevant step
+rather than failing the whole run.
+
 ## Step 0 — Identify PE and load config
 
 **Auto-detect from email:**
