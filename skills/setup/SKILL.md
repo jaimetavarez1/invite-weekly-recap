@@ -3,15 +3,16 @@ name: setup-invite-recap
 description: >
   First-time setup for the Invite Weekly Recap plugin. Introduces the recap,
   confirms the PE's key, collects the org-specific Slack channels to include, and
-  saves the PE's config to GitHub. The recap runs through Cowork using the PE's own
-  Slack connection — no bot to invite. Trigger on "set up my weekly recap",
+  saves the PE's config by opening a [RECAP-INGEST] GitHub issue (a workflow writes
+  it). The recap runs through Cowork using the PE's own Slack connection — no bot to
+  invite and no repo write access needed. Trigger on "set up my weekly recap",
   "configure my recap", "invite recap setup", "first time setup", or "my channels
   aren't configured yet".
 ---
 
 Walk the PE through first-time setup for the Weekly Recruiting Recap. Everything runs
 through Cowork (Claude) using the PE's own connected Slack, Notion, and GitHub — there is
-no bot to invite to channels.
+no bot to invite to channels, and no repo write access is required.
 
 ## Step 1 — Welcome and introduce the recap
 
@@ -43,7 +44,8 @@ Make sure the PE has these connectors authorized in Cowork:
 
 - **Slack** — this is what the recap reads from (uses the PE's own access)
 - **Notion** — so the recap can publish the weekly page
-- **GitHub** — so the PE's config and dashboard data are saved
+- **GitHub** — used only to **open an issue** that delivers config/recap data (no repo
+  write access needed — opening an issue on a public repo works for any GitHub account)
 
 If any are missing, point the PE to Cowork's connector settings before continuing.
 
@@ -101,26 +103,30 @@ details → the ID is in the URL and starts with `C`.
 
 Collect the name and ID for each channel.
 
-## Step 5 — Save config to GitHub
+## Step 5 — Save config by opening a [RECAP-INGEST] issue
 
-Save the PE's channel list to the shared GitHub config using the **connected GitHub
-connector** (do not use an embedded token). Write to `config/<pe_key>.json` in the
-`jaimetavarez1/invite-weekly-recap` repo on the `main` branch. If the file already exists,
-fetch its SHA first and include it in the update.
+Save the PE's channel list by opening a GitHub **issue** with the PE's GitHub connector
+(issue-create tool). A workflow ingests it and writes `config/<pe_key>.json` using the repo's
+own token — so no repo write access is needed.
 
-Config shape:
+**Issue title:** `[RECAP-INGEST] <pe_key> CONFIG`
+
+**Issue body:** a single fenced ```json block containing exactly:
 
 ```json
 {
   "pe_key": "<pe_key>",
-  "org_channels": [
-    { "id": "CXXXXXXXX", "name": "#channel-name" }
-  ]
+  "config": {
+    "pe_key": "<pe_key>",
+    "org_channels": [
+      { "id": "CXXXXXXXX", "name": "#channel-name" }
+    ]
+  }
 }
 ```
 
-Use `create_or_update_file` (or `push_files`) on the GitHub connector with a commit message
-like `setup: save config for <pe_key>`.
+Create the issue in `jaimetavarez1/invite-weekly-recap`. The ingest workflow fires on open,
+writes `config/<pe_key>.json`, and auto-closes the issue. Confirm the issue was created.
 
 ## Step 6 — Confirm and set expectations
 
@@ -160,5 +166,6 @@ Each recap creates a new Notion page under the Weekly Recruiting Recaps parent.
 
 ---
 
-If the GitHub config save failed: "The config save didn't go through — try once more, or
-ping Jaime to add your channels manually. Setup takes under a minute once it connects."
+If the issue couldn't be created: "I couldn't open the GitHub issue that saves your config —
+make sure your GitHub connector is connected in Cowork, then try again, or ping Jaime. (No
+repo write access is needed — only the ability to open an issue.)"
