@@ -1,0 +1,14 @@
+{
+  "pe": "test",
+  "week": "smoke test",
+  "refreshedAt": "2026-07-21T03:05:00Z",
+  "updates": [
+    {
+      "heading": "Ingest pipeline smoke test",
+      "bullets": [
+        "If data/test.json exists in the repo, the issue-to-Action-to-push path works.",
+        "This file is safe to delete."
+      ]
+    }
+  ]
+}
