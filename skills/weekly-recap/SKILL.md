@@ -5,11 +5,11 @@ description: >
   configured org Slack channels plus shared Invite channels using the PE's own
   Slack connector, reads the IOPE Newsletter and Leadership Hub, then delivers the
   synthesized JSON by opening a [RECAP-INGEST] GitHub issue that a workflow ingests
-  and pushes. Also creates a Notion page. Trigger on "give me my weekly recap",
-  "run my recap", "weekly update", "what happened this week in recruiting", or "run
-  the invite recap". Also handles mid-week live artifact refreshes — trigger on
-  "refresh my recap", "refresh the live artifact", "add new updates", or "update my
-  recap".
+  and pushes. Also updates the shared weekly Notion page. Trigger on "give me my
+  weekly recap", "run my recap", "weekly update", "what happened this week in
+  recruiting", or "run the invite recap". Also handles mid-week live artifact
+  refreshes — trigger on "refresh my recap", "refresh the live artifact", "add new
+  updates", or "update my recap".
 ---
 
 Generate the weekly recruiting recap for the PE running this skill.
@@ -24,12 +24,13 @@ connectors** — Slack, Notion, and GitHub. There is no shared bot and no embedd
   synthesized recap by **opening a `[RECAP-INGEST]` issue**. A GitHub Action ingests that
   issue and pushes the data using the repo's own token. Opening an issue on a public repo is
   allowed for any GitHub account, so PEs never need to be collaborators.
-- **Notion** page creation goes through the PE's Notion connector.
+- **Notion** updates go through the PE's Notion connector.
 
 Throughout, use the connector tools available in the session (e.g. `slack_read_channel`,
 `slack_search_public_and_private`, `notion-query-data-sources`, `notion-fetch`,
-`notion-create-pages`, and the GitHub connector's issue-create and file-read tools). Do
-**not** use raw `urllib` calls with a hardcoded token — there is no shared token anymore.
+`notion-create-pages`, `notion-update-page`, and the GitHub connector's issue-create and
+file-read tools). Do **not** use raw `urllib` calls with a hardcoded token — there is no
+shared token anymore.
 
 ## Preflight — confirm the PE's connectors are connected
 
@@ -39,7 +40,7 @@ or unauthorized, **stop and prompt the PE to connect it** — do not push ahead 
 Required connectors:
 - **Slack** — to read the PE's channels.
 - **GitHub** — to open the delivery issue.
-- **Notion** — to read the Leadership Hub / IOPE Newsletter and create the weekly page.
+- **Notion** — to read the Leadership Hub / IOPE Newsletter and update the weekly page.
 
 Check each with a lightweight, read-only call:
 - **Slack** — a trivial call such as listing/reading one channel or `auth.test`.
@@ -109,11 +110,11 @@ Determine whether this is a **full run** or a **refresh** based on what the PE s
 | "give me my weekly recap", "run my recap", "weekly update", "what happened this week" | `FULL` |
 | "refresh my recap", "refresh the live artifact", "add new updates", "update my recap", "refresh" | `REFRESH` |
 
-**Full mode** — the clean-slate weekly reset. Overwrites all JSON data and creates a new
-Notion page.
+**Full mode** — the clean-slate weekly reset. Overwrites all JSON data and updates the shared
+weekly Notion page.
 
 **Refresh mode** — mid-week top-up. Adds new updates without removing anything already there.
-Does NOT create a Notion page.
+Does NOT touch Notion.
 
 For the Slack read window: **full** = 7 days ago; **refresh** = the `refreshedAt` timestamp
 from the current `data/shared.json` (read it via the connector; fall back to 7 days ago if
@@ -269,25 +270,54 @@ Create the issue in `jaimetavarez1/invite-weekly-recap`. The ingest workflow fir
 open, writes the files, pushes (rebuilding the dashboard), and auto-closes the issue. Confirm
 the issue was created; the dashboard updates within ~1 minute.
 
-## Step 5 — Create Notion page (full mode only)
+## Step 5 — Update the shared weekly Notion page (full mode only)
 
 **Skip entirely in refresh mode.**
 
+**There is ONE Notion page per week, shared by all PEs.** Never create a second page for a
+week that already has one — find the existing page and update only your own section.
+
 **Parent page ID:** `376ad673-c6c2-8196-8e2e-e09dbc954986`
-**Title:** `Week of [today's date], [year]` (e.g. `Week of July 20, 2026`), icon `📋`.
+
+**1. Compute the week title — anchored to Monday so every PE lands on the same page**
+(a Monday run and a Thursday run in the same week must resolve to the identical title):
+```python
+import datetime
+today = datetime.date.today()
+monday = today - datetime.timedelta(days=today.weekday())   # Monday of the current week
+week_title = f"Week of {monday.strftime('%B %-d, %Y')}"      # e.g. "Week of July 20, 2026"
+```
+
+**2. Look for an existing page.** `notion-fetch` the parent page `376ad673-...` and scan its
+child pages for one whose title exactly equals `week_title`. Use the Monday-anchored title for
+the match — do NOT match on today's date.
+
+**3a. If the weekly page EXISTS → update only your own section.**
+- Find the `### <Your Name> — <Org>` subsection under `## 🎯 PE Org Updates` and replace its
+  body with your freshly synthesized updates, using `notion-update-page` with `update_content`
+  (your current subsection text as `old_str`, the new one as `new_str`).
+- If your `###` subsection isn't on the page yet, add it under the PE Org Updates section
+  (e.g. `insert_content`).
+- **Do NOT** modify other PEs' subsections, **do NOT** create a new page, and **do NOT**
+  duplicate the shared sections. Leave the Org & Policy and Key Events sections as the first
+  PE created them (the dashboard is the always-current shared view of those).
+- Share the existing page's URL when you confirm.
+
+**3b. If NO weekly page exists yet → create it once** (`notion-create-pages`) with title
+`week_title` and icon `📋`.
 
 First content block:
 > 🔴 **[→ Open Live Interactive Recap](https://jaimetavarez1.github.io/invite-weekly-recap/)** — tabs, filters, and one-click Slack summary
 
-Then all four sections:
+Then the four sections:
 ```
 ## 📋 Org & Policy Updates
-(orgPolicy items — ### per item, - bullets, *italic* source citations)
+(orgPolicy items from shared.json — ### per item, - bullets, *italic* source citations)
 
 ---
 
 ## 📅 Key Events & Decisions
-(keyEvents items — ### per theme, - bullets, *italic* source citations)
+(keyEvents items from shared.json — ### per theme, - bullets, *italic* source citations)
 
 ---
 
@@ -299,18 +329,18 @@ Then all four sections:
 ### Michelle Cordray — Customer Experience
 ### Kebone Moloko — PM/PD, Data
 ```
-
-For the **running PE's own** section, use the updates you just synthesized in memory (the
-issue push is asynchronous, so `data/<pe_key>.json` may not be updated yet). For the **other**
-PEs, read their existing `data/<pe>.json` from GitHub via the connector (public read); if
-missing → "No data available yet." Render each update as `**heading**` + `-` bullets.
+For your own subsection use your in-memory synthesized updates. For the other PEs, read their
+existing `data/<pe>.json` from GitHub (public read); if missing → "No data available yet."
+Render each update as `**heading**` + `-` bullets.
 
 ## Step 6 — Confirm
 
-**Full mode:** tell the PE it's done and share the Notion page link, the live artifact link
+**Full mode:** tell the PE it's done and share the **weekly Notion page** link (the shared one
+you updated or created), the live artifact link
 (https://jaimetavarez1.github.io/invite-weekly-recap/), and a 2–3 sentence plain-language
 summary of the most important things this week. Note the dashboard updates within ~1 minute
-once the ingest Action runs.
+once the ingest Action runs, and mention whether you updated the existing weekly page or
+created it.
 
 **Refresh mode:** tell the PE what was added (counts of new orgPolicy / keyEvents / PE
 updates), share the live artifact link, and note existing updates were preserved and nothing
