@@ -38,16 +38,26 @@ bot to invite. It delivers a Notion page and updates the live dashboard, usually
 
 ---
 
-## Step 2 — Confirm connectors
+## Step 2 — Preflight: confirm connectors (prompt to connect any that are missing)
 
-Make sure the PE has these connectors authorized in Cowork:
+This skill and the recap depend on three connectors. **Actively check each one** with a
+lightweight, read-only call before continuing — don't assume they're connected:
 
-- **Slack** — this is what the recap reads from (uses the PE's own access)
-- **Notion** — so the recap can publish the weekly page
-- **GitHub** — used only to **open an issue** that delivers config/recap data (no repo
-  write access needed — opening an issue on a public repo works for any GitHub account)
+- **Slack** — the recap reads from it (uses the PE's own access). Check with a trivial call
+  such as `auth.test` or reading one channel.
+- **GitHub** — used to **open an issue** that saves config/recap data (no repo write access
+  needed). Check with `get_me` or a read of any repo file.
+- **Notion** — so the recap can publish the weekly page and read the Leadership Hub. Check
+  with a `notion-fetch` of the recaps parent page `376ad673-c6c2-8196-8e2e-e09dbc954986`.
 
-If any are missing, point the PE to Cowork's connector settings before continuing.
+If any connector's tools aren't available or a check fails with an authorization error, **stop
+and prompt the PE to connect it** — name the specific connector:
+
+> ⚠️ Your **[Slack / GitHub / Notion]** connector isn't connected in Cowork yet. Open Cowork's
+> connector settings, connect **[name]**, then say "continue" and I'll pick up right where I
+> left off.
+
+If several are missing, list them all in one message. Only continue once all three respond.
 
 ## Step 3 — Identify the PE
 
