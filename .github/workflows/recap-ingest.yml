@@ -1,0 +1,60 @@
+name: Recap Ingest (from PE issue)
+
+# A PE's Cowork skill opens a "[RECAP-INGEST]" issue containing the synthesized
+# recap JSON in its body. This workflow parses it and pushes data/config using
+# the workflow's own GITHUB_TOKEN — so PEs never need repo write access or an
+# embedded token. They read Slack with their own connector, then just file an
+# issue.
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  ingest:
+    # Only run for recap-ingest issues.
+    #
+    # SECURITY NOTE: per request, this does NOT verify the issue author. Because
+    # the repo is public, ANY GitHub user can open a "[RECAP-INGEST]" issue and
+    # overwrite the dashboard data. To lock it down later, add an author
+    # allowlist to this condition, e.g.:
+    #   && contains(fromJSON('["jaimetavarez1","teresa-gh","lisa-gh"]'), github.event.issue.user.login)
+    if: startsWith(github.event.issue.title, '[RECAP-INGEST]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Write recap data/config from issue body
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: python3 scripts/ingest_recap.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ config/
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "recap: ingest from issue #${{ github.event.issue.number }}"
+            git push
+          fi
+
+      - name: Close the issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue close ${{ github.event.issue.number }} \
+            --repo ${{ github.repository }} \
+            --comment "✅ Recap data ingested and pushed — the live dashboard will update shortly."
