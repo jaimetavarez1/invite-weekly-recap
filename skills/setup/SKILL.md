@@ -78,7 +78,7 @@ If the email isn't in the roster or isn't available, ask: "What PE key do you go
 ## Step 4 — Collect the PE's org channels
 
 The recap reads whatever channels the PE lists here, using the PE's own Slack access. The
-three shared Invite channels are already included for everyone — no need to list them.
+shared Invite channels are already included for everyone — no need to list them.
 
 Tell the PE:
 
@@ -100,10 +100,15 @@ Common patterns by org:
 You don't need to invite anything to these channels — because the recap runs with your own
 Slack access, it can already read every channel you're a member of, including private ones.
 
-The three shared channels already included for everyone (no setup needed):
+The shared channels already included for everyone (no setup needed):
 - #invite-team
 - #invite-pes
 - #invite_pes_and_people_insights
+- #pe-announcements
+- #pe-community
+- #people_team_pe
+- #people-team
+- #all-announcements
 
 ---
 
@@ -159,7 +164,7 @@ Run `set up my weekly recap` again and update your channel list.
 | Source | What it covers |
 |---|---|
 | Your org channels | The channels you listed |
-| #invite-team, #invite-pes, #invite_pes_and_people_insights | Shared Invite updates for all PEs |
+| Shared channels (#invite-team, #invite-pes, #invite_pes_and_people_insights, #pe-announcements, #pe-community, #people_team_pe, #people-team, #all-announcements) | Shared Invite + PE-community updates for all PEs |
 | IOPE Newsletter | Official Invite Ops updates, SOPs, action items |
 | People Central Updates | Bi-weekly People team policy + tooling changes |
 | Invite PE Leadership Hub | Pass-downs and open PE action items (Notion) |
