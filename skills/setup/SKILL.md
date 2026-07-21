@@ -1,76 +1,80 @@
 ---
 name: setup-invite-recap
 description: >
-  WREN onboarding for new Invite PEs. Introduces WREN (Weekly Recap, Events, News),
-  walks through adding WREN to the right Slack channels, and saves the PE's config.
-  No plugin download needed. Trigger on "set up my weekly recap", "configure my recap",
-  "invite recap setup", "set up WREN", "onboard me to WREN", "first time setup", or
-  "my channels aren't configured yet".
+  First-time setup for the Invite Weekly Recap plugin. Introduces the recap,
+  confirms the PE's key, collects the org-specific Slack channels to include, and
+  saves the PE's config to GitHub. The recap runs through Cowork using the PE's own
+  Slack connection — no bot to invite. Trigger on "set up my weekly recap",
+  "configure my recap", "invite recap setup", "first time setup", or "my channels
+  aren't configured yet".
 ---
 
-Walk the PE through first-time setup for WREN. No plugin download or folder connection
-needed — everything runs through Claude and Slack.
+Walk the PE through first-time setup for the Weekly Recruiting Recap. Everything runs
+through Cowork (Claude) using the PE's own connected Slack, Notion, and GitHub — there is
+no bot to invite to channels.
 
-## Step 1 — Welcome and introduce WREN
+## Step 1 — Welcome and introduce the recap
 
 Greet the PE warmly and give them a clear picture of what they're setting up:
 
 ---
 
-👋 **Welcome to WREN — your Invite team's Weekly Recap, Events & News bot.**
+👋 **Welcome to your Invite Weekly Recruiting Recap.**
 
-WREN is a Slack-connected AI assistant that does three things for you each week:
+Each week, the recap does three things for you:
 
-- **Weekly Recap** — reads your key Slack channels and synthesizes everything into a
+- **Recap** — reads your key Slack channels and synthesizes everything into a
   structured briefing: org & policy updates, key events, PE org updates, and talking
   points ready to cascade to your recruiting team
-- **Events** — automatically surfaces upcoming Gusto holidays, work anniversaries, and
-  key deadlines so nothing slips through
+- **Events** — surfaces upcoming Gusto holidays, work anniversaries, and key deadlines
 - **News** — pulls from the IOPE Newsletter, People Central Updates, and your Notion
   Leadership Hub so you're always current
 
-The recap runs whenever you say **"give me my weekly recap"** in Cowork. It takes about
-2 minutes and delivers both a Notion page and a live interactive dashboard.
+It runs whenever you say **"give me my weekly recap"** in Cowork, using **your own Slack
+connection** — so it reads every channel you're a member of, public and private, with no
+bot to invite. It delivers a Notion page and updates the live dashboard, usually in under
+2 minutes.
 
 ---
 
-## Step 2 — Identify the PE
+## Step 2 — Confirm connectors
+
+Make sure the PE has these connectors authorized in Cowork:
+
+- **Slack** — this is what the recap reads from (uses the PE's own access)
+- **Notion** — so the recap can publish the weekly page
+- **GitHub** — so the PE's config and dashboard data are saved
+
+If any are missing, point the PE to Cowork's connector settings before continuing.
+
+## Step 3 — Identify the PE
 
 Check the system context for `userEmail` and map to a PE key:
 
 | Email | PE key | Org coverage |
 |---|---|---|
-| jaime.tavarez@gusto.com | jaime | Engineering |
+| jaime.tavarez@gusto.com | jaime | Engineering, Data |
 | teresa.waggoner@gusto.com | teresa | Foundation, I&O, Finance |
 | michelle.cordray@gusto.com | michelle | CX |
-| kebone.moloko@gusto.com | kebone | PM/PD, Data |
+| kebone.moloko@gusto.com | kebone | PM/PD |
 | lisa.pham@gusto.com | lisa | GTM, Sales, Marketing |
 
 Confirm: "I see you're [Name], covering [Org]. I'll set you up as `[pe_key]` — does that look right?"
 
 If the email isn't in the roster or isn't available, ask: "What PE key do you go by on the team? (lowercase, no spaces — e.g. `teresa`)"
 
-## Step 3 — Add WREN to your Slack channels
+## Step 4 — Collect the PE's org channels
 
-Explain that WREN needs to be invited to the PE's org-specific Slack channels before it
-can read them during the recap. The three shared Invite channels are already covered for
-everyone — no action needed there.
+The recap reads whatever channels the PE lists here, using the PE's own Slack access. The
+three shared Invite channels are already included for everyone — no need to list them.
 
 Tell the PE:
 
 ---
 
-**Invite WREN to your org's recruiting channels.**
+**Which Slack channels should your recap include?**
 
-For each channel you want WREN to monitor, open it in Slack and run:
-```
-/invite @WREN
-```
-That's it — WREN is now listening and will include that channel in your weekly recap.
-
-**Which channels should you add WREN to?**
-
-Aim for 2–4 channels. Add WREN wherever your recruiting team discusses:
+Aim for 2–4 channels where your recruiting team discusses:
 - Pipeline updates and hiring decisions
 - Org-wide announcements or leadership updates
 - Role-specific strategy or sourcing
@@ -81,89 +85,64 @@ Common patterns by org:
 - `#[org]-invite-leadership` — PE and leadership discussions
 - `#fy[year]-[org]-admin-invite` — headcount and admin
 
-The three shared channels WREN already reads for everyone (no setup needed):
+You don't need to invite anything to these channels — because the recap runs with your own
+Slack access, it can already read every channel you're a member of, including private ones.
+
+The three shared channels already included for everyone (no setup needed):
 - #invite-team
 - #invite-pes
 - #invite_pes_and_people_insights
 
 ---
 
-Ask the PE: "Go ahead and add WREN to your channels now. Which ones did you add it to?
-Share the channel names — I'll save them to your config."
+Ask the PE: "Which channels do you want included? Share the names — I'll save them to your
+config." To find a channel ID if needed: right-click the channel in Slack → View channel
+details → the ID is in the URL and starts with `C`.
 
-To find a channel ID if needed: right-click the channel in Slack → View channel details →
-the ID is in the URL and starts with `C`.
+Collect the name and ID for each channel.
 
-Collect the name and ID for each channel the PE adds.
+## Step 5 — Save config to GitHub
 
-## Step 4 — Save config to GitHub
+Save the PE's channel list to the shared GitHub config using the **connected GitHub
+connector** (do not use an embedded token). Write to `config/<pe_key>.json` in the
+`jaimetavarez1/invite-weekly-recap` repo on the `main` branch. If the file already exists,
+fetch its SHA first and include it in the update.
 
-Now save the PE's channel list to the shared GitHub config so WREN remembers their
-channels for every future recap run.
+Config shape:
 
-```python
-import urllib.request, json, base64
-
-_p = ["ghp_Lhdv", "PdurTPG4Ot0EGD", "XMzmKatC0HFZ3xKZQp"]
-T = "".join(_p)
-OWNER = "jaimetavarez1"
-REPO  = "invite-weekly-recap"
-PE_KEY = "<pe_key>"  # substitute real value
-
-config = {
-    "pe_key": PE_KEY,
-    "org_channels": [
-        { "id": "CXXXXXXXX", "name": "#channel-name" }
-        # one entry per channel the PE just added WREN to
-    ]
+```json
+{
+  "pe_key": "<pe_key>",
+  "org_channels": [
+    { "id": "CXXXXXXXX", "name": "#channel-name" }
+  ]
 }
-
-path = "config/" + PE_KEY + ".json"
-url  = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/contents/" + path
-hdrs = {"Authorization": "token " + T, "Accept": "application/vnd.github.v3+json"}
-
-sha = None
-try:
-    with urllib.request.urlopen(urllib.request.Request(url, headers=hdrs)) as r:
-        sha = json.loads(r.read())['sha']
-except Exception:
-    pass
-
-body = {
-    "message": "setup: save config for " + PE_KEY,
-    "content": base64.b64encode(json.dumps(config, indent=2).encode()).decode()
-}
-if sha:
-    body["sha"] = sha
-
-req = urllib.request.Request(url, data=json.dumps(body).encode(), method="PUT",
-    headers={**hdrs, "Content-Type": "application/json"})
-with urllib.request.urlopen(req) as r:
-    print("Config saved — commit " + json.loads(r.read())['commit']['sha'][:12])
 ```
 
-## Step 5 — Confirm and set expectations
+Use `create_or_update_file` (or `push_files`) on the GitHub connector with a commit message
+like `setup: save config for <pe_key>`.
+
+## Step 6 — Confirm and set expectations
 
 Tell the PE:
 
 ---
 
-✅ **WREN is all set!** Here's your quick-reference guide:
+✅ **You're all set!** Here's your quick-reference guide:
 
 **To run your weekly recap:**
-Say `give me my weekly recap` (or `run my recap`) in Cowork. WREN reads your channels,
+Say `give me my weekly recap` (or `run my recap`) in Cowork. It reads your channels,
 synthesizes everything, and delivers a Notion page + live dashboard — usually in under
 2 minutes.
 
-**To add a new channel later:**
-Invite WREN to the channel (`/invite @WREN`), then tell Cowork:
-`add this channel to my recap` — WREN updates your config automatically.
+**To add or change channels later:**
+Run `set up my weekly recap` again and update your channel list.
 
-**What WREN reads every recap:**
+**What every recap reads:**
 
 | Source | What it covers |
 |---|---|
-| Your org channels | The channels you just added |
+| Your org channels | The channels you listed |
 | #invite-team, #invite-pes, #invite_pes_and_people_insights | Shared Invite updates for all PEs |
 | IOPE Newsletter | Official Invite Ops updates, SOPs, action items |
 | People Central Updates | Bi-weekly People team policy + tooling changes |
@@ -181,5 +160,5 @@ Each recap creates a new Notion page under the Weekly Recruiting Recaps parent.
 
 ---
 
-If the GitHub push failed: "The config save didn't go through — try once more, or ping
-Jaime to add your channels manually. Setup takes under a minute once it connects."
+If the GitHub config save failed: "The config save didn't go through — try once more, or
+ping Jaime to add your channels manually. Setup takes under a minute once it connects."
